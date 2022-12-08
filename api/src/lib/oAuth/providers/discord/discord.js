@@ -6,9 +6,12 @@ import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import Sentry from 'src/lib/sentry'
-import { fetchUser } from 'src/lib/users'
+
+var path = require('path')
 
 export const DISCORD = 'DISCORD'
+const DISCORD_API_URL = 'https://discord.com/api/v9'
+
 export const DISCORD_OAUTH_URL_AUTHORIZE =
   'https://discord.com/oauth2/authorize'
 
