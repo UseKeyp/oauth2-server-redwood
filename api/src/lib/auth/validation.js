@@ -1,8 +1,9 @@
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
-import { KEYP } from 'src/lib/oAuth/providers/keyp'
+import { CHESS } from 'src/lib/oAuth/providers/chess'
+import { DISCORD } from 'src/lib/oAuth/providers/discord'
 
-const APPROVED_LOGIN_PROVIDERS = [KEYP]
+const APPROVED_LOGIN_PROVIDERS = [CHESS, DISCORD]
 
 export const validateLoginRequest = ({ type }) => {
   if (!APPROVED_LOGIN_PROVIDERS.includes(type)) {

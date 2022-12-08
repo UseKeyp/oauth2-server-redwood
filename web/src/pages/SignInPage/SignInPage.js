@@ -50,21 +50,17 @@ const LoginPortal = () => {
           <span className="block xl:inline">Sign In</span>
         </h1>
         <div className="mt-6">
-          <div className="mb-2">
-            <h3 className="text-base font-bold color-grey-light text-center">
-              Sign in to oauth2-demo-client
-            </h3>
-          </div>
+          <div className="mb-2"></div>
         </div>
 
         <div className="login-portal-container--button-wrapper">
           <button
-            onClick={() => onSubmitSignUp('KEYP')}
+            onClick={() => onSubmitSignUp('DISCORD')}
             className="login-button"
             size="small"
           >
             <div className="flex justify-center align-center items-center m-1">
-              <span className="mr-2">Sign in with Keyp</span>
+              <span className="mr-2">Sign in with Discord</span>
             </div>
           </button>
           {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}

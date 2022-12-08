@@ -8,10 +8,10 @@ export const cors = {
   origin: isProduction
     ? process.env.APP_DOMAIN
     : [
-        'http://0.0.0.0:8910',
-        'http://localhost:8910',
+        'http://0.0.0.0:3000',
+        'http://localhost:3000',
         'http://localhost',
-        'http://10.0.2.2:8910',
+        'http://10.0.2.2:3000',
       ],
   credentials: true,
 }
