@@ -3,7 +3,7 @@ import { toast } from '@redwoodjs/web/toast'
 
 import { getErrorResponse } from 'src/utils/helpers'
 
-export const logIn = async (attributes) => {
+const login = async (attributes) => {
   console.log(attributes)
   try {
     /* eslint-disable-next-line no-undef */
@@ -44,7 +44,7 @@ const logout = async () => {
 class ExtendedRedwoodAuthProvider extends RedwoodAuthProvider {
   constructor(props) {
     super(props)
-    this.rwClient.logIn = logIn
+    this.rwClient.login = login
     this.rwClient.logout = logout
   }
 }
