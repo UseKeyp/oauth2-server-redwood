@@ -13,24 +13,25 @@ generator client {
 // TODO: Please remove the following example:
 
 model User {
-  id           String   @id // Chess.com id
-  username     String?  @unique // platform username
-  address      String?  @unique // Torus wallet address
-  locale       String?
-  email        String?  @unique // Email address
+  id             String           @id // Chess.com id
+  username       String?          @unique // platform username
+  address        String?          @unique // Torus wallet address
+  locale         String?
+  email          String?          @unique // Email address
   // --------------- STATE --------------
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  mfa_enabled  Boolean?
-  imageSrc     String? // Avatar URL
-  country      String? // Player's country  eg. US, DE
-  mintCredits  Int      @default(3) // Mint for free!
-  banned       Boolean  @default(false)
-  blocked      Boolean? // Prevents others from interacting with this person
-  refreshToken String? // Discord.com Oauth
-  accessToken  String? // Discord.com Oauth
-  OAuth        OAuth[]
-  betaAccess   Boolean  @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  mfa_enabled    Boolean?
+  imageSrc       String? // Avatar URL
+  country        String? // Player's country  eg. US, DE
+  mintCredits    Int              @default(3) // Mint for free!
+  banned         Boolean          @default(false)
+  blocked        Boolean? // Prevents others from interacting with this person
+  refreshToken   String? // Discord.com Oauth
+  accessToken    String? // Discord.com Oauth
+  OAuth          OAuth[]
+  betaAccess     Boolean          @default(false)
+  OAuthChallenge OAuthChallenge[]
 }
 
 model OAuth {
@@ -40,4 +41,18 @@ model OAuth {
   createdAt     DateTime @default(now())
   user          User?    @relation(fields: [userId], references: [id])
   userId        String?
+}
+
+model OAuthChallenge {
+  state                 String   @id
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  code_challenge        String
+  client_id             String
+  scope                 String
+  redirect_uri          String
+  response_type         String
+  code_challenge_method String
+  user                  User?    @relation(fields: [userId], references: [id])
+  userId                String?
 }

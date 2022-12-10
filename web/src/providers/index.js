@@ -1,4 +1,5 @@
 import { OAuthProvider } from 'src/providers/oAuth'
+import { OAuthAuthorityProvider } from 'src/providers/oAuthAuthority'
 import { RedirectionProvider } from 'src/providers/redirection'
 import { ToastProvider } from 'src/providers/toast'
 
@@ -10,7 +11,9 @@ const AllContextProviders = ({ children }) => {
     <>
       <ToastProvider>
         <OAuthProvider>
-          <RedirectionProvider>{children}</RedirectionProvider>
+          <OAuthAuthorityProvider>
+            <RedirectionProvider>{children}</RedirectionProvider>
+          </OAuthAuthorityProvider>
         </OAuthProvider>
       </ToastProvider>
     </>

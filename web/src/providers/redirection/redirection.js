@@ -3,6 +3,7 @@ import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { navigate } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
+import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
 export const APPROVED_LOGIN_PROVIDERS = ['KEYP', 'DISCORD']
@@ -24,6 +25,7 @@ const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
   const { reauthenticate, logIn } = useAuth()
+  const { authorize } = useOAuthAuthority()
   const { submitCodeGrant } = useOAuth()
 
   let url
@@ -59,8 +61,8 @@ const RedirectionProvider = ({ children }) => {
       })
     if (response.id) {
       await reauthenticate()
-      // TODO: complete OAuth provider flow
-      navigate(getRedirectTo() || '/profile')
+      // TODO: Handle case where the user is doing normal login and send to profile
+      await authorize()
     }
   }
 
