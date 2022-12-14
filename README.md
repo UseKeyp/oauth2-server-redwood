@@ -1,11 +1,11 @@
-<h1 align="center"><img width="600" style="border-radius: 30px;" src="https://github.com/treasure-chess/treasure-chess/blob/main/github-header.png?raw=true"/></h1>
-<h1 align="center">Welcome to oauth2-server-redwood 👋</h1>
+<h1 align="center"><img width="600" style="border-radius: 30px;" src="https://raw.githubusercontent.com/UseKeyp/.github/main/Keyp-Logo-Color.svg"/></h1>
+<h1 align="center">Welcome to OAuth Server Redwood 👋</h1>
 <p align="center">
   <a href="#" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" />
   </a>
-  <a href="https://twitter.com/treasure chess_" target="_blank">
-    <img alt="Twitter: treasurechess_" src="https://img.shields.io/twitter/follow/treasurechess_.svg?style=social" />
+  <a href="https://twitter.com/UseKeyp" target="_blank">
+    <img alt="Twitter: UseKeyp" src="https://img.shields.io/twitter/follow/UseKeyp.svg?style=social" />
   </a>
 </p>
 
@@ -32,20 +32,20 @@ TODO
 3.
 ## Resources 🧑‍💻
 
-OAuth Server libraries: https://oauth.net/code/nodejs/
+- OAuth Server libraries: https://oauth.net/code/nodejs/
+- Similar tools https://github.com/panva/oauth4webapi/blob/main/examples/code.ts and https://github.com/panva/node-openid-client
 
 ## Contributors ✨
 
-👤 **Nifty Chess Team <maintainers@niftychess.com>**
+👤 **Keyp Team <maintainers@UseKeyp.com>**
 
-- Website: https://treasurechess.com
-- Twitter: [@treasurechess\_](https://twitter.com/treasurechess_)
-- GitHub: [@Treasure-Chess](https://github.com/Treasure-Chess)
+- Website: https://UseKeyp.com
+- Twitter: [@UseKeyp](https://twitter.com/UseKeyp)
+- GitHub: [@UseKeyp](https://github.com/UseKeyp)
 
 ## License 📝
 
 Copyright © 2022 Nifty Chess, Inc.<br />
 This project is MIT licensed.
-
 
 
