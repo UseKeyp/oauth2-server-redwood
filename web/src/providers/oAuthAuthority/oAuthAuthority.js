@@ -3,7 +3,7 @@ const OAuthAuthorityContext = React.createContext({
 })
 
 const parseUrl = () => {
-  const url = new URL(window.location.href) // Support prerender
+  let url = new URL(window.location.href) // Support prerender
   return { interactionUid: url.searchParams.get('uid') }
 }
 
@@ -19,15 +19,12 @@ const OAuthAuthorityProvider = ({ children }) => {
   const continueInteraction = async () => {
     try {
       const interactionUid = localStorage.getItem(INTERACTION_UID_LOCAL_KEY)
-      fetch(
-        `${process.env.APP_DOMAIN}/api/oauth/interaction/${interactionUid}/login`,
-        {
-          method: 'POST',
-          // headers: {
-          //   'Content-Type': 'application/json',
-          // },
-        }
-      )
+      fetch(`/api/oauth/interaction/${interactionUid}/login`, {
+        method: 'POST',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        // },
+      })
     } catch (error) {
       return { error: error.message }
     }

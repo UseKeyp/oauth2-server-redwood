@@ -8,7 +8,7 @@
 [web]
   title = "oauth2-server-redwood"
   port = 3000
-  # host = "0.0.0.0"
+  host = "0.0.0.0"
   apiUrl = "/api"
   includeEnvironmentVariables = [] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]

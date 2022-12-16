@@ -44,15 +44,6 @@ const oidc = new Provider('http://localhost:3000', {
   ],
   cookies: {
     keys: process.env.SECURE_KEY.split(','),
-    // short: {
-    //   httpOnly: true,
-    //   overwrite: true,
-    //   sameSite: 'lax',
-    //   path: '/',
-    // },
-    // long: {
-    //   path: '/',
-    // },
   },
   jwks,
   // oidc-provider only looks up the accounts by their ID when it has to read the claims,
@@ -125,13 +116,9 @@ expressApp.get(
       const { uid, prompt, params } = details
 
       const client = await oidc.Client.find(params.client_id)
-
+      console.log(res)
       if (prompt.name === 'login') {
-        // Navigate the user to the correct oauth endpoint.
-        const url = new URL(process.env.APP_DOMAIN + '/signin')
-        url.searchParams.set('uid', uid) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
-        // TODO: pass `client` object for TOS and privacy policy
-        return res.redirect(url.toString())
+        return res.redirect(`/signin?uid=${uid}`)
       }
 
       return res.render('interaction', {
@@ -153,8 +140,10 @@ expressApp.post(
   parse,
   async (req, res, next) => {
     try {
-      logger.debug('/oauth/interaction/:uid/login')
-
+      console.log(
+        'see what else is available to you for interaction views',
+        details
+      )
       const { uid, prompt, params } = await oidc.interactionDetails(req, res)
       assert.strictEqual(prompt.name, 'login')
       const client = await oidc.Client.find(params.client_id)
@@ -182,6 +171,7 @@ expressApp.post(
       const result = {
         login: { accountId },
       }
+      logger.debug('logged in successfully')
 
       await oidc.interactionFinished(req, res, result, {
         mergeWithLastSubmission: false,
