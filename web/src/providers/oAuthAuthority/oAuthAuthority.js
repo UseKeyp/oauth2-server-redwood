@@ -48,6 +48,7 @@ const OAuthAuthorityProvider = ({ children }) => {
         console.log('User is not authenticated')
         localStorage.setItem('oauth', JSON.stringify(oAuthData))
         if (oAuthData.login_provider) {
+          // Automatically navigate the user to the correct social login provider
           const response = await signUp({
             type: oAuthData.login_provider.toUpperCase(),
           })
@@ -66,15 +67,11 @@ const OAuthAuthorityProvider = ({ children }) => {
       const { data } = await oAuthAuthorizeMutation({ variables: oAuthData })
       const { oAuthAuthorize } = data
 
-      // Prompt for permission authorization
+      // Prompt for authorization permissions
 
       // Redirect back to the app
-      if (oAuthAuthorize.status === 'SUCCESS') {
-        setState({ isLoading: false })
-        return {
-          data: oAuthAuthorize,
-          successMessage: 'Great - connection complete!',
-        }
+      if (oAuthAuthorize.url) {
+        window.location = oAuthAuthorize.url
       } else {
         const errorMessage = 'Something went wrong'
         setState({ isLoading: false, error: errorMessage })
