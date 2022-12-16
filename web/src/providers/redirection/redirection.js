@@ -1,12 +1,11 @@
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
-import { navigate } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-export const APPROVED_LOGIN_PROVIDERS = ['KEYP', 'DISCORD']
+export const APPROVED_LOGIN_PROVIDERS = ['KEYP', 'NODE_OIDC']
 
 const saveRedirectTo = (redirect) =>
   redirect &&

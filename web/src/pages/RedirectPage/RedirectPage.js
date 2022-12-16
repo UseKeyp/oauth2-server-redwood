@@ -13,7 +13,7 @@ const Redirect = ({ type }) => {
     )
 
   let callToAction
-  if (type === 'keyp') {
+  if (['chess', 'node_oidc', 'discord'].includes(type)) {
     if (successMessage) {
       callToAction = (
         <button
@@ -48,7 +48,7 @@ const Redirect = ({ type }) => {
                 successMessage ? `green` : `[#FFBB0D]`
               }`}
             >
-              Keyp
+              <h3>{type}</h3>
             </div>
             <div className="mt-6 tracking-tight">
               {successMessage}
@@ -63,7 +63,9 @@ const Redirect = ({ type }) => {
                 </>
               ) : null}
             </div>
-            {callToAction || <p className="mt-8 ">You can close this page</p>}
+            {callToAction || (
+              <p className="mt-8 ">You will be redirected shortly</p>
+            )}
           </div>
         </div>
       </div>

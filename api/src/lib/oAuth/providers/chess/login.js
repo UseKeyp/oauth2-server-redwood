@@ -5,16 +5,15 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 // import { fetchMember } from 'src/lib/members'
-import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 
 export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
   try {
-    // if (!decoded) return null
-    // /* eslint-disable camelcase */
-    // const { preferred_username, user_id, email } = decoded
-    // logger.debug({ custom: decoded }, 'onConnected() decoded')
-    // // Create member if needed, and get current avatar
+    if (!decoded) return null
+    /* eslint-disable camelcase */
+    const { preferred_username, user_id, email } = decoded
+    logger.debug({ custom: decoded }, 'onConnected() decoded')
+    // Create member if needed, and get current avatar
     // const member = await fetchMember(preferred_username, true)
     // if (member.banned) {
     //   throw new AuthenticationError('user is banned')
@@ -60,7 +59,6 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     return { username: 'bob', id: 123 }
   } catch (e) {
     logger.error(e)
-    Sentry.captureException(e)
     throw `onConnected() error`
   }
 }

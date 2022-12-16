@@ -1,4 +1,4 @@
-import { handleCoinbaseLogin } from './coinbase'
+import { handleCoinbaseLogin } from './node-oidc'
 jest.setTimeout(20000)
 
 describe('coinbaseLoginUrl', () => {

@@ -12,6 +12,7 @@ const CHESS_OAUTH_URL_TOKEN = 'https://oauth.chess.com/token'
 const CHESS_SCOPE = 'openid profile games:read email'
 const CHESS_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/chess'
 
+const responseType = 'id_token'
 const params = {
   client_id: process.env.CHESS_CLIENT_ID,
   scope: CHESS_SCOPE,
@@ -64,11 +65,11 @@ const onSubmitCode = async (code, { codeVerifier, memberId }) => {
     // Use to get your own CHESS_API_ACCESS_TOKEN for rate-limiting
     accessToken && logger.debug(`CHESS_API_ACCESS_TOKEN ${accessToken}`)
 
-    if (!response.id_token) throw 'Failed to get id_token from Chess.com'
+    if (!response.id_token) throw 'Failed to get id_token'
     const decoded = await decodeJwt(idToken)
 
     if (new Date() - new Date(decoded.iat * 1000) > 60 * 1000)
-      throw 'Chess.com token was not issued recently. It must be <1 minute old.'
+      throw 'id_token was not issued recently. It must be <1 minute old.'
     return {
       accessToken,
       accessTokenExpiration: getExpiration(expiration),
@@ -131,4 +132,5 @@ export const provider = {
   urlAuthorize: CHESS_OAUTH_URL_AUTHORIZE,
   params,
   onSubmitCode,
+  responseType,
 }
