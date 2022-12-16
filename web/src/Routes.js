@@ -16,7 +16,7 @@ const Routes = () => {
   return (
     <Router>
       <AllContextProviders>
-        <Route path="/oauth/{action}" page={OauthPage} name="oauth" />
+        <Route path="/oauth" page={OauthPage} name="oauth" />
         <Set wrap={DefaultLayout}>
           <Route path="/" page={HomePage} name="home" />
           <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />

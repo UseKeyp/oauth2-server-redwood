@@ -2,16 +2,12 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
-const OauthPage = ({ action }) => {
+const OauthPage = () => {
   const { authorize } = useOAuthAuthority()
 
   React.useEffect(() => {
-    oauthProviderFlow()
+    authorize()
   }, [])
-
-  const oauthProviderFlow = async () => {
-    if (action === 'authorize') authorize()
-  }
 
   return (
     <>

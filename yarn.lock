@@ -5868,7 +5868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:^4.17.13, @types/express@npm:^4.17.14":
+"@types/express@npm:*, @types/express@npm:^4.17.13":
   version: 4.17.14
   resolution: "@types/express@npm:4.17.14"
   dependencies:
@@ -6039,7 +6039,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^8.5.0, @types/jsonwebtoken@npm:^8.5.9":
+"@types/jsonwebtoken@npm:^8.5.0":
   version: 8.5.9
   resolution: "@types/jsonwebtoken@npm:8.5.9"
   dependencies:
@@ -7098,13 +7098,6 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: 9fd00e3373ecd6c7e8f6adfb3216f5bc9ac050e6fc4ef932f03dbd1d45ccc08289ae16fc9eec10c5de8f1ca65b5f70c02635e1e9015d109dae96fdede340abf5
-  languageName: node
-  linkType: hard
-
-"add@npm:^2.0.6":
-  version: 2.0.6
-  resolution: "add@npm:2.0.6"
-  checksum: 6b21d5f2e58cf5e15d56cc6f9ebce04f04f4c33ae25f09d600ddacf8df00036ba521f17feb1b3f81307b7c6d2ef0bed8b511a0f86f062eb90c2f909b48b588ae
   languageName: node
   linkType: hard
 
@@ -15527,7 +15520,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^2.0.5, jose@npm:^2.0.6":
+"jose@npm:^2.0.5":
   version: 2.0.6
   resolution: "jose@npm:2.0.6"
   dependencies:
@@ -15810,20 +15803,6 @@ __metadata:
     limiter: ^1.1.5
     lru-memoizer: ^2.1.4
   checksum: 8faa3d0a1cce1326474717cef4a0f33dab03b2075340c7b55452fda064a468a453c67bf79e1a94361c61a88f33c7b2375f1d630867c5457c4f571e8ed4dc1f57
-  languageName: node
-  linkType: hard
-
-"jwks-rsa@npm:^2.1.5":
-  version: 2.1.5
-  resolution: "jwks-rsa@npm:2.1.5"
-  dependencies:
-    "@types/express": ^4.17.14
-    "@types/jsonwebtoken": ^8.5.9
-    debug: ^4.3.4
-    jose: ^2.0.6
-    limiter: ^1.1.5
-    lru-memoizer: ^2.1.4
-  checksum: 4f0e2b2aadf70394ab7541fa8ad564662a9372f0e545783e666a75166a477807db5d6511bc529e5d591036eedf3d0572919e0d9437862a7b3f270b5478df0784
   languageName: node
   linkType: hard
 
@@ -17572,20 +17551,6 @@ __metadata:
   checksum: f7c4fedb0dc0786204ee99f440e9827d6e01a0c0322e93b5c9a9a382dd0bd9650d98ca3d1967a77554e3ec1f9a46a20cfea80a41fb00e91c5101c53d8b2c9aed
   languageName: node
   linkType: hard
-
-"oauth-client@workspace:packages/oauth-client":
-  version: 0.0.0-use.local
-  resolution: "oauth-client@workspace:packages/oauth-client"
-  dependencies:
-    add: ^2.0.6
-    cross-fetch: ^3.1.5
-    jsonwebtoken: ^8.5.1
-    jwks-rsa: ^2.1.5
-    pkce-challenge: ^3.0.0
-    uuid: ^9.0.0
-    yarn: ^1.22.19
-  languageName: unknown
-  linkType: soft
 
 "object-assign@npm:^4.0.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
   version: 4.1.1
@@ -23065,7 +23030,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:9.0.0, uuid@npm:^9.0.0":
+"uuid@npm:9.0.0":
   version: 9.0.0
   resolution: "uuid@npm:9.0.0"
   bin:
@@ -24148,16 +24113,6 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: b1dbfefa679848442454b60053a6c95d62f2d2e21dd28def92b647587f415969173c6e99a0f3bab4f1b67ee8283bf735ebe3544013f09491186ba9e8a9a2b651
-  languageName: node
-  linkType: hard
-
-"yarn@npm:^1.22.19":
-  version: 1.22.19
-  resolution: "yarn@npm:1.22.19"
-  bin:
-    yarn: bin/yarn.js
-    yarnpkg: bin/yarn.js
-  checksum: a6f9cdf67cca7e11141a18ffc1736a24dd569885b2ec0838982fcf21e5138840c66d9ebfc1846b0b35bc7b415cb985c65d79fb43aa1721b865e4f60c5569062a
   languageName: node
   linkType: hard
 

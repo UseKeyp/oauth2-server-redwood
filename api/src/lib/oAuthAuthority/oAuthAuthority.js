@@ -13,9 +13,10 @@ export const authorize = async ({
   response_type,
   state,
 }) => {
+  // Send request to  oauth2-server-redwood
+
   return {
-    status,
     text,
-    url,
+    url: 'https://example.com',
   }
 }
