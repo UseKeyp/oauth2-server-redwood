@@ -5,7 +5,7 @@ import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-export const APPROVED_LOGIN_PROVIDERS = ['KEYP', 'NODE_OIDC']
+export const APPROVED_LOGIN_PROVIDERS = ['NODE_OIDC', 'DISCORD']
 
 const saveRedirectTo = (redirect) =>
   redirect &&
@@ -24,7 +24,7 @@ const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
   const { reauthenticate, logIn } = useAuth()
-  const { authorize } = useOAuthAuthority()
+  const { continueInteraction } = useOAuthAuthority()
   const { submitCodeGrant } = useOAuth()
 
   let url
@@ -60,8 +60,7 @@ const RedirectionProvider = ({ children }) => {
       })
     if (response.id) {
       await reauthenticate()
-      // TODO: Handle case where the user is doing normal login and send to profile
-      await authorize()
+      await continueInteraction()
     }
   }
 

@@ -11,9 +11,6 @@
 
 If you'd like to join our team please let us know. Happy hacking!
 
-<p align="center">
-<img width="600px" src="oauth2-client-redwood.gif"/>
-</p>
 
 > A demo OAuth2 server built using Redwood.
 
@@ -24,6 +21,12 @@ If you'd like to join our team please let us know. Happy hacking!
 ## Demo 📙
 
 TODO
+
+## Developing
+
+Here's the user-agent flow for a standard node-oidc-provider. Note ours is slightly modified, since we want to use as much of our Redwood app UI as possible.
+
+<img  src="user-agent-flow.png"/>
 
 ## TODO
 

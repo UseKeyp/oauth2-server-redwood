@@ -1,7 +1,8 @@
 // see previous example for the things that are not commented
 
-const Account = require('./account')
-const jwks = require('./jwks')
+import Provider from 'oidc-provider'
+
+import { logger } from 'src/lib/logger'
 
 require('dotenv').config()
 
@@ -10,7 +11,9 @@ const path = require('path')
 
 const bodyParser = require('body-parser')
 const express = require('express')
-const Provider = require('oidc-provider')
+
+const Account = require('./account')
+const jwks = require('./jwks')
 
 assert(
   process.env.SECURE_KEY,
@@ -22,7 +25,7 @@ assert.equal(
   'process.env.SECURE_KEY format invalid'
 )
 
-const oidc = new Provider('https://node-oidc-provider-example.vercel.app', {
+const oidc = new Provider('http://localhost:3000', {
   clients: [
     {
       client_id: '123',
@@ -41,6 +44,15 @@ const oidc = new Provider('https://node-oidc-provider-example.vercel.app', {
   ],
   cookies: {
     keys: process.env.SECURE_KEY.split(','),
+    // short: {
+    //   httpOnly: true,
+    //   overwrite: true,
+    //   sameSite: 'lax',
+    //   path: '/',
+    // },
+    // long: {
+    //   path: '/',
+    // },
   },
   jwks,
   // oidc-provider only looks up the accounts by their ID when it has to read the claims,
@@ -84,9 +96,8 @@ const oidc = new Provider('https://node-oidc-provider-example.vercel.app', {
 })
 
 oidc.proxy = true
-// oidc.listen(process.env.PORT);
 
-// let's work with express here, below is just the interaction definition
+// See Express docs https://expressjs.com/en/5x/api.html#app.settings.table
 const expressApp = express()
 expressApp.set('trust proxy', true)
 expressApp.set('view engine', 'ejs')
@@ -116,14 +127,11 @@ expressApp.get(
       const client = await oidc.Client.find(params.client_id)
 
       if (prompt.name === 'login') {
-        return res.render('login', {
-          client,
-          uid,
-          details: prompt.details,
-          params,
-          title: 'Sign-in',
-          flash: undefined,
-        })
+        // Navigate the user to the correct oauth endpoint.
+        const url = new URL(process.env.APP_DOMAIN + '/signin')
+        url.searchParams.set('uid', uid) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
+        // TODO: pass `client` object for TOS and privacy policy
+        return res.redirect(url.toString())
       }
 
       return res.render('interaction', {
@@ -140,11 +148,13 @@ expressApp.get(
 )
 
 expressApp.post(
-  '/api/oauth/interaction/:uid/login',
+  '/oauth/interaction/:uid/login',
   setNoCache,
   parse,
   async (req, res, next) => {
     try {
+      logger.debug('/oauth/interaction/:uid/login')
+
       const { uid, prompt, params } = await oidc.interactionDetails(req, res)
       assert.strictEqual(prompt.name, 'login')
       const client = await oidc.Client.find(params.client_id)
@@ -183,7 +193,7 @@ expressApp.post(
 )
 
 expressApp.post(
-  '/api/oauth/interaction/:uid/confirm',
+  '/oauth/interaction/:uid/confirm',
   setNoCache,
   parse,
   async (req, res, next) => {
@@ -247,7 +257,7 @@ expressApp.post(
 )
 
 expressApp.get(
-  '/api/oauth/interaction/:uid/abort',
+  '/oauth/interaction/:uid/abort',
   setNoCache,
   async (req, res, next) => {
     try {

@@ -1,15 +1,20 @@
 import { useEffect } from 'react'
 
 import { useAuth } from '@redwoodjs/auth'
-import { routes, navigate, useParams } from '@redwoodjs/router'
+import {
+  useParams,
+  // navigate,
+  // routes
+} from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import { login } from 'src/providers/auth'
+import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 import { saveRedirectTo } from 'src/providers/redirection'
 import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
+  const { saveInteraction } = useOAuthAuthority()
 
   const { error, redirectTo } = useParams()
   const { toast } = useToast()
@@ -28,6 +33,7 @@ const LoginPortal = () => {
   }
 
   useEffect(() => {
+    saveInteraction()
     if (redirectTo) {
       saveRedirectTo(redirectTo) && reauthenticate()
     }
