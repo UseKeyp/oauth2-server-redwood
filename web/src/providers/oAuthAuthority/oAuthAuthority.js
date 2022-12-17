@@ -25,6 +25,7 @@ const OAuthAuthorityProvider = ({ children }) => {
         //   'Content-Type': 'application/json',
         // },
       })
+      // window.location.href = `/api/oauth/auth/${interactionUid}`
     } catch (error) {
       return { error: error.message }
     }

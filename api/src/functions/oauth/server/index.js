@@ -1,16 +1,17 @@
 // see previous example for the things that are not commented
 
-import Provider from 'oidc-provider'
+const Provider = require('oidc-provider')
 
 import { logger } from 'src/lib/logger'
 
-require('dotenv').config()
+import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+dotenv.config()
 
-const assert = require('assert')
-const path = require('path')
+import assert from 'assert'
+import path from 'path'
 
-const bodyParser = require('body-parser')
-const express = require('express')
+import bodyParser from 'body-parser'
+import express from 'express'
 
 const Account = require('./account')
 const jwks = require('./jwks')
@@ -25,7 +26,7 @@ assert.equal(
   'process.env.SECURE_KEY format invalid'
 )
 
-const oidc = new Provider('http://localhost:3000', {
+const oidc = new Provider('http://localhost:3000/api', {
   clients: [
     {
       client_id: '123',
@@ -46,6 +47,12 @@ const oidc = new Provider('http://localhost:3000', {
     keys: process.env.SECURE_KEY.split(','),
   },
   jwks,
+  ttl: {
+    AuthorizationCode: 60,
+    DeviceCode: 60,
+    IdToken: 60,
+    Interaction: 60,
+  },
   // oidc-provider only looks up the accounts by their ID when it has to read the claims,
   // passing it our Account model method is sufficient, it should return a Promise that resolves
   // with an object with accountId property and a claims method.
@@ -58,26 +65,20 @@ const oidc = new Provider('http://localhost:3000', {
     email: ['email', 'email_verified'],
   },
   routes: {
-    authorization: '/oauth/auth',
-    backchannel_authentication: '/oauth/backchannel',
-    code_verification: '/oauth/device',
-    device_authorization: '/oauth/device/auth',
-    end_session: '/oauth/session/end',
-    introspection: '/oauth/token/introspection',
-    jwks: '/oauth/jwks',
-    pushed_authorization_request: '/oauth/request',
-    registration: '/oauth/reg',
-    revocation: '/oauth/token/revocation',
-    token: '/oauth/token',
-    userinfo: '/oauth/me',
+    authorization: '/auth',
+    backchannel_authentication: '/backchannel',
+    jwks: '/jwks',
+    revocation: '/token/revocation',
+    token: '/token',
+    userinfo: '/me',
   },
   // let's tell oidc-provider where our own interactions will be
   // setting a nested route is just good practice so that users
   // don't run into weird issues with multiple interactions open
   // at a time.
   interactions: {
-    url(ctx, interaction) {
-      return `/api/oauth/interaction/${interaction.uid}`
+    url: async function interactionsUrl(ctx, interaction) {
+      return `interaction/${interaction.uid}`
     },
   },
   features: {
@@ -140,36 +141,39 @@ expressApp.post(
   parse,
   async (req, res, next) => {
     try {
+      const details = await oidc.interactionDetails(req, res)
       console.log(
         'see what else is available to you for interaction views',
         details
       )
-      const { uid, prompt, params } = await oidc.interactionDetails(req, res)
+      const { uid, prompt, params } = details
       assert.strictEqual(prompt.name, 'login')
-      const client = await oidc.Client.find(params.client_id)
+      // Lookup the client
+      // const client = await oidc.Client.find(params.client_id)
 
-      const accountId = await Account.authenticate(
-        req.body.email,
-        req.body.password
-      )
+      // Validate redwood session token
 
-      if (!accountId) {
-        res.render('login', {
-          client,
-          uid,
-          details: prompt.details,
-          params: {
-            ...params,
-            login_hint: req.body.email,
-          },
-          title: 'Sign-in',
-          flash: 'Invalid email or password.',
-        })
-        return
-      }
+      // Lookup the user
+      // const accountId = await Account.authenticate(
+      //   req.body.email,
+      //   req.body.password
+      // )
+
+      // if (!accountId) {
+      //   console.log('invalid login attempt')
+      //   // TODO: redirect to signin page with error message
+      //   // eg.  flash: 'Invalid email or password.',
+      //   return
+      // }
 
       const result = {
-        login: { accountId },
+        login: {
+          accountId: '23121d3c-84df-44ac-b458-3d63a9a05497',
+          // acr: string, // acr value for the authentication
+          // arm: string[], // amr values for the authentication
+          // remember: boolean, // true if provider should use a persistent cookie rather than a session one, defaults to true
+          // ts: number, // unix timestamp of the authentication, defaults to now()
+        },
       }
       logger.debug('logged in successfully')
 
@@ -265,6 +269,6 @@ expressApp.get(
 )
 
 // leave the rest of the requests to be handled by oidc-provider, there's a catch all 404 there
-expressApp.use(oidc.callback())
+expressApp.use('/oauth', oidc.callback())
 
 export default expressApp
