@@ -19,13 +19,9 @@ const OAuthAuthorityProvider = ({ children }) => {
   const continueInteraction = async () => {
     try {
       const interactionUid = localStorage.getItem(INTERACTION_UID_LOCAL_KEY)
-      fetch(`/api/oauth/interaction/${interactionUid}/login`, {
+      await fetch(`/oauth/interaction/${interactionUid}/login`, {
         method: 'POST',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
       })
-      // window.location.href = `/api/oauth/auth/${interactionUid}`
     } catch (error) {
       return { error: error.message }
     }

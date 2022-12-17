@@ -7,6 +7,7 @@
     "@redwoodjs/graphql-server": "^3.7.1",
     "@sentry/node": "^7.24.2",
     "@sentry/tracing": "^7.24.2",
+    "cors": "^2.8.5",
     "oidc-provider": "^7.14.3",
     "pkce-challenge": "^3.0.0",
     "serverless-http": "^3.1.0"
