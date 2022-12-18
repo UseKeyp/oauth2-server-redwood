@@ -96,7 +96,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:7.19.3":
+"@babel/cli@npm:7.19.3, @babel/cli@npm:^7.19.3":
   version: 7.19.3
   resolution: "@babel/cli@npm:7.19.3"
   dependencies:
@@ -163,7 +163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.20.5, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.1, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.12.9, @babel/core@npm:^7.14.0, @babel/core@npm:^7.7.5":
+"@babel/core@npm:7.20.5, @babel/core@npm:^7.1.0, @babel/core@npm:^7.11.1, @babel/core@npm:^7.11.6, @babel/core@npm:^7.12.10, @babel/core@npm:^7.12.3, @babel/core@npm:^7.12.9, @babel/core@npm:^7.14.0, @babel/core@npm:^7.20.5, @babel/core@npm:^7.7.5":
   version: 7.20.5
   resolution: "@babel/core@npm:7.20.5"
   dependencies:
@@ -520,7 +520,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/node@npm:7.20.5":
+"@babel/node@npm:7.20.5, @babel/node@npm:^7.16.0":
   version: 7.20.5
   resolution: "@babel/node@npm:7.20.5"
   dependencies:
@@ -1521,7 +1521,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-env@npm:7.20.2, @babel/preset-env@npm:^7.12.11":
+"@babel/preset-env@npm:7.20.2, @babel/preset-env@npm:^7.12.11, @babel/preset-env@npm:^7.16.0":
   version: 7.20.2
   resolution: "@babel/preset-env@npm:7.20.2"
   dependencies:
@@ -3514,6 +3514,19 @@ __metadata:
   checksum: 11b2151e6d1de6f6eb23128de5aa8a429fd9097d839a5190cb77aa47a6b627022c42d50fa7c47a00f1c9f8f0c1560092b09b061855d293fa0741a2a94cfb174d
   languageName: node
   linkType: hard
+
+"@oauth2-server-redwood/server@0.1.0, @oauth2-server-redwood/server@workspace:packages/oauth2-server":
+  version: 0.0.0-use.local
+  resolution: "@oauth2-server-redwood/server@workspace:packages/oauth2-server"
+  dependencies:
+    "@babel/cli": ^7.19.3
+    "@babel/core": ^7.20.5
+    "@babel/node": ^7.16.0
+    "@babel/preset-env": ^7.16.0
+    nodemon: ^2.0.20
+    oidc-provider: ^7.14.3
+  languageName: unknown
+  linkType: soft
 
 "@open-draft/until@npm:^1.0.3":
   version: 1.0.3
@@ -7704,12 +7717,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "api@workspace:api"
   dependencies:
+    "@oauth2-server-redwood/server": 0.1.0
     "@redwoodjs/api": ^3.7.1
     "@redwoodjs/graphql-server": ^3.7.1
     "@sentry/node": ^7.24.2
     "@sentry/tracing": ^7.24.2
-    cors: ^2.8.5
-    oidc-provider: ^7.14.3
     pkce-challenge: ^3.0.0
     serverless-http: ^3.1.0
   languageName: unknown
@@ -10178,16 +10190,6 @@ __metadata:
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
   checksum: 90a0e40abbddfd7618f8ccd63a74d88deea94e77d0e8dbbea059fa7ebebb8fbb4e2909667fe26f3a467073de1a542ebe6ae4c73a73745ac5833786759cd906c9
-  languageName: node
-  linkType: hard
-
-"cors@npm:^2.8.5":
-  version: 2.8.5
-  resolution: "cors@npm:2.8.5"
-  dependencies:
-    object-assign: ^4
-    vary: ^1
-  checksum: 373702b7999409922da80de4a61938aabba6929aea5b6fd9096fefb9e8342f626c0ebd7507b0e8b0b311380744cc985f27edebc0a26e0ddb784b54e1085de761
   languageName: node
   linkType: hard
 
@@ -17921,7 +17923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemon@npm:2.0.20":
+"nodemon@npm:2.0.20, nodemon@npm:^2.0.20":
   version: 2.0.20
   resolution: "nodemon@npm:2.0.20"
   dependencies:
@@ -18096,7 +18098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-assign@npm:^4, object-assign@npm:^4.0.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
+"object-assign@npm:^4.0.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
   checksum: 1f4df9945120325d041ccf7b86f31e8bcc14e73d29171e37a7903050e96b81323784ec59f93f102ec635bcf6fa8034ba3ea0a8c7e69fa202b87ae3b6cec5a414
@@ -23764,7 +23766,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vary@npm:^1, vary@npm:^1.1.2, vary@npm:~1.1.2":
+"vary@npm:^1.1.2, vary@npm:~1.1.2":
   version: 1.1.2
   resolution: "vary@npm:1.1.2"
   checksum: f15d588d79f3675135ba783c91a4083dcd290a2a5be9fcb6514220a1634e23df116847b1cc51f66bfb0644cf9353b2abb7815ae499bab06e46dd33c1a6bf1f4f

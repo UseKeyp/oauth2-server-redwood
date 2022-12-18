@@ -36,6 +36,7 @@ To run this repo locally:
 
 - Update your .env from `.env.example`.
 - You'll need to setup a nginx proxy, since oidc-provider sometimes ignores the extra `/api` path prefix, and cookie paths are not set properly. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. I'm open to other ideas here if you'd like to help!
+- Run `yarn build` in `/packages/oauth2-server
 
 ## TODO
 
