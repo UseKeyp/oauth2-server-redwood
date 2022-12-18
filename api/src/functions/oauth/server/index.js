@@ -1,7 +1,6 @@
 // see previous example for the things that are not commented
 
 import assert from 'assert'
-import { url } from 'inspector'
 import path from 'path'
 
 import bodyParser from 'body-parser'
@@ -11,14 +10,12 @@ import express from 'express'
 import { logger } from 'src/lib/logger'
 dotenv.config()
 
-const cors = require('cors')
+// const cors = require('cors')
 const Provider = require('oidc-provider')
 
 const Account = require('./account')
 const jwks = require('./jwks')
-const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:3210'],
-}
+
 assert(
   process.env.SECURE_KEY,
   'process.env.SECURE_KEY missing, run `heroku addons:create securekey`'
@@ -39,8 +36,9 @@ const oidc = new Provider(`${process.env.APP_DOMAIN}/api/oauth`, {
         'http://0.0.0.0:3000/redirect/node_oidc',
         'http://0.0.0.0:8910/redirect/node_oidc',
         'http://localhost:8910/redirect/node_oidc',
+        'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
         'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
-      ], // using jwt.io as redirect_uri to show the ID Token contents
+      ],
       response_types: ['code'],
       grant_types: ['authorization_code'],
       token_endpoint_auth_method: 'none',
@@ -109,12 +107,17 @@ oidc.use(async (ctx, next) => {
   await next()
   // console.log('post middleware', ctx.method, ctx.oidc.route)
 })
-// See Express docs https://expressjs.com/en/5x/api.html#app.settings.table
+
+// Express docs https://expressjs.com/en/5x/api.html#app.settings.table
 const expressApp = express()
 expressApp.set('trust proxy', true)
-expressApp.set('view engine', 'ejs')
-expressApp.set('views', path.resolve(__dirname, 'views'))
-expressApp.use(cors(corsOptions))
+// expressApp.set('view engine', 'ejs')
+// expressApp.set('views', path.resolve(__dirname, 'views'))
+// expressApp.use(
+//   cors({
+//     origin: ['http://localhost:3000', 'http://localhost:3210'],
+//   })
+// )
 
 const parse = bodyParser.urlencoded({ extended: false })
 
@@ -138,14 +141,14 @@ expressApp.get(
         return res.redirect(`/signin?uid=${uid}`)
       }
 
-      // return res.redirect(`/consent?uid=${uid}`)
-      return res.render('interaction', {
-        client,
-        uid,
-        details: prompt.details,
-        params,
-        title: 'Authorize',
-      })
+      return res.redirect(`/consent?uid=${uid}`)
+      // return res.render('interaction', {
+      //   client,
+      //   uid,
+      //   details: prompt.details,
+      //   params,
+      //   title: 'Authorize',
+      // })
     } catch (err) {
       return next(err)
     }
@@ -200,10 +203,6 @@ expressApp.post(
       const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
       console.log(newRedirectTo)
       res.send({ redirectTo: newRedirectTo })
-      // res.statusCode = 303 // eslint-disable-line no-param-reassign
-      // res.setHeader('Location', newRedirectTo)
-      // res.setHeader('Content-Length', '0')
-      // res.end()
     } catch (err) {
       next(err)
     }
@@ -274,12 +273,7 @@ expressApp.post(
       const newUid = redirectTo.toString().split('/auth/')[1]
       const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
       console.log(newRedirectTo)
-      // TODO: add when using our own consent page
-      // res.send({ redirectTo: newRedirectTo })
-      res.statusCode = 303 // eslint-disable-line no-param-reassign
-      res.setHeader('Location', newRedirectTo)
-      res.setHeader('Content-Length', '0')
-      res.end()
+      res.send({ redirectTo: newRedirectTo })
     } catch (err) {
       next(err)
     }
@@ -295,9 +289,12 @@ expressApp.get(
         error: 'access_denied',
         error_description: 'End-User aborted interaction',
       }
-      await oidc.interactionFinished(req, res, result, {
+
+      const redirectTo = await oidc.interactionResult(req, res, result, {
         mergeWithLastSubmission: false,
       })
+      const newUid = redirectTo.toString().split('/auth/')[1]
+      res.redirect(`/oauth/auth/${newUid}`)
     } catch (err) {
       next(err)
     }

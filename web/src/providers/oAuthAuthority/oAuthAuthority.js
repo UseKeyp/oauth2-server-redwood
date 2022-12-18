@@ -5,7 +5,7 @@ const OAuthAuthorityContext = React.createContext({
 })
 
 const parseUrl = () => {
-  let url = new URL(window.location.href) // Support prerender
+  let url = new URL(window.location.href)
   return { interactionUid: url.searchParams.get('uid') }
 }
 
@@ -22,13 +22,12 @@ const OAuthAuthorityProvider = ({ children }) => {
 
   const continueInteraction = async ({ type }) => {
     try {
-      if (!['login', 'confirm'].includes(type))
+      if (!['login', 'confirm', 'abort'].includes(type))
         throw 'Invalid type for continueInteraction'
       const interactionUid = localStorage.getItem(INTERACTION_UID_LOCAL_KEY)
-      const response = await fetch(
-        `/oauth/interaction/${interactionUid}/${type}`,
-        { method: 'POST' }
-      ).then((res) => {
+      const url = `/oauth/interaction/${interactionUid}/${type}`
+      if (type === 'abort') return window.location.replace(url)
+      const response = await fetch(url, { method: 'POST' }).then((res) => {
         if (![200, 202, 302, 303].includes(res.status))
           throw new Error('Error contacting the OAuth server')
         return res.json()
