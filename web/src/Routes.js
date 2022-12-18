@@ -8,7 +8,7 @@ const Routes = () => {
     <Router>
       <AllContextProviders>
         <Set wrap={DefaultLayout}>
-          <Route path="/consent" page={ConsentPage} name="consent" />
+          <Route path="/authorize" page={AuthorizePage} name="authorize" />
           <Route path="/" page={HomePage} name="home" />
           <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
           <Route path="/signin" page={SignInPage} name="signin" />

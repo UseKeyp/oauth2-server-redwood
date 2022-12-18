@@ -15,7 +15,7 @@ If you'd like to join our team please let us know. Happy hacking!
 <img width="600px" src="oauth-server-redwood-demo.gif"/>
 </p>
 
-> A demo OAuth2 authority server built using Redwood.
+> A demo OAuth2 authority server built using Redwood and oidc-provider
 
 🚧 IN DEVELOPMENT 🚧
 
@@ -23,7 +23,7 @@ If you'd like to join our team please let us know. Happy hacking!
 
 ## Demo 📙
 
-In this demo, its important to note that this is an unusual case, and the login could be accomplished with normal username/password. However, here the server is wrapping the user's Discord account with its own account (double authentication).
+In the example gif above, its important to note that the server is wrapping the user's Discord account with its own account (double authentication). The flow could also just use normal username/password.
 ## Developing
 
 Here's the user-agent flow for a standard node-oidc-provider. Note ours is slightly modified, since we use our Redwood app UI for the login and consent screens.

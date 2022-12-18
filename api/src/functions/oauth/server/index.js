@@ -1,7 +1,6 @@
 // see previous example for the things that are not commented
 
 import assert from 'assert'
-import path from 'path'
 
 import bodyParser from 'body-parser'
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
@@ -141,14 +140,7 @@ expressApp.get(
         return res.redirect(`/signin?uid=${uid}`)
       }
 
-      return res.redirect(`/consent?uid=${uid}`)
-      // return res.render('interaction', {
-      //   client,
-      //   uid,
-      //   details: prompt.details,
-      //   params,
-      //   title: 'Authorize',
-      // })
+      return res.redirect(`/authorize?uid=${uid}`)
     } catch (err) {
       return next(err)
     }
@@ -168,13 +160,8 @@ expressApp.post(
       // Lookup the client
       const client = await oidc.Client.find(params.client_id)
 
-      // Validate redwood session token
-
       // Lookup the user
-      const accountId = await Account.authenticate(
-        req.body.email,
-        req.body.password
-      )
+      const accountId = await Account.authenticate()
 
       if (!accountId) {
         console.log('invalid login attempt')

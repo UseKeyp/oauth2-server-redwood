@@ -1,9 +1,12 @@
+import { getCurrentUser, isAuthenticated } from 'src/lib/auth'
+import { logger } from 'src/lib/logger'
+
+const assert = require('assert')
+
 const low = require('lowdb')
 const Memory = require('lowdb/adapters/Memory')
 
 const db = low(new Memory())
-
-const assert = require('assert')
 
 db.defaults({
   users: [
@@ -43,14 +46,14 @@ class Account {
   }
 
   // This can be anything you need to authenticate a user
-  static async authenticate(email, password) {
+  static async authenticate() {
     try {
-      // assert(password, 'password must be provided')
-      // assert(email, 'email must be provided')
-      // const lowercased = String(email).toLowerCase()
-      const account = db.get('users').find({ email: 'foo@example.com' }).value()
-      assert(account, 'invalid credentials provided')
+      logger.debug('authenticate()')
+      const account = context.currentUser
+      logger.debug({ custom: account }, 'authenticate')
 
+      console.log('account.id', account.id)
+      assert(account, 'invalid credentials provided')
       return account.id
     } catch (err) {
       return undefined

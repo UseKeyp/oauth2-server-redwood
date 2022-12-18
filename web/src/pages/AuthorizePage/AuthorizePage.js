@@ -2,7 +2,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
-const ConsentPage = () => {
+const AuthorizePage = () => {
   const { continueInteraction, saveInteraction } = useOAuthAuthority()
 
   React.useEffect(() => {
@@ -11,9 +11,9 @@ const ConsentPage = () => {
 
   return (
     <>
-      <MetaTags title="Consent" description="Consent page" />
+      <MetaTags title="Authorize" description="Authorize page" />
 
-      <h1>Consent</h1>
+      <h1>Authorize</h1>
       <p>Approve this app to access your account</p>
       <p>
         <button onClick={() => continueInteraction({ type: 'confirm' })}>
@@ -27,4 +27,4 @@ const ConsentPage = () => {
   )
 }
 
-export default ConsentPage
+export default AuthorizePage

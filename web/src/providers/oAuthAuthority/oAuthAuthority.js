@@ -1,3 +1,5 @@
+import { useAuth } from '@redwoodjs/auth'
+
 import { useToast } from 'src/providers/toast'
 
 const OAuthAuthorityContext = React.createContext({
@@ -10,6 +12,8 @@ const parseUrl = () => {
 }
 
 const OAuthAuthorityProvider = ({ children }) => {
+  const { getCurrentUser } = useAuth()
+
   const { toast } = useToast()
 
   const INTERACTION_UID_LOCAL_KEY = 'interactionUid'
@@ -27,7 +31,13 @@ const OAuthAuthorityProvider = ({ children }) => {
       const interactionUid = localStorage.getItem(INTERACTION_UID_LOCAL_KEY)
       const url = `/oauth/interaction/${interactionUid}/${type}`
       if (type === 'abort') return window.location.replace(url)
-      const response = await fetch(url, { method: 'POST' }).then((res) => {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'auth-provider': 'dbAuth',
+          authorization: 'Bearer 381135787330109441',
+        },
+      }).then((res) => {
         if (![200, 202, 302, 303].includes(res.status))
           throw new Error('Error contacting the OAuth server')
         return res.json()
