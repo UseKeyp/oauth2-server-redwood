@@ -1,5 +1,3 @@
-import { useAuth } from '@redwoodjs/auth'
-
 import { useToast } from 'src/providers/toast'
 
 const OAuthAuthorityContext = React.createContext({
@@ -12,8 +10,6 @@ const parseUrl = () => {
 }
 
 const OAuthAuthorityProvider = ({ children }) => {
-  const { getCurrentUser } = useAuth()
-
   const { toast } = useToast()
 
   const INTERACTION_UID_LOCAL_KEY = 'interactionUid'
@@ -24,7 +20,7 @@ const OAuthAuthorityProvider = ({ children }) => {
       localStorage.setItem(INTERACTION_UID_LOCAL_KEY, interactionUid)
   }
 
-  const continueInteraction = async ({ type }) => {
+  const continueInteraction = async ({ type, userId }) => {
     try {
       if (!['login', 'confirm', 'abort'].includes(type))
         throw 'Invalid type for continueInteraction'
@@ -35,7 +31,7 @@ const OAuthAuthorityProvider = ({ children }) => {
         method: 'POST',
         headers: {
           'auth-provider': 'dbAuth',
-          authorization: 'Bearer 381135787330109441',
+          authorization: `Bearer ${userId}`,
         },
       }).then((res) => {
         if (![200, 202, 302, 303].includes(res.status))

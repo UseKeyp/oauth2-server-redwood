@@ -4,7 +4,6 @@ import { toast } from '@redwoodjs/web/toast'
 import { getErrorResponse } from 'src/utils/helpers'
 
 const login = async (attributes) => {
-  console.log(attributes)
   try {
     /* eslint-disable-next-line no-undef */
     const { type, code, state } = attributes

@@ -39,7 +39,8 @@ To run this repo locally:
 
 ## TODO
 
-- [ ] Validate rw session tokens during login
+- [x] Validate rw session tokens during login
+- [ ] Add claims to the user model and fetch in `findAccount`
 - [ ] Show proper scopes for consent page
 - [ ] Improve the UI
 - [ ] Fix redirect bug to /profile

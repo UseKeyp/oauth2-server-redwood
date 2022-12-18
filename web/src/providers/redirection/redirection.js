@@ -53,15 +53,12 @@ const RedirectionProvider = ({ children }) => {
       type: type.toUpperCase(),
       method: 'login',
     })
-    if (response.error || !response)
+    if (response.error || !response || !response.id)
       return setState({
         isLoading: false,
         errorMessage: response.error || 'Something went wrong',
       })
-    if (response.id) {
-      await reauthenticate()
-      await continueInteraction({ type: 'login' })
-    }
+    await continueInteraction({ type: 'login', userId: response.id })
   }
 
   const completeOAuth = async () => {
