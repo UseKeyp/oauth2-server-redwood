@@ -60,7 +60,7 @@ const RedirectionProvider = ({ children }) => {
       })
     if (response.id) {
       await reauthenticate()
-      await continueInteraction()
+      await continueInteraction({ type: 'login' })
     }
   }
 

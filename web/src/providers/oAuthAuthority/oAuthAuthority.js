@@ -1,3 +1,5 @@
+import { useToast } from 'src/providers/toast'
+
 const OAuthAuthorityContext = React.createContext({
   isLoading: true,
 })
@@ -8,6 +10,8 @@ const parseUrl = () => {
 }
 
 const OAuthAuthorityProvider = ({ children }) => {
+  const { toast } = useToast()
+
   const INTERACTION_UID_LOCAL_KEY = 'interactionUid'
 
   const saveInteraction = () => {
@@ -16,13 +20,22 @@ const OAuthAuthorityProvider = ({ children }) => {
       localStorage.setItem(INTERACTION_UID_LOCAL_KEY, interactionUid)
   }
 
-  const continueInteraction = async () => {
+  const continueInteraction = async ({ type }) => {
     try {
+      if (!['login', 'confirm'].includes(type))
+        throw 'Invalid type for continueInteraction'
       const interactionUid = localStorage.getItem(INTERACTION_UID_LOCAL_KEY)
-      await fetch(`/oauth/interaction/${interactionUid}/login`, {
-        method: 'POST',
+      const response = await fetch(
+        `/oauth/interaction/${interactionUid}/${type}`,
+        { method: 'POST' }
+      ).then((res) => {
+        if (![200, 202, 302, 303].includes(res.status))
+          throw new Error('Error contacting the OAuth server')
+        return res.json()
       })
+      window.location.replace(response.redirectTo)
     } catch (error) {
+      toast.error(error?.message)
       return { error: error.message }
     }
   }

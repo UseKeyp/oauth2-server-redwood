@@ -8,6 +8,7 @@ export const cors = {
   origin: isProduction
     ? process.env.APP_DOMAIN
     : [
+        process.env.APP_DOMAIN,
         'http://0.0.0.0:3000',
         'http://localhost:3000',
         'http://localhost',

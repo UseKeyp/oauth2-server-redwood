@@ -138,7 +138,7 @@ expressApp.get(
         return res.redirect(`/signin?uid=${uid}`)
       }
 
-      // return res.redirect(`/signin?uid=${uid}`)
+      // return res.redirect(`/consent?uid=${uid}`)
       return res.render('interaction', {
         client,
         uid,
@@ -190,9 +190,6 @@ expressApp.post(
         },
       }
       logger.debug('logged in successfully')
-      // await oidc.interactionFinished(req, res, result, {
-      //   mergeWithLastSubmission: false,
-      // })
 
       const redirectTo = await oidc.interactionResult(req, res, result, {
         mergeWithLastSubmission: false,
@@ -202,11 +199,11 @@ expressApp.post(
       const newUid = redirectTo.toString().split('/auth/')[1]
       const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
       console.log(newRedirectTo)
-
-      res.statusCode = 303 // eslint-disable-line no-param-reassign
-      res.setHeader('Location', newRedirectTo)
-      res.setHeader('Content-Length', '0')
-      res.end()
+      res.send({ redirectTo: newRedirectTo })
+      // res.statusCode = 303 // eslint-disable-line no-param-reassign
+      // res.setHeader('Location', newRedirectTo)
+      // res.setHeader('Content-Length', '0')
+      // res.end()
     } catch (err) {
       next(err)
     }
@@ -277,7 +274,8 @@ expressApp.post(
       const newUid = redirectTo.toString().split('/auth/')[1]
       const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
       console.log(newRedirectTo)
-
+      // TODO: add when using our own consent page
+      // res.send({ redirectTo: newRedirectTo })
       res.statusCode = 303 // eslint-disable-line no-param-reassign
       res.setHeader('Location', newRedirectTo)
       res.setHeader('Content-Length', '0')

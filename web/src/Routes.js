@@ -15,6 +15,7 @@ import AllContextProviders from 'src/providers'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/consent" page={ConsentPage} name="consent" />
       <AllContextProviders>
         <Route path="/oauth" page={OauthPage} name="oauth" />
         <Set wrap={DefaultLayout}>

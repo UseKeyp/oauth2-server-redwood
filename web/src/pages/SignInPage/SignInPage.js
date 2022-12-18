@@ -53,12 +53,12 @@ const LoginPortal = () => {
     <div className="flex justify-center">
       <div className="login-portal-container w-80 sm:w-96">
         <h1 className="text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
-          <span className="block xl:inline">Sign In</span>
+          <span className="block xl:inline">Oauth2 Server Redwood</span>
         </h1>
         <div className="mt-6">
           <div className="mb-2">
             <h3 className="text-base font-bold color-grey-light text-center">
-              Sign in to oauth2-client-redwood
+              Sign in
             </h3>
           </div>
         </div>
