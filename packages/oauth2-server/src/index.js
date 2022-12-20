@@ -2,9 +2,10 @@ import assert from 'assert'
 
 import bodyParser from 'body-parser'
 import express from 'express'
+import serverless from 'serverless-http'
 
-import { context as globalContext } from './globalContext'
 import htmlSafe from './helpers'
+import { dbAuthSession } from './shared'
 
 // const cors = require('cors')
 const Provider = require('oidc-provider')
@@ -19,21 +20,12 @@ const app = ({ db }) => {
     'process.env.SECURE_KEY format invalid'
   )
 
-  const authenticate = async () => {
+  const authenticate = async (req) => {
     try {
-      console.log('authenticate()')
-      // const account = await getCurrentUser() // context.currentUser
-      // const logIt = (event, context) => {
-      //   console.log(event, context)
-      // }
-      // const withAuth = useRequireAuth({ logIt, getCurrentUser })
-      // await withAuth(req)
-      // Context doesn't seem to be available in packages
-      // const account = context?.currentUser
-      console.log({ currentUser: globalContext.currentUser })
-      // assert(account.id, 'invalid credentials provided')
-      // return account.id
-      return '381135787330109441'
+      const session = dbAuthSession(req.apiGateway.event)
+      console.log(session)
+      assert(session?.id, 'invalid credentials provided')
+      return session.id
     } catch (err) {
       console.log(err)
       return undefined
@@ -199,14 +191,13 @@ const app = ({ db }) => {
         const client = await oidc.Client.find(params.client_id)
 
         // Lookup the user
-        const accountId = await authenticate()
+        const accountId = await authenticate(req)
 
-        console.log(accountId)
         if (!accountId) {
           console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
           return res.send({
-            redirectTo: `http://localhost/signin?uid=${uid}?error=invalid`,
+            redirectTo: `http://localhost/redirect/keyp?error=invalid login attempt`,
           })
         }
 
@@ -331,4 +322,4 @@ const app = ({ db }) => {
   return expressApp
 }
 
-export default app
+export default ({ db }) => app({ db })

@@ -37,6 +37,7 @@ const LoginPortal = () => {
     if (redirectTo) {
       saveRedirectTo(redirectTo) && reauthenticate()
     }
+    // continueInteraction({ type: 'login', userId: '381135787330109441' })
   }, [redirectTo, reauthenticate])
 
   useEffect(() => {
