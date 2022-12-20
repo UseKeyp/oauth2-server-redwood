@@ -1,5 +1,5 @@
 <h1 align="center"><img width="600" style="border-radius: 30px;" src="https://raw.githubusercontent.com/UseKeyp/.github/main/Keyp-Logo-Color.svg"/></h1>
-<h1 align="center">Welcome to OAuth Server Redwood 👋</h1>
+<h1 align="center">Welcome to Keyp OAuth2 Server 👋</h1>
 <p align="center">
   <a href="#" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg" />
@@ -9,48 +9,27 @@
   </a>
 </p>
 
-If you'd like to join our team please let us know. Happy hacking!
+> OAuth2 server supporting the Keyp Public API
 
-<p align="center">
-<img width="600px" src="oauth-server-redwood-demo.gif"/>
-</p>
+⚠️ This private repo is for our internal use only. It is not intended for public use. ⚠️
 
-> A demo OAuth2 authority server built using Redwood and oidc-provider
+Please ensure contributions are also made to support the open source repo here https://github.com/UseKeyp/oauth2-server-redwood
 
-🚧 IN DEVELOPMENT 🚧
+## Usage
 
-"Authority" means that you are providing authentication or authorization as a service for _other apps_. For example "Sign in with MyCompanyApp", as opposed to "Sign in with Google".  If you're just looking to implement an OAuth2 client in your app, check out [`oauth2-client-redwood`](https://github.com/usekeyp/oauth2-client-redwood).
+This repo is the source and test-application for `@keyp/oauth2-server`. It is used by importing it into a function in the `keyp-app`.
 
-## Demo 📙
+```bash
+yarn start
+```
 
-In the example gif above, its important to note that the server is wrapping the user's Discord account with its own account (double authentication). The flow could also just use normal username/password.
-## Developing
-
-Here's the user-agent flow for a standard node-oidc-provider. Note ours is slightly modified, since we use our Redwood app UI for the login and consent screens.
-
-<img  src="user-agent-flow.png"/>
-
-## Contributing guide
-
-To run this repo locally:
-
-- Update your .env from `.env.example`.
-- You'll need to setup a nginx proxy, since oidc-provider sometimes ignores the extra `/api` path prefix, and cookie paths are not set properly. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. I'm open to other ideas here if you'd like to help!
-- Run `yarn build` in `/packages/oauth2-server
-
-## TODO
-
-- [x] Validate rw session tokens during login
-- [ ] Add claims to the user model and fetch in `findAccount`
-- [ ] Show proper scopes for consent page
-- [ ] Improve the UI
-- [ ] Fix redirect bug to /profile
-- [ ] Add dbAuth username/password option to make the demo simpler to understand
-- [ ] Security audit
 ## Resources 🧑‍💻
 
+- OAuth 2.0 https://oauth.net/2/
 - OAuth Server libraries: https://oauth.net/code/nodejs/
-- Similar tools https://github.com/panva/oauth4webapi/blob/main/examples/code.ts and https://github.com/panva/node-openid-client
+- oauth4webapi https://github.com/panva/oauth4webapi
+- node-oidc-provider https://github.com/panva/node-oidc-provider
+- openid-client https://github.com/panva/node-openid-client
 
 ## Contributors ✨
 
@@ -63,6 +42,4 @@ To run this repo locally:
 ## License 📝
 
 Copyright © 2022 Nifty Chess, Inc.<br />
-This project is MIT licensed.
-
 
