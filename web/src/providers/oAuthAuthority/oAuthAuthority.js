@@ -29,10 +29,12 @@ const OAuthAuthorityProvider = ({ children }) => {
       if (type === 'abort') return window.location.replace(url)
       const response = await fetch(url, {
         method: 'POST',
-        headers: {
-          'auth-provider': 'dbAuth',
-          authorization: `Bearer ${userId}`,
-        },
+        ...(userId && {
+          headers: {
+            'auth-provider': 'dbAuth',
+            authorization: `Bearer ${userId}`,
+          },
+        }),
       }).then((res) => {
         if (![200, 202, 302, 303].includes(res.status))
           throw new Error('Error contacting the OAuth server')

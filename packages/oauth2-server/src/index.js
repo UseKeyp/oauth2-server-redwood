@@ -4,6 +4,8 @@ import bodyParser from 'body-parser'
 import * as dotenv from 'dotenv'
 import express from 'express'
 
+import htmlSafe from './helpers'
+
 dotenv.config()
 
 // const cors = require('cors')
@@ -24,23 +26,27 @@ const app = ({ db }) => {
       // const account = await getCurrentUser() // context.currentUser
 
       // Context doesn't seem to be available in packages
-      const account = context.currentUser
+      const account = context?.currentUser
+      console.log(context)
+      console.log('account', account)
 
-      assert(account, 'invalid credentials provided')
+      assert(account.id, 'invalid credentials provided')
       return account.id
     } catch (err) {
       return undefined
     }
   }
+
   const findAccount = async (ctx, id) => {
     const account = await db.user.findUnique({
       where: { id },
       select: { id: true, username: true, email: true },
     })
-    console.log('findAccount')
-    console.log('id', id)
-    console.log('account', account)
+    console.log('findAccount', account)
+    // console.log('id', id)
+    // console.log('account', account)
     if (!account) {
+      console.log('Account not found', id)
       return undefined
     }
 
@@ -56,7 +62,7 @@ const app = ({ db }) => {
       },
     }
   }
-  findAccount('foo', '381135787330109441')
+
   const oidc = new Provider(`${process.env.APP_DOMAIN}/api/oauth`, {
     clients: [
       {
@@ -94,9 +100,9 @@ const app = ({ db }) => {
       DeviceCode: 60,
       IdToken: 60,
       Interaction: 60,
+      Session: 60,
     },
     findAccount,
-
     // let's tell oidc-provider you also support the email scope, which will contain email and
     // email_verified claims
     claims: {
@@ -123,6 +129,27 @@ const app = ({ db }) => {
     features: {
       // disable the packaged interactions
       devInteractions: { enabled: false },
+    },
+    renderError: async (ctx, out, error) => {
+      console.error('renderError', error)
+      ctx.type = 'html'
+      ctx.body = `<!DOCTYPE html>
+        <head>
+          <title>oops! something went wrong</title>
+          <style>/* css and html classes omitted for brevity, see lib/helpers/defaults.js */</style>
+        </head>
+        <body>
+          <div>
+            <h1>oops! something went wrong</h1>
+            ${Object.entries(out)
+              .map(
+                ([key, value]) =>
+                  `<pre><strong>${key}</strong>: ${htmlSafe(value)}</pre>`
+              )
+              .join('')}
+          </div>
+        </body>
+        </html>`
     },
   })
 
@@ -183,13 +210,13 @@ const app = ({ db }) => {
         const client = await oidc.Client.find(params.client_id)
 
         // Lookup the user
-        const accountId = authenticate()
+        const accountId = await authenticate()
 
         if (!accountId) {
           console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
           // eg.  flash: 'Invalid email or password.',
-          return
+          return res.redirect(`/signin?uid=${uid}`)
         }
 
         const result = {
@@ -208,7 +235,6 @@ const app = ({ db }) => {
         // NOTE: may be unnecessary to get the new uid
         const newUid = redirectTo.toString().split('/auth/')[1]
         const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
-        console.log(newRedirectTo)
         res.send({ redirectTo: newRedirectTo })
       } catch (err) {
         next(err)

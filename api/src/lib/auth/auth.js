@@ -22,7 +22,7 @@ import { logger } from '../logger'
  * seen if someone were to open the Web Inspector in their browser.
  */
 export const getCurrentUser = async (session) => {
-  logger.debug({ custom: session }, 'session')
+  // logger.debug({ custom: session }, 'session')
   if (!session) {
     throw new Error('Invalid session')
   }
@@ -38,7 +38,7 @@ export const getCurrentUser = async (session) => {
       email: true,
     },
   })
-  logger.debug({ custom: user }, 'getCurrentUser')
+  // logger.debug({ custom: user }, 'getCurrentUser')
   return user
 }
 
