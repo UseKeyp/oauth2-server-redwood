@@ -3,10 +3,10 @@ import assert from 'assert'
 import bodyParser from 'body-parser'
 import express from 'express'
 import serverless from 'serverless-http'
-
+import fetch from 'node-fetch'
 import htmlSafe from './helpers'
 import { dbAuthSession } from './shared'
-
+import path from "path"
 // const cors = require('cors')
 const Provider = require('oidc-provider')
 
@@ -105,6 +105,9 @@ const app = ({ db }) => {
     },
     interactions: {
       url: async function interactionsUrl(ctx, interaction) {
+        const provider = ctx.req?.apiGateway?.event?.queryStringParameters?.login_provider
+        if (provider)
+          return `/oauth/interaction/${interaction.uid}?login_provider=${provider}`
         return `/oauth/interaction/${interaction.uid}`
       },
     },
@@ -136,18 +139,12 @@ const app = ({ db }) => {
   })
 
   oidc.proxy = true
-  // oidc.use(async (ctx, next) => {
-  //   /** pre-processing
-  //    * you may target a specific action here by matching `ctx.path`
-  //    */
-  //   console.log('pre middleware', ctx.method, ctx.path)
-  //   await next()
-  //   // console.log('post middleware', ctx.method, ctx.oidc.route)
-  // })
 
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
+  expressApp.set('view engine', 'ejs');
+  expressApp.set('views', path.resolve(__dirname, 'views'));
 
   const parse = bodyParser.urlencoded({ extended: false })
 
@@ -167,7 +164,27 @@ const app = ({ db }) => {
         const { uid, prompt, params } = details
         console.log('/oauth/interaction/:uid', prompt)
         const client = await oidc.Client.find(params.client_id)
+
+        const provider = req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
+          if (provider){
+            // Option 1: Directly forward. This doesn't work, since it won't set cookies
+            // const response = await fetch(`${process.env.APP_DOMAIN}/api/auth`,{
+            //   method: 'POST',
+            //   headers: {                'Content-Type': 'application/json',              },
+            //   body: JSON.stringify({             method:"signup", type:  provider,              })
+            // }).then(res => res.json())
+            // return res.redirect(response.url)
+
+            // Option 2: Too slow to load rw app for a single request
+            // return res.redirect(`/signin?uid=${uid}&login_provider=${provider}`)
+
+            // Option 3: Load the smallest page possible
+            return res.render('signin', {   provider,
+              url: `${process.env.APP_DOMAIN}/api/auth`,
+              uid
+            });
+          }
           return res.redirect(`/signin?uid=${uid}`)
         }
         return res.redirect(`/authorize?uid=${uid}`)

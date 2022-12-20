@@ -16,7 +16,7 @@ const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { saveInteraction, continueInteraction } = useOAuthAuthority()
 
-  const { error, redirectTo } = useParams()
+  const { error, redirectTo, login_provider } = useParams()
   const { toast } = useToast()
   const [errorText, setErrorText] = React.useState('')
   const getErrorText = (error) => {
@@ -37,7 +37,8 @@ const LoginPortal = () => {
     if (redirectTo) {
       saveRedirectTo(redirectTo) && reauthenticate()
     }
-  }, [redirectTo, reauthenticate])
+    if (login_provider) onSubmitSignUp(login_provider)
+  }, [redirectTo, reauthenticate, login_provider])
 
   useEffect(() => {
     if (error) setErrorText(getErrorText(error))

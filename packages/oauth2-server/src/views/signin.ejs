@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Keyp</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Roboto:400,100);
+
+      body {
+        font-family: 'Roboto', sans-serif;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        color:  #383838;
+      }
+    </style>
+  </head>
+  <body>
+  </body>
+  <script>
+    localStorage.setItem('interactionUid', '<%= uid %>')
+    fetch(`<%= url %>`,{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json',},
+      body: JSON.stringify({method:"signup", type:  '<%= provider %>',})
+    }).then(async res => {
+      const response = await res.json()
+      window.location = response.url
+    })
+  </script>
+</html>

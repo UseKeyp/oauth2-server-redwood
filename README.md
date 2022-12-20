@@ -17,7 +17,7 @@ Please ensure contributions are also made to support the open source repo here h
 
 ## Usage
 
-This repo is the source and test-application for `@keyp/oauth2-server`. It is used by importing it into a function in the `keyp-app`.
+This is the source and test-app for `@keyp/oauth2-server`. The published package is used in production over in `keyp-app`.
 
 ```bash
 yarn start
