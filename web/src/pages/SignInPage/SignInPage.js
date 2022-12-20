@@ -14,7 +14,7 @@ import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
-  const { saveInteraction } = useOAuthAuthority()
+  const { saveInteraction, continueInteraction } = useOAuthAuthority()
 
   const { error, redirectTo } = useParams()
   const { toast } = useToast()
@@ -80,6 +80,20 @@ const LoginPortal = () => {
           >
             <div className="flex justify-center align-center items-center m-1">
               <span className="mr-2">Discord</span>
+            </div>
+          </button>
+          <button
+            onClick={() =>
+              continueInteraction({
+                userId: '381135787330109441',
+                type: 'login',
+              })
+            }
+            className="login-button"
+            size="small"
+          >
+            <div className="flex justify-center align-center items-center m-1">
+              <span className="mr-2">(skip)</span>
             </div>
           </button>
           {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}

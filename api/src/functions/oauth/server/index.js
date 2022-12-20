@@ -200,8 +200,9 @@ const app = ({ db }) => {
         if (!accountId) {
           console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
-          // eg.  flash: 'Invalid email or password.',
-          return res.redirect(`/signin?uid=${uid}?error=invalid`)
+          return res.send({
+            redirectTo: `http://localhost/signin?uid=${uid}?error=invalid`,
+          })
         }
 
         const result = {

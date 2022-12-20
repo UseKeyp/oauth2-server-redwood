@@ -1,12 +1,10 @@
 import assert from 'assert'
 
 import bodyParser from 'body-parser'
-import * as dotenv from 'dotenv'
 import express from 'express'
 
+import { context as globalContext } from './globalContext'
 import htmlSafe from './helpers'
-
-dotenv.config()
 
 // const cors = require('cors')
 const Provider = require('oidc-provider')
@@ -23,16 +21,21 @@ const app = ({ db }) => {
 
   const authenticate = async () => {
     try {
+      console.log('authenticate()')
       // const account = await getCurrentUser() // context.currentUser
-
+      // const logIt = (event, context) => {
+      //   console.log(event, context)
+      // }
+      // const withAuth = useRequireAuth({ logIt, getCurrentUser })
+      // await withAuth(req)
       // Context doesn't seem to be available in packages
-      const account = context?.currentUser
-      console.log(context)
-      console.log('account', account)
-
-      assert(account.id, 'invalid credentials provided')
-      return account.id
+      // const account = context?.currentUser
+      console.log({ currentUser: globalContext.currentUser })
+      // assert(account.id, 'invalid credentials provided')
+      // return account.id
+      return '381135787330109441'
     } catch (err) {
+      console.log(err)
       return undefined
     }
   }
@@ -43,8 +46,6 @@ const app = ({ db }) => {
       select: { id: true, username: true, email: true },
     })
     console.log('findAccount', account)
-    // console.log('id', id)
-    // console.log('account', account)
     if (!account) {
       console.log('Account not found', id)
       return undefined
@@ -67,7 +68,7 @@ const app = ({ db }) => {
     clients: [
       {
         client_id: '123',
-        // client_secret: "node-oidc-secret",
+        client_secret: 'somesecret',
         redirect_uris: [
           'https://jwt.io',
           'http://0.0.0.0:3000/redirect/node_oidc',
@@ -76,24 +77,16 @@ const app = ({ db }) => {
           'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
           'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
         ],
-        response_types: ['code'],
-        grant_types: ['authorization_code'],
-        token_endpoint_auth_method: 'none',
       },
     ],
-    cookies: {
-      keys: process.env.SECURE_KEY.split(','),
-      short: {
-        httpOnly: true,
-        overwrite: true,
-        sameSite: 'none',
-      },
-      long: {
-        httpOnly: true,
-        overwrite: true,
-        sameSite: 'none',
-      },
+    clientDefaults: {
+      grant_types: ['authorization_code'],
+      id_token_signed_response_alg: 'RS256',
+      response_types: ['code'],
+      token_endpoint_auth_method: 'client_secret_post',
     },
+    // clientAuthMethods: ['client_secret_post'],
+    cookies: { keys: process.env.SECURE_KEY.split(',') },
     jwks,
     ttl: {
       AuthorizationCode: 60,
@@ -101,6 +94,7 @@ const app = ({ db }) => {
       IdToken: 60,
       Interaction: 60,
       Session: 60,
+      AccessToken: 60,
     },
     findAccount,
     // let's tell oidc-provider you also support the email scope, which will contain email and
@@ -117,10 +111,6 @@ const app = ({ db }) => {
       token: '/token',
       userinfo: '/me',
     },
-    // let's tell oidc-provider where our own interactions will be
-    // setting a nested route is just good practice so that users
-    // don't run into weird issues with multiple interactions open
-    // at a time.
     interactions: {
       url: async function interactionsUrl(ctx, interaction) {
         return `/oauth/interaction/${interaction.uid}`
@@ -188,7 +178,6 @@ const app = ({ db }) => {
         if (prompt.name === 'login') {
           return res.redirect(`/signin?uid=${uid}`)
         }
-
         return res.redirect(`/authorize?uid=${uid}`)
       } catch (err) {
         return next(err)
@@ -212,11 +201,13 @@ const app = ({ db }) => {
         // Lookup the user
         const accountId = await authenticate()
 
+        console.log(accountId)
         if (!accountId) {
           console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
-          // eg.  flash: 'Invalid email or password.',
-          return res.redirect(`/signin?uid=${uid}`)
+          return res.send({
+            redirectTo: `http://localhost/signin?uid=${uid}?error=invalid`,
+          })
         }
 
         const result = {
