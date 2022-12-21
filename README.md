@@ -11,34 +11,17 @@
 
 > OAuth2 server supporting the Keyp Public API
 
-⚠️ This private repo is for our internal use only. It is not intended for public use. ⚠️
+⚠️ PRIVATE for internal access only ⚠️
 
 Please ensure contributions are also made to support the open source repo here https://github.com/UseKeyp/oauth2-server-redwood
 
 ## Usage
 
-This is the source and test-app for `@keyp/oauth2-server`. The published package is used in production over in `keyp-app`.
+This is the source and test-app for `keyp-oauth2-server`. The published package is used in production over in `keyp-app`.
 
 ```bash
 yarn start
 ```
-
-## Resources 🧑‍💻
-
-- OAuth 2.0 https://oauth.net/2/
-- OAuth Server libraries: https://oauth.net/code/nodejs/
-- oauth4webapi https://github.com/panva/oauth4webapi
-- node-oidc-provider https://github.com/panva/node-oidc-provider
-- openid-client https://github.com/panva/node-openid-client
-
-## Contributors ✨
-
-👤 **Keyp Team <maintainers@UseKeyp.com>**
-
-- Website: https://UseKeyp.com
-- Twitter: [@UseKeyp](https://twitter.com/UseKeyp)
-- GitHub: [@UseKeyp](https://github.com/UseKeyp)
-
 ## License 📝
 
 Copyright © 2022 Nifty Chess, Inc.<br />

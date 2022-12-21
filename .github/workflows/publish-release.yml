@@ -1,0 +1,21 @@
+name: Publish Release Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-release:
+    name: Publish released packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Setup and Build Packages
+        uses: ./.github/actions/setup_packages
+
+      - name: Publish Packages
+        uses: ./.github/actions/publish_packages
+        with:
+          version: latest
