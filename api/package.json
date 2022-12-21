@@ -1,13 +1,13 @@
 {
   "name": "api",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@redwoodjs/api": "^3.7.1",
     "@redwoodjs/graphql-server": "^3.7.1",
     "@sentry/node": "^7.24.2",
     "@sentry/tracing": "^7.24.2",
-    "@usekeyp/oauth2-server": "^0.0.1-alpha.1",
+    "@usekeyp/oauth2-server": "^0.0.1",
     "pkce-challenge": "^3.0.0",
     "serverless-http": "^3.1.0"
   }
