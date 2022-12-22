@@ -1,12 +1,11 @@
 import assert from 'assert'
+import path from 'path'
 
 import bodyParser from 'body-parser'
 import express from 'express'
-import serverless from 'serverless-http'
-import fetch from 'node-fetch'
+
 import htmlSafe from './helpers'
-import { dbAuthSession } from './shared'
-import path from "path"
+
 // const cors = require('cors')
 const Provider = require('oidc-provider')
 
@@ -105,7 +104,8 @@ const app = ({ db }) => {
     },
     interactions: {
       url: async function interactionsUrl(ctx, interaction) {
-        const provider = ctx.req?.apiGateway?.event?.queryStringParameters?.login_provider
+        const provider =
+          ctx.req?.apiGateway?.event?.queryStringParameters?.login_provider
         if (provider)
           return `/oauth/interaction/${interaction.uid}?login_provider=${provider}`
         return `/oauth/interaction/${interaction.uid}`
@@ -143,8 +143,8 @@ const app = ({ db }) => {
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
-  expressApp.set('view engine', 'ejs');
-  expressApp.set('views', path.resolve(__dirname, 'views'));
+  expressApp.set('view engine', 'ejs')
+  expressApp.set('views', path.resolve(__dirname, 'views'))
 
   const parse = bodyParser.urlencoded({ extended: false })
 
@@ -165,9 +165,10 @@ const app = ({ db }) => {
         console.log('/oauth/interaction/:uid', prompt)
         const client = await oidc.Client.find(params.client_id)
 
-        const provider = req.apiGateway?.event?.queryStringParameters?.login_provider
+        const provider =
+          req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
-          if (provider){
+          if (provider) {
             // Option 1: Directly forward. This doesn't work, since it won't set cookies
             // const response = await fetch(`${process.env.APP_DOMAIN}/api/auth`,{
             //   method: 'POST',
@@ -180,10 +181,11 @@ const app = ({ db }) => {
             // return res.redirect(`/signin?uid=${uid}&login_provider=${provider}`)
 
             // Option 3: Load the smallest page possible
-            return res.render('signin', {   provider,
+            return res.render('signin', {
+              provider,
               url: `${process.env.APP_DOMAIN}/api/auth`,
-              uid
-            });
+              uid,
+            })
           }
           return res.redirect(`/signin?uid=${uid}`)
         }
