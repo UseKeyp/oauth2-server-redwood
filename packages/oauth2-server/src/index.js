@@ -178,9 +178,9 @@ const app = ({ db }) => {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ method: 'signup', type: provider }),
             }).then((res) => res.json())
-            const redirectUrl = response.url
-            if (!redirectUrl) throw "Error during sign up. Couldn't fetch url."
-            return res.render('signin', { redirectUrl, uid })
+            if (!response.url) throw "Error during sign up. Couldn't fetch url."
+            console.log(response.url)
+            return res.render('signin', { redirectUrl: response.url, uid })
           }
           return res.redirect(`/signin?uid=${uid}`)
         }
