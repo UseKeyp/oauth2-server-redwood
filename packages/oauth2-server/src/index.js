@@ -1,10 +1,13 @@
 import assert from 'assert'
+import { url } from 'inspector'
 import path from 'path'
 
 import bodyParser from 'body-parser'
 import express from 'express'
+import fetch from 'node-fetch'
 
 import htmlSafe from './helpers'
+import { dbAuthSession } from './shared'
 
 // const cors = require('cors')
 const Provider = require('oidc-provider')
@@ -170,22 +173,14 @@ const app = ({ db }) => {
         if (prompt.name === 'login') {
           if (provider) {
             // Option 1: Directly forward. This doesn't work, since it won't set cookies
-            // const response = await fetch(`${process.env.APP_DOMAIN}/api/auth`,{
-            //   method: 'POST',
-            //   headers: {                'Content-Type': 'application/json',              },
-            //   body: JSON.stringify({             method:"signup", type:  provider,              })
-            // }).then(res => res.json())
-            // return res.redirect(response.url)
-
-            // Option 2: Too slow to load rw app for a single request
-            // return res.redirect(`/signin?uid=${uid}&login_provider=${provider}`)
-
-            // Option 3: Load the smallest page possible
-            return res.render('signin', {
-              provider,
-              url: `${process.env.APP_DOMAIN}/api/auth`,
-              uid,
-            })
+            const response = await fetch(`${process.env.APP_DOMAIN}/api/auth`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ method: 'signup', type: provider }),
+            }).then((res) => res.json())
+            const redirectUrl = response.url
+            if (!redirectUrl) throw "Error during sign up. Couldn't fetch url."
+            return res.render('signin', { redirectUrl, uid })
           }
           return res.redirect(`/signin?uid=${uid}`)
         }
