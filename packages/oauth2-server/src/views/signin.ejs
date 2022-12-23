@@ -10,8 +10,7 @@
   </body>
   <script>
     localStorage.setItem('interactionUid', '<%= uid %>')
-    console.log('<%= redirectUrl %>')
-    console.log('<%= redirectUrl %>'.replace(/&amp;/g, "&"))
-    window.location = '<%= redirectUrl %>'.replace(/&amp;/g, "&")
+    console.log('Whoosh')
+    window.location = '<%= providerAuthUrl %>'.replace(/&amp;/g, "&")
   </script>
 </html>

@@ -172,15 +172,17 @@ const app = ({ db }) => {
           req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
           if (provider) {
-            // Option 1: Directly forward. This doesn't work, since it won't set cookies
             const response = await fetch(`${process.env.APP_DOMAIN}/api/auth`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ method: 'signup', type: provider }),
+              body: JSON.stringify({
+                method: 'signup',
+                type: provider,
+                stateExtraData: uid,
+              }),
             }).then((res) => res.json())
             if (!response.url) throw "Error during sign up. Couldn't fetch url."
-            console.log(response.url)
-            return res.render('signin', { redirectUrl: response.url, uid })
+            return res.redirect(response.url)
           }
           return res.redirect(`/signin?uid=${uid}`)
         }

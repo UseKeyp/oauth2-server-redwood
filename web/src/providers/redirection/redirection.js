@@ -23,7 +23,7 @@ const RedirectionContext = React.createContext({})
 const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
-  const { reauthenticate, logIn } = useAuth()
+  const { logIn } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
   const { submitCodeGrant } = useOAuth()
 
@@ -58,7 +58,11 @@ const RedirectionProvider = ({ children }) => {
         isLoading: false,
         errorMessage: response.error || 'Something went wrong',
       })
-    await continueInteraction({ type: 'login', userId: response.id })
+    await continueInteraction({
+      type: 'login',
+      userId: response.id,
+      uid: grantState.split(':')[1], // Pull out the interaction uid from the state param
+    })
   }
 
   const completeOAuth = async () => {
