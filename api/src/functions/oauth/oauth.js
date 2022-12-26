@@ -1,4 +1,4 @@
-import app from '@usekeyp/oauth2-server'
+import app from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'

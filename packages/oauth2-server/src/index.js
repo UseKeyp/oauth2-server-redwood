@@ -105,6 +105,7 @@ const app = ({ db }) => {
       token: '/token',
       userinfo: '/me',
     },
+
     interactions: {
       url: async function interactionsUrl(ctx, interaction) {
         const provider =
@@ -114,8 +115,20 @@ const app = ({ db }) => {
         return `/oauth/interaction/${interaction.uid}`
       },
     },
+
     features: {
-      // disable the packaged interactions
+      introspection: {
+        enabled: true,
+        introspectionAllowedPolicy: (ctx, client, token) => {
+          if (
+            client.clientAuthMethod === 'none' &&
+            token.clientId !== ctx.oidc.client.clientId
+          ) {
+            return false
+          }
+          return true
+        },
+      },
       devInteractions: { enabled: false },
     },
     renderError: async (ctx, out, error) => {
@@ -146,8 +159,6 @@ const app = ({ db }) => {
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
-  expressApp.set('view engine', 'ejs')
-  expressApp.set('views', path.resolve(__dirname, 'views'))
 
   const parse = bodyParser.urlencoded({ extended: false })
 
