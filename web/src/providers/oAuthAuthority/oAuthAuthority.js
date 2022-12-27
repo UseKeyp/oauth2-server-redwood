@@ -10,7 +10,7 @@ const OAuthAuthorityProvider = ({ children }) => {
   const getInteractionUid = () => {
     let url = new URL(window.location.href)
     const uid = url.searchParams.get('uid')
-    if (!uid) throw 'Error getting interactionUid from URL'
+    // if (!uid) throw 'Error getting interactionUid from URL'
     return uid
   }
 

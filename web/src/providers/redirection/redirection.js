@@ -58,11 +58,16 @@ const RedirectionProvider = ({ children }) => {
         isLoading: false,
         errorMessage: response.error || 'Something went wrong',
       })
-    await continueInteraction({
+    const { error } = await continueInteraction({
       type: 'login',
       userId: response.id,
       uid: grantState.split(':')[1], // Pull out the interaction uid from the state param
     })
+    if (error)
+      return setState({
+        isLoading: false,
+        errorMessage: error || 'Something went wrong',
+      })
   }
 
   const completeOAuth = async () => {
