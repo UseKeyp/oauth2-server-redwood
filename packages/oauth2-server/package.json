@@ -22,6 +22,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/usekeyp/keyp-oauth2-server.git"
+    "url": "git+ssh://git@github.com/usekeyp/oauth2-server-redwood.git"
   }
 }

@@ -29,12 +29,12 @@ export const getConfig = (db) => {
     cookies: { keys: process.env.SECURE_KEY.split(',') },
     jwks,
     ttl: {
-      AuthorizationCode: 1,
-      DeviceCode: 10,
-      IdToken: 1440,
-      Interaction: 3,
+      AuthorizationCode: 60,
+      DeviceCode: 600,
+      IdToken: 3600,
+      Interaction: 600,
       Session: 1440,
-      AccessToken: 1440,
+      AccessToken: 86400,
     },
     findAccount: findAccount(db),
     // let's tell oidc-provider you also support the email scope, which will contain email and

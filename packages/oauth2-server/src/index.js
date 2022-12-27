@@ -1,4 +1,5 @@
 import assert from 'assert'
+import path from 'path'
 
 import bodyParser from 'body-parser'
 import express from 'express'
@@ -39,6 +40,8 @@ const app = ({ db }) => {
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
+  expressApp.set('view engine', 'ejs')
+  expressApp.set('views', path.resolve(__dirname, 'views'))
 
   const parse = bodyParser.urlencoded({ extended: false })
 
