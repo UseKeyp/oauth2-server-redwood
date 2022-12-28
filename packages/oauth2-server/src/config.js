@@ -1,24 +1,49 @@
 import { findAccount } from './account'
+import getAdapter from './adapter'
 import htmlSafe from './helpers'
 
 const jwks = require('./jwks')
 
 export const getConfig = (db) => {
+  // const adapter = getAdapter(db)
+  // const getAdapter = (db) => {
+  //   return (name) => {
+  //     console.log(name)
+  //     return {
+  //       find: () => ({
+  //         client_id: '123',
+  //         client_secret: 'somesecret',
+  //         redirect_uris: [
+  //           'https://jwt.io',
+  //           'http://0.0.0.0:3000/redirect/node_oidc',
+  //           'http://0.0.0.0:8910/redirect/node_oidc',
+  //           'http://localhost:8910/redirect/node_oidc',
+  //           'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
+  //           'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
+  //         ],
+  //       }),
+  //     }
+  //   }
+  // }
+  const adapter = getAdapter(db)
   return {
-    clients: [
-      {
-        client_id: '123',
-        client_secret: 'somesecret',
-        redirect_uris: [
-          'https://jwt.io',
-          'http://0.0.0.0:3000/redirect/node_oidc',
-          'http://0.0.0.0:8910/redirect/node_oidc',
-          'http://localhost:8910/redirect/node_oidc',
-          'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
-          'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
-        ],
-      },
-    ],
+    adapter,
+    // adapter: PrismaAdapter,
+    findAccount: findAccount(db),
+    // clients: [
+    //   {
+    //     client_id: '123',
+    //     client_secret: 'somesecret',
+    //     redirect_uris: [
+    //       'https://jwt.io',
+    //       'http://0.0.0.0:3000/redirect/node_oidc',
+    //       'http://0.0.0.0:8910/redirect/node_oidc',
+    //       'http://localhost:8910/redirect/node_oidc',
+    //       'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
+    //       'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
+    //     ],
+    //   },
+    // ],
     clientDefaults: {
       grant_types: ['authorization_code'],
       id_token_signed_response_alg: 'RS256',
@@ -29,14 +54,15 @@ export const getConfig = (db) => {
     cookies: { keys: process.env.SECURE_KEY.split(',') },
     jwks,
     ttl: {
-      AuthorizationCode: 60,
-      DeviceCode: 600,
-      IdToken: 3600,
-      Interaction: 600,
-      Session: 1440,
-      AccessToken: 86400,
+      // Sessions
+      Session: 1209600, // 14 days in seconds
+      Interaction: 600, // 10 minutes
+      DeviceCode: 600, // 10 minutes
+      // Tokens
+      AuthorizationCode: 60, //  1 minute
+      IdToken: 3600, // 1 hour
+      AccessToken: 86400, // 24 hours
     },
-    findAccount: findAccount(db),
     // let's tell oidc-provider you also support the email scope, which will contain email and
     // email_verified claims
     claims: {
@@ -66,6 +92,7 @@ export const getConfig = (db) => {
       introspection: {
         enabled: true,
         introspectionAllowedPolicy: (ctx, client, token) => {
+          return true
           if (
             client.clientAuthMethod === 'none' &&
             token.clientId !== ctx.oidc.client.clientId

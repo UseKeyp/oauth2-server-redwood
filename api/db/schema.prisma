@@ -62,6 +62,26 @@ model ClientsOnDevelopers {
   @@id([userId, clientId])
 }
 
+model Oidc {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  consumed   Boolean   @default(false)
+  consumedAt DateTime?
+  grantId    String?
+  userCode   String?
+  uid        String?
+  type       String
+  expiresAt  DateTime?
+  payload    Json?
+
+  // oidc_id        String  @unique
+  // model_metadata Json
+  // u_id           String?
+  // client_id      String?
+  // account_id     String?
+}
+
 enum ClientPermissions {
   OWNER
   EDITOR

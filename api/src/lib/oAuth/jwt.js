@@ -1,6 +1,8 @@
+import { promisify } from 'util'
+
 import { verify as verifyJwt, decode as decodeJwt } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
-import { promisify } from 'util'
+
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'

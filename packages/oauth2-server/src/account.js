@@ -5,16 +5,16 @@ export const findAccount = (db) => async (ctx, sub) => {
   })
   console.log('findAccount', account)
   if (!account) {
-    console.log('Account not found for id:', id)
+    console.log('Account not found for id:', sub)
     return undefined
   }
 
   return {
-    accountId: id,
+    accountId: sub,
     claims: async (use, scope, claims, rejected) => {
       console.log('claims', use, scope, claims, rejected)
       return {
-        sub: id,
+        sub,
         email: account.email,
         email_verified: account.email_verified,
       }
