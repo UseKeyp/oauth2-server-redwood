@@ -1,0 +1,14 @@
+name: Publish Release Package
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish-release:
+    name: Publish released packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+# TODO

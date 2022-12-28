@@ -1,5 +1,6 @@
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
+import { navigate, routes } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
@@ -23,7 +24,7 @@ const RedirectionContext = React.createContext({})
 const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
-  const { reauthenticate, logIn } = useAuth()
+  const { logIn } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
   const { submitCodeGrant } = useOAuth()
 
@@ -58,7 +59,21 @@ const RedirectionProvider = ({ children }) => {
         isLoading: false,
         errorMessage: response.error || 'Something went wrong',
       })
-    await continueInteraction({ type: 'login', userId: response.id })
+    const uid = grantState.split(':')[1]
+    if (uid) {
+      const { error } = await continueInteraction({
+        type: 'login',
+        userId: response.id,
+        uid, // Pull out the interaction uid from the state param
+      })
+      if (error)
+        return setState({
+          isLoading: false,
+          errorMessage: error || 'Something went wrong',
+        })
+    } else {
+      window.location = routes.profile()
+    }
   }
 
   const completeOAuth = async () => {

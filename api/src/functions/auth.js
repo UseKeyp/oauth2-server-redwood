@@ -97,10 +97,10 @@ export const handler = async (event, context) => {
 
   authHandler.signup = async () => {
     try {
-      const { type } = authHandler.params
+      const { type, stateExtraData } = authHandler.params
       logger.debug(`authHandler.signup type: ${type}`)
       validateLoginRequest({ type })
-      const { url } = await oAuthUrl(type)
+      const { url } = await oAuthUrl({ type, stateExtraData })
       return [JSON.stringify({ url }), {}, { statusCode: 201 }]
     } catch (e) {
       logger.error(e)

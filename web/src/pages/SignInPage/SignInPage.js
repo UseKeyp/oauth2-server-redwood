@@ -14,9 +14,9 @@ import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
-  const { saveInteraction, continueInteraction } = useOAuthAuthority()
+  const { getInteractionUid } = useOAuthAuthority()
 
-  const { error, redirectTo, login_provider } = useParams()
+  const { error, redirectTo } = useParams()
   const { toast } = useToast()
   const [errorText, setErrorText] = React.useState('')
   const getErrorText = (error) => {
@@ -24,7 +24,8 @@ const LoginPortal = () => {
   }
 
   const onSubmitSignUp = async (type) => {
-    const response = await signUp({ type })
+    const interactionUid = getInteractionUid()
+    const response = await signUp({ type, stateExtraData: interactionUid })
     if (response.url) {
       window.location = response.url
     } else {
@@ -32,16 +33,14 @@ const LoginPortal = () => {
     }
   }
 
-  useEffect(() => {
-    saveInteraction()
-    if (redirectTo) {
-      saveRedirectTo(redirectTo) && reauthenticate()
-    }
-    if (login_provider) onSubmitSignUp(login_provider)
-  }, [redirectTo, reauthenticate, login_provider])
+  // useEffect(() => {
+  //   if (redirectTo) {
+  //     saveRedirectTo(redirectTo) && reauthenticate()
+  //   }
+  // }, [redirectTo, reauthenticate])
 
   useEffect(() => {
-    if (error) setErrorText(getErrorText(error))
+    error && setErrorText(getErrorText(error))
   }, [error])
 
   useEffect(() => {
@@ -49,6 +48,18 @@ const LoginPortal = () => {
     //   navigate(routes.profile())
     // }
   }, [isAuthenticated])
+
+  const getButton = (type, text) => (
+    <button
+      onClick={() => onSubmitSignUp(type)}
+      className="login-button mt-2"
+      size="small"
+    >
+      <div className="flex justify-center align-center items-center m-1">
+        <span className="mr-2">{text}</span>
+      </div>
+    </button>
+  )
 
   return (
     <div className="flex justify-center">
@@ -65,38 +76,10 @@ const LoginPortal = () => {
         </div>
 
         <div className="login-portal-container--button-wrapper">
-          <button
-            onClick={() => onSubmitSignUp('NODE_OIDC')}
-            className="login-button"
-            size="small"
-          >
-            <div className="flex justify-center align-center items-center m-1">
-              <span className="mr-2">node-oidc-provider</span>
-            </div>
-          </button>
-          <button
-            onClick={() => onSubmitSignUp('DISCORD')}
-            className="login-button"
-            size="small"
-          >
-            <div className="flex justify-center align-center items-center m-1">
-              <span className="mr-2">Discord</span>
-            </div>
-          </button>
-          <button
-            onClick={() =>
-              continueInteraction({
-                userId: '381135787330109441',
-                type: 'login',
-              })
-            }
-            className="login-button"
-            size="small"
-          >
-            <div className="flex justify-center align-center items-center m-1">
-              <span className="mr-2">(skip)</span>
-            </div>
-          </button>
+          {getButton('NODE_OIDC', 'oidc-provider')}
+          <br />
+          {getButton('DISCORD', 'Discord')}
+          <br />
           {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
         </div>
         <div className="w-full text-center"></div>

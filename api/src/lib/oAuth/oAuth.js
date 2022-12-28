@@ -7,7 +7,7 @@ import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { providers, types } from 'src/lib/oAuth/providers'
 
-export const oAuthUrl = async (type) => {
+export const oAuthUrl = async ({ type, stateExtraData }) => {
   try {
     if (!Object.values(types).includes(type))
       throw `OAuth Provider ${type} is not enabled.`
@@ -20,7 +20,7 @@ export const oAuthUrl = async (type) => {
     Object.keys(params).map((key) => {
       url.searchParams.set(key, params[key])
     })
-    const state = uuidv4()
+    const state = uuidv4() + (stateExtraData ? `:${stateExtraData}` : '')
     // For oAuth codeGrant, we sometimes need the user id
     let userId
     if (context.currentUser?.id) userId = context.currentUser?.id

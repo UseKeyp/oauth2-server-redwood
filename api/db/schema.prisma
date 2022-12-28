@@ -8,29 +8,24 @@ generator client {
   binaryTargets = "native"
 }
 
-// Define your own datamodels here and run `yarn redwood prisma migrate dev`
-// to create migrations for them and apply to your dev DB.
-// TODO: Please remove the following example:
-
 model User {
-  id           String   @id // Chess.com id
-  username     String?  @unique // platform username
-  address      String?  @unique // Torus wallet address
+  id           String                @id
+  username     String?               @unique // platform username
+  address      String?               @unique // Ethereum wallet address
+  email        String?               @unique // Email address
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
   locale       String?
-  email        String?  @unique // Email address
-  // --------------- STATE --------------
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
   mfa_enabled  Boolean?
-  imageSrc     String? // Avatar URL
-  country      String? // Player's country  eg. US, DE
-  mintCredits  Int      @default(3) // Mint for free!
-  banned       Boolean  @default(false)
+  imageSrc     String?
+  country      String?
+  banned       Boolean               @default(false)
   blocked      Boolean? // Prevents others from interacting with this person
-  refreshToken String? // Discord.com Oauth
-  accessToken  String? // Discord.com Oauth
+  betaAccess   Boolean               @default(false)
+  refreshToken String?
+  accessToken  String?
   OAuth        OAuth[]
-  betaAccess   Boolean  @default(false)
+  clients      ClientsOnDevelopers[]
 }
 
 model OAuth {
@@ -40,4 +35,50 @@ model OAuth {
   createdAt     DateTime @default(now())
   user          User?    @relation(fields: [userId], references: [id])
   userId        String?
+}
+
+model Client {
+  id           String                @id
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+  developers   ClientsOnDevelopers[]
+  redirectUrls String
+  clientSecret String?
+  accessToken  String
+  refreshToken String
+  deleted      Boolean               @default(false) // Owner has deleted the client
+  paused       Boolean               @default(false) // Rate-limiting or other security concern
+}
+
+model ClientsOnDevelopers {
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id])
+  client      Client            @relation(fields: [clientId], references: [id])
+  userId      String
+  clientId    String
+  accessLevel ClientPermissions
+
+  @@id([userId, clientId])
+}
+
+model Oidc {
+  id         String    @default(cuid())
+  type       Int
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  consumed   Boolean   @default(false)
+  consumedAt DateTime?
+  grantId    String?
+  userCode   String?
+  uid        String?   @unique
+  expiresAt  DateTime?
+  payload    Json?
+
+  @@id([id, type])
+}
+
+enum ClientPermissions {
+  OWNER
+  EDITOR
 }

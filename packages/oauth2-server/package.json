@@ -1,6 +1,6 @@
 {
-  "name": "@usekeyp/oauth2-server",
-  "version": "0.1.0",
+  "name": "oauth2-server-redwood",
+  "version": "0.0.1",
   "description": "",
   "module": "dist/index.js",
   "main": "dist/index.js",
@@ -19,5 +19,9 @@
     "nodemon": "^2.0.20"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/usekeyp/oauth2-server-redwood.git"
+  }
 }

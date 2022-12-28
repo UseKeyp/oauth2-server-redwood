@@ -4,27 +4,23 @@ const OAuthAuthorityContext = React.createContext({
   isLoading: true,
 })
 
-const parseUrl = () => {
-  let url = new URL(window.location.href)
-  return { interactionUid: url.searchParams.get('uid') }
-}
-
 const OAuthAuthorityProvider = ({ children }) => {
   const { toast } = useToast()
 
-  const INTERACTION_UID_LOCAL_KEY = 'interactionUid'
-
-  const saveInteraction = () => {
-    const { interactionUid } = parseUrl()
-    if (interactionUid)
-      localStorage.setItem(INTERACTION_UID_LOCAL_KEY, interactionUid)
+  const getInteractionUid = () => {
+    let url = new URL(window.location.href)
+    const uid = url.searchParams.get('uid')
+    // if (!uid) throw 'Error getting interactionUid from URL'
+    return uid
   }
 
-  const continueInteraction = async ({ type, userId }) => {
+  const continueInteraction = async ({ type, userId, uid }) => {
     try {
+      let interactionUid = uid
+      if (!interactionUid) interactionUid = getInteractionUid()
+      if (!interactionUid) throw 'No uid for continueInteraction'
       if (!['login', 'confirm', 'abort'].includes(type))
         throw 'Invalid type for continueInteraction'
-      const interactionUid = localStorage.getItem(INTERACTION_UID_LOCAL_KEY)
       const url = `/oauth/interaction/${interactionUid}/${type}`
       if (type === 'abort') return window.location.replace(url)
       const response = await fetch(url, {
@@ -42,6 +38,7 @@ const OAuthAuthorityProvider = ({ children }) => {
       })
       window.location.replace(response.redirectTo)
     } catch (error) {
+      console.log(error)
       toast.error(error?.message)
       return { error: error.message }
     }
@@ -50,7 +47,7 @@ const OAuthAuthorityProvider = ({ children }) => {
   return (
     <OAuthAuthorityContext.Provider
       value={{
-        saveInteraction,
+        getInteractionUid,
         continueInteraction,
       }}
     >

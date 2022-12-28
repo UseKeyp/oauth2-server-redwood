@@ -3,11 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const AuthorizePage = () => {
-  const { continueInteraction, saveInteraction } = useOAuthAuthority()
-
-  React.useEffect(() => {
-    saveInteraction && saveInteraction()
-  }, [saveInteraction])
+  const { continueInteraction } = useOAuthAuthority()
 
   return (
     <>
