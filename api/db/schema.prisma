@@ -63,23 +63,19 @@ model ClientsOnDevelopers {
 }
 
 model Oidc {
-  id         String    @id @default(cuid())
+  id         String    @default(cuid())
+  type       Int
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   consumed   Boolean   @default(false)
   consumedAt DateTime?
   grantId    String?
   userCode   String?
-  uid        String?
-  type       String
+  uid        String?   @unique
   expiresAt  DateTime?
   payload    Json?
 
-  // oidc_id        String  @unique
-  // model_metadata Json
-  // u_id           String?
-  // client_id      String?
-  // account_id     String?
+  @@id([id, type])
 }
 
 enum ClientPermissions {

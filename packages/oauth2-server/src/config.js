@@ -5,30 +5,9 @@ import htmlSafe from './helpers'
 const jwks = require('./jwks')
 
 export const getConfig = (db) => {
-  // const adapter = getAdapter(db)
-  // const getAdapter = (db) => {
-  //   return (name) => {
-  //     console.log(name)
-  //     return {
-  //       find: () => ({
-  //         client_id: '123',
-  //         client_secret: 'somesecret',
-  //         redirect_uris: [
-  //           'https://jwt.io',
-  //           'http://0.0.0.0:3000/redirect/node_oidc',
-  //           'http://0.0.0.0:8910/redirect/node_oidc',
-  //           'http://localhost:8910/redirect/node_oidc',
-  //           'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
-  //           'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
-  //         ],
-  //       }),
-  //     }
-  //   }
-  // }
   const adapter = getAdapter(db)
   return {
     adapter,
-    // adapter: PrismaAdapter,
     findAccount: findAccount(db),
     // clients: [
     //   {
