@@ -37,48 +37,37 @@ model OAuth {
   userId        String?
 }
 
-model Client {
-  id           String                @id
-  createdAt    DateTime              @default(now())
-  updatedAt    DateTime              @updatedAt
-  developers   ClientsOnDevelopers[]
-  redirectUrls String
-  clientSecret String?
-  accessToken  String
-  refreshToken String
-  deleted      Boolean               @default(false) // Owner has deleted the client
-  paused       Boolean               @default(false) // Rate-limiting or other security concern
-}
-
 model ClientsOnDevelopers {
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
   user        User              @relation(fields: [userId], references: [id])
-  client      Client            @relation(fields: [clientId], references: [id])
   userId      String
-  clientId    String
+  Oidc        Oidc              @relation(fields: [oidcId, oidcType], references: [id, type])
+  oidcId      String
+  oidcType    Int               @default(5)
   accessLevel ClientPermissions
 
-  @@id([userId, clientId])
+  @@id([userId, oidcId])
 }
 
 model Oidc {
-  id         String    @default(cuid())
+  id         String                @default(cuid())
   type       Int
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  consumed   Boolean   @default(false)
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  consumed   Boolean               @default(false)
   consumedAt DateTime?
   grantId    String?
   userCode   String?
-  uid        String?   @unique
+  uid        String?               @unique
   expiresAt  DateTime?
   payload    Json?
+  developers ClientsOnDevelopers[]
 
   @@id([id, type])
 }
 
 enum ClientPermissions {
-  OWNER
-  EDITOR
+  OWNER // Can disable client
+  EDITOR // Can update redirect urls
 }
