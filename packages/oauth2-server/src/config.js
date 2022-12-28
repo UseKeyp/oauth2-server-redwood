@@ -1,8 +1,7 @@
 import { findAccount } from './account'
 import getAdapter from './adapter'
 import htmlSafe from './helpers'
-
-const jwks = require('./jwks')
+import jwks from './jwks'
 
 export const getConfig = (db) => {
   const adapter = getAdapter(db)

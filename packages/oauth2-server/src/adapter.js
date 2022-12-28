@@ -1,9 +1,6 @@
 // Adapted from https://github.com/panva/node-oidc-provider/blob/main/example/adapters/contributed/prisma.ts
 // Adapter interface: https://github.com/panva/node-oidc-provider/blob/main/example/my_adapter.js
 
-const { Prisma } = require('@prisma/client')
-const { Adapter, AdapterPayload } = require('oidc-provider')
-
 const types = [
   'OidcModels',
   'AccessToken',
