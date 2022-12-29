@@ -24,7 +24,7 @@ model User {
   betaAccess   Boolean               @default(false)
   refreshToken String?
   accessToken  String?
-  OAuth        OAuth[]
+  oAuth        OAuth[]
   clients      ClientsOnDevelopers[]
 }
 
@@ -42,32 +42,33 @@ model ClientsOnDevelopers {
   updatedAt   DateTime          @updatedAt
   user        User              @relation(fields: [userId], references: [id])
   userId      String
-  Oidc        Oidc              @relation(fields: [oidcId, oidcType], references: [id, type])
+  oidc        Oidc              @relation(fields: [oidcId, oidcType], references: [id, type])
   oidcId      String
-  oidcType    Int               @default(5)
-  accessLevel ClientPermissions
+  oidcType    Int               @default(7)
+  accessLevel ClientAccessLevel
 
   @@id([userId, oidcId])
 }
 
 model Oidc {
-  id         String                @default(cuid())
+  id         String    @default(cuid())
   type       Int
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
-  consumed   Boolean               @default(false)
-  consumedAt DateTime?
   grantId    String?
   userCode   String?
-  uid        String?               @unique
+  uid        String?   @unique
   expiresAt  DateTime?
-  payload    Json?
+  payload    Json
+  disabled   Boolean? // Allow developers to disable "delete" clients
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
   developers ClientsOnDevelopers[]
 
   @@id([id, type])
 }
 
-enum ClientPermissions {
+enum ClientAccessLevel {
   OWNER // Can disable client
   EDITOR // Can update redirect urls
 }
