@@ -11,12 +11,12 @@ import { dbAuthSession } from './shared'
 // const cors = require('cors')
 const Provider = require('oidc-provider')
 
-const app = ({ db }) => {
-  assert(process.env.SECURE_KEY, 'process.env.SECURE_KEY missing')
+const app = (db, settings) => {
+  assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
   assert.equal(
-    process.env.SECURE_KEY.split(',').length,
+    settings.SECURE_KEY.split(',').length,
     2,
-    'process.env.SECURE_KEY format invalid'
+    'settings.SECURE_KEY format invalid'
   )
 
   const authenticate = async (req) => {
@@ -32,8 +32,8 @@ const app = ({ db }) => {
   }
 
   const oidc = new Provider(
-    `${process.env.APP_DOMAIN}/api/oauth`,
-    getConfig(db)
+    `${settings.APP_DOMAIN}/api/oauth`,
+    getConfig(db, settings)
   )
   oidc.proxy = true
 
@@ -66,7 +66,7 @@ const app = ({ db }) => {
           req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
           if (provider) {
-            const response = await fetch(`${process.env.APP_DOMAIN}/api/auth`, {
+            const response = await fetch(`${settings.APP_DOMAIN}/api/auth`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -78,9 +78,10 @@ const app = ({ db }) => {
             if (!response.url) throw "Error during sign up. Couldn't fetch url."
             return res.redirect(response.url)
           }
-          return res.redirect(`/signin?uid=${uid}`)
+          return res.redirect(`${settings.routes.login}?uid=${uid}`)
         }
-        return res.redirect(`/authorize?uid=${uid}`)
+        // Interaction is not logging in, so we must be authorizing
+        return res.redirect(`${settings.routes.authorize}?uid=${uid}`)
       } catch (err) {
         return next(err)
       }
@@ -232,4 +233,4 @@ const app = ({ db }) => {
   return expressApp
 }
 
-export default ({ db }) => app({ db })
+export default (...args) => app(...args)
