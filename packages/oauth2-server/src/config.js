@@ -3,7 +3,7 @@ import getAdapter from './adapter'
 import htmlSafe from './helpers'
 import jwks from './jwks'
 
-export const getConfig = (db) => {
+export const getConfig = ({ settings, db }) => {
   const adapter = getAdapter(db)
   return {
     adapter,
@@ -29,7 +29,7 @@ export const getConfig = (db) => {
       token_endpoint_auth_method: 'client_secret_post',
     },
     // clientAuthMethods: ['client_secret_post'],
-    cookies: { keys: process.env.SECURE_KEY.split(',') },
+    cookies: { keys: settings.SECURE_KEY.split(',') },
     jwks,
     ttl: {
       // Sessions

@@ -97,7 +97,7 @@ const LoginPortal = () => {
   )
 }
 
-const SignInPage = () => {
+const LoginPage = () => {
   return (
     <>
       <MetaTags title="Sign In" description="Join to start collecting." />
@@ -106,4 +106,4 @@ const SignInPage = () => {
   )
 }
 
-export default SignInPage
+export default LoginPage
