@@ -11,7 +11,7 @@ import { dbAuthSession } from './shared'
 // const cors = require('cors')
 const Provider = require('oidc-provider')
 
-const app = ({ settings, db }) => {
+const app = (db, settings) => {
   assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
   assert.equal(
     settings.SECURE_KEY.split(',').length,
@@ -33,7 +33,7 @@ const app = ({ settings, db }) => {
 
   const oidc = new Provider(
     `${settings.APP_DOMAIN}/api/oauth`,
-    getConfig({ db, settings })
+    getConfig(db, settings)
   )
   oidc.proxy = true
 
@@ -78,9 +78,10 @@ const app = ({ settings, db }) => {
             if (!response.url) throw "Error during sign up. Couldn't fetch url."
             return res.redirect(response.url)
           }
-          return res.redirect(`/signin?uid=${uid}`)
+          return res.redirect(`${settings.routes.login}?uid=${uid}`)
         }
-        return res.redirect(`/authorize?uid=${uid}`)
+        // Interaction is not logging in, so we must be authorizing
+        return res.redirect(`${settings.routes.authorize}?uid=${uid}`)
       } catch (err) {
         return next(err)
       }
@@ -232,4 +233,4 @@ const app = ({ settings, db }) => {
   return expressApp
 }
 
-export default ({ db }) => app({ db })
+export default (...args) => app(...args)

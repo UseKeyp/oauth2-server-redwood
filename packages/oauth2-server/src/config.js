@@ -3,31 +3,18 @@ import getAdapter from './adapter'
 import htmlSafe from './helpers'
 import jwks from './jwks'
 
-export const getConfig = ({ settings, db }) => {
+export const getConfig = (db, settings) => {
   const adapter = getAdapter(db)
   return {
     adapter,
     findAccount: findAccount(db),
-    // clients: [
-    //   {
-    //     client_id: '123',
-    //     client_secret: 'somesecret',
-    //     redirect_uris: [
-    //       'https://jwt.io',
-    //       'http://0.0.0.0:3000/redirect/node_oidc',
-    //       'http://0.0.0.0:8910/redirect/node_oidc',
-    //       'http://localhost:8910/redirect/node_oidc',
-    //       'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
-    //       'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
-    //     ],
-    //   },
-    // ],
     clientDefaults: {
       grant_types: ['authorization_code'],
       id_token_signed_response_alg: 'RS256',
       response_types: ['code'],
       token_endpoint_auth_method: 'client_secret_post',
     },
+    // TODO: unsure if this config is needed
     // clientAuthMethods: ['client_secret_post'],
     cookies: { keys: settings.SECURE_KEY.split(',') },
     jwks,
@@ -67,19 +54,19 @@ export const getConfig = ({ settings, db }) => {
     },
 
     features: {
-      introspection: {
-        enabled: true,
-        introspectionAllowedPolicy: (ctx, client, token) => {
-          return true
-          if (
-            client.clientAuthMethod === 'none' &&
-            token.clientId !== ctx.oidc.client.clientId
-          ) {
-            return false
-          }
-          return true
-        },
-      },
+      // TODO: enable introspection for API server
+      // introspection: {
+      //   enabled: true,
+      //   introspectionAllowedPolicy: (ctx, client, token) => {
+      //     if (
+      //       client.clientAuthMethod === 'none' &&
+      //       token.clientId !== ctx.oidc.client.clientId
+      //     ) {
+      //       return false
+      //     }
+      //     return true
+      //   },
+      // },
       devInteractions: { enabled: false },
     },
     renderError: async (ctx, out, error) => {
@@ -103,5 +90,6 @@ export const getConfig = ({ settings, db }) => {
         </body>
         </html>`
     },
+    ...settings.config,
   }
 }

@@ -5,44 +5,94 @@
   </a>
 </p>
 
-> An OAuth2 provider built using Redwood and oidc-provider
-
-<p align="left">
-<img width="600px" src="oauth-server-redwood-demo.gif"/>
-</p>
+> OAuth2 server with dynamic client registration, built with Oidc-Provider for RedwoodJS
 
 🚧 IN DEVELOPMENT 🚧
 
-"Authority" means that you are providing authentication or authorization as a service for _other apps_. For example "Sign in with MyCompanyApp", as opposed to "Sign in with Google".  If you're just looking to implement an OAuth2 client in your app, check out [`oauth2-client-redwood`](https://github.com/usekeyp/oauth2-client-redwood).
+"Authority" means that you are providing authentication or authorization as a service for _other apps_. For example "Sign in with MyCompanyApp", as opposed to "Sign in with Google".  If you're just looking to implement an OAuth2 client in your app, check out [`oauth2-client-redwood`][oauth2-client-redwood].
 
 ## Demo ⏯️
 
 Hosted demo coming soon
 
 In the example gif above, its important to note that the server is wrapping the user's Discord account with its own account (double authentication). The flow could also just use normal username/password.
-## Developing
+## Usage
 
-Here's the user-agent flow for a standard node-oidc-provider. Note ours is slightly modified, since we use our Redwood app UI for the login and consent screens.
+1. Create a new function `oauth` and install the package
 
-<img  src="user-agent-flow.png"/>
+```bash
+yarn add oauth2-server-redwood serverless-http
+```
+
+```js
+// api/src/functions/oauth.js
+import oauth2Server from 'oauth2-server-redwood'
+import serverless from 'serverless-http'
+
+import { db } from 'src/lib/db'
+
+export const handler = serverless(
+  oauth2Server(db, {
+    SECURE_KEY: process.env.SECURE_KEY,
+    APP_DOMAIN: process.env.APP_DOMAIN,
+    routes: { login: '/login', authorize: '/authorize' },
+    config: {
+      // Define your own OIDC-Provider config (https://github.com/panva/node-oidc-provider)
+      clients: [
+        {
+          client_id: '123',
+          client_secret: 'somesecret',
+          redirect_uris: [
+            'https://jwt.io',
+            'https://oauthdebugger.com/debug',
+            'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
+          ],
+        },
+      ],
+    },
+  })
+)
+```
+
+2. Copy the .env.example to .env and update the values
+
+3. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
+
+4.  Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
+
+```bash
+yarn rw setup auth dbAuth
+```
+
+5. To test, you can use https://oauthdebugger.com/
+
+- Authorize URI: http://localhost/oauth/auth
+- Client ID: 123
+- Scope: openid email profile
+- Use PKCE: true
+
+<img width="400px" src="oauth-debugger.png">
+
+Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update the line in the `.env` file to point to your server:
+
+```
+OAUTH2_SERVER_REDWOOD_API_DOMAIN=http://localhost/oauth
+```
 
 ## Contributing 💡
 
 To run this repo locally:
 
-- Update your .env from `.env.example`.
-- You'll need to setup a nginx proxy, since oidc-provider sometimes ignores the extra `/api` path prefix, and cookie paths are not set properly. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. I'm open to other ideas here if you'd like to help!
-- Run `yarn build` in `/packages/oauth2-server
-
+- Clone the repo and follow steps 2 & 3 above
+- Run `yarn build:watch` in `/packages/oauth2-server`
+- Run `yarn rw dev` to start the app
 ## TODO
 
 - [x] Validate rw session tokens during login
-- [ ] Add claims to the user model and fetch in `findAccount`
+- [ ] Upgrade to latest oidc-provider (blocked by lack of support for "require")
+- [ ] Add dbAuth username/password option to make the demo simpler to understand
 - [ ] Show proper scopes for consent page
 - [ ] Improve the UI
-- [ ] Fix redirect bug to /profile
-- [ ] Add dbAuth username/password option to make the demo simpler to understand
-- [ ] Security audit
 ## Resources 🧑‍💻
 
 - OAuth Server libraries: https://oauth.net/code/nodejs/
@@ -58,6 +108,5 @@ Copyright © 2023 Nifty Chess, Inc.<br />
 This project is MIT licensed.
 
 [sponsor-keyp]: https://UseKeyp.com
-
-
+[oauth2-client-redwood]: https://github.com/UseKeyp/oauth2-client-redwood
 
