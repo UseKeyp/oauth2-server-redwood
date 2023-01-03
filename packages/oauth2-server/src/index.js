@@ -233,4 +233,4 @@ const app = (db, settings) => {
   return expressApp
 }
 
-export default (...args) => app(...args)
+export default app

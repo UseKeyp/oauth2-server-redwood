@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import { validate } from '@redwoodjs/api'
 
 import { db } from 'src/lib/db'
@@ -32,8 +34,9 @@ export const clients = async () => {
 }
 
 export const createClient = async () => {
+  const id = uuidv4()
   const client = await db.oidc.create({
-    data: { type: 7, payload: { redirect_uris: [] } },
+    data: { id, type: 7, payload: { client_id: id, redirect_uris: [] } },
   })
   await db.clientsOnDevelopers.create({
     data: {
