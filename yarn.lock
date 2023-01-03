@@ -20321,6 +20321,7 @@ __metadata:
     "@babel/core": ^7.20.5
     "@babel/node": ^7.16.0
     "@babel/preset-env": ^7.16.0
+    deepmerge: ^4.2.2
     nodemon: ^2.0.20
     oidc-provider: ^7.14.3
   languageName: unknown

@@ -229,7 +229,7 @@ const app = (db, settings) => {
 
   // leave the rest of the requests to be handled by oidc-provider, there's a catch all 404 there
   expressApp.use('/oauth', oidc.callback())
-
+  expressApp.oidc = oidc
   return expressApp
 }
 
