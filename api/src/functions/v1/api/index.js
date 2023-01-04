@@ -23,7 +23,7 @@ const app = (db, settings) => {
   console.log(settings.version)
 
   // Validate token
-  const tokenIntrospection = async (req, res, next) => {
+  const validateToken = async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     const response = await fetch(
       settings.APP_DOMAIN + '/oauth/token/introspection',
@@ -32,7 +32,11 @@ const app = (db, settings) => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
         },
-        body: encodeBody({ token }),
+        body: encodeBody({
+          token,
+          client_id: 'api-server',
+          client_secret: process.env.INTROSPECTION_SECRET,
+        }),
       }
     ).then((res) => res.json())
     console.log(response)
@@ -44,7 +48,7 @@ const app = (db, settings) => {
   const parse = bodyParser.urlencoded({ extended: false })
 
   // TODO: set version route prefix
-  app.get('/v1/sanity-check', tokenIntrospection, async (req, res) => {
+  app.get('/v1/sanity-check', validateToken, async (req, res) => {
     return res.send({ success: true })
   })
 
