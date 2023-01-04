@@ -11,12 +11,28 @@ export const getConfig = (db, settings) => {
     {
       adapter,
       findAccount: findAccount(db),
+      clients: [
+        {
+          client_id: 'api-server',
+          client_secret: settings.INTROSPECTION_SECRET,
+          redirect_uris: ['https://nowhere.foo'],
+          token_endpoint_auth_method: 'client_secret_post',
+        },
+      ],
+      clientAuthMethods: ['none', 'client_secret_post'],
+      tokenEndpointAuthMethods: ['client_secret_post'],
       clientDefaults: {
         grant_types: ['authorization_code'],
         id_token_signed_response_alg: 'RS256',
         response_types: ['code'],
         token_endpoint_auth_method: 'client_secret_post',
-        clientAuthMethods: ['client_secret_post'],
+      },
+      pkce: { require: true, methods: ['S256'] },
+      responseTypes: ['code', 'id_token'],
+      scopes: ['openid', 'offline_access'],
+      claims: {
+        openid: ['sub'],
+        email: ['email', 'email_verified'],
       },
       cookies: { keys: settings.SECURE_KEY.split(',') },
       jwks,
@@ -29,12 +45,6 @@ export const getConfig = (db, settings) => {
         AuthorizationCode: 60, //  1 minute
         IdToken: 3600, // 1 hour
         AccessToken: 86400, // 24 hours
-      },
-      // let's tell oidc-provider you also support the email scope, which will contain email and
-      // email_verified claims
-      claims: {
-        openid: ['sub'],
-        email: ['email', 'email_verified'],
       },
       routes: {
         authorization: '/auth',
@@ -55,8 +65,19 @@ export const getConfig = (db, settings) => {
           return `/oauth/interaction/${interaction.uid}`
         },
       },
-
-      features: { devInteractions: { enabled: false } },
+      features: {
+        devInteractions: { enabled: false },
+        introspection: {
+          enabled: true,
+          allowedPolicy: async (ctx) => {
+            if (ctx.oidc.client.clientId !== 'api-server') {
+              // Restrict introspectection to api-server only
+              return ctx.res.status(401).send('Unauthorized')
+            }
+            return true
+          },
+        },
+      },
       renderError: async (ctx, out, error) => {
         console.error('renderError', error)
         ctx.type = 'html'

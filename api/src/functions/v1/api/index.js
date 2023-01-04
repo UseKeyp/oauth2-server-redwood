@@ -40,8 +40,6 @@ const app = (db, settings) => {
     req.ctx = { user: response.sub, scope: response.scope }
     next()
   }
-  // const router = express.Router()
-  // app.use('v1', routes(router))
 
   const parse = bodyParser.urlencoded({ extended: false })
 
