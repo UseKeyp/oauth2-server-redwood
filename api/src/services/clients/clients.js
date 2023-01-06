@@ -51,7 +51,7 @@ export const createClient = async () => {
 export const updateClient = async ({ id, redirectUrls }) => {
   const client = await db.oidc.findUnique({
     where: { id_type: { id, type: 7 } },
-    select: { developers: true },
+    select: { developers: true, payload: true },
   })
   if (!client) throw new Error('Client not found')
 

@@ -20,8 +20,6 @@ const app = (db, settings) => {
   app.set('view engine', 'ejs')
   app.set('views', path.resolve(__dirname, 'views'))
 
-  console.log(settings.version)
-
   // Validate token
   const validateToken = async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
@@ -48,9 +46,9 @@ const app = (db, settings) => {
   const parse = bodyParser.urlencoded({ extended: false })
 
   // TODO: set version route prefix
-  app.get('/v1/sanity-check', validateToken, async (req, res) => {
-    return res.send({ success: true })
-  })
+  // app.get('/v1/sanity-check', validateToken, async (req, res) => {
+  //   return res.send({ success: true })
+  // })
 
   // TODO: set cache policy
   function cachePolicy(req, res, next) {

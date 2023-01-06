@@ -15,20 +15,26 @@ export const getConfig = (db, settings) => {
         {
           client_id: 'api-server',
           client_secret: settings.INTROSPECTION_SECRET,
-          redirect_uris: ['https://nowhere.foo'],
+          redirect_uris: [],
           token_endpoint_auth_method: 'client_secret_post',
         },
       ],
       clientAuthMethods: ['none', 'client_secret_post'],
-      tokenEndpointAuthMethods: ['client_secret_post'],
       clientDefaults: {
         grant_types: ['authorization_code'],
         id_token_signed_response_alg: 'RS256',
         response_types: ['code'],
-        token_endpoint_auth_method: 'client_secret_post',
+        token_endpoint_auth_method: 'none',
+      },
+      scopes: ['openid'],
+      issueRefreshToken: (ctx, client, code) => {
+        return (
+          client.grantTypeAllowed('refresh_token') &&
+          code.scopes.has('offline_access')
+        )
       },
       pkce: { require: true, methods: ['S256'] },
-      responseTypes: ['code', 'id_token'],
+      responseTypes: ['code id_token', 'code', 'id_token'],
       scopes: ['openid', 'offline_access'],
       claims: {
         openid: ['sub'],

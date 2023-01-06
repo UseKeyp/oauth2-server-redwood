@@ -5,11 +5,15 @@
   </a>
 </p>
 
-> OAuth2 server with dynamic client registration, built with Oidc-Provider for RedwoodJS
+> OAuth2 server with dynamic client registration and test API, built with Oidc-Provider for RedwoodJS
+
+<p align="left">
+<img width="500px" src="demo.png"/>
+</p>
 
 🚧 IN DEVELOPMENT 🚧
 
-"Authority" means that you are providing authentication or authorization as a service for _other apps_. For example "Sign in with MyCompanyApp", as opposed to "Sign in with Google".  If you're just looking to implement an OAuth2 client in your app, check out [`oauth2-client-redwood`][oauth2-client-redwood].
+"Authority" means that you are providing authentication or authorization as a service for _other apps_. For example "Sign in with MyCompanyApp", as opposed to "Sign in with Google". If you're just looking to implement an OAuth2 client in your app, check out [`oauth2-client-redwood`][oauth2-client-redwood].
 
 ## Demo ⏯️
 
@@ -17,7 +21,9 @@ Hosted demo coming soon
 
 ## Usage
 
-1. Create a new function `oauth` and install the package
+To add the OAuth2 server to your own app:
+
+1. Create a new api function `oauth` and install the packages
 
 ```bash
 yarn add oauth2-server-redwood serverless-http
@@ -34,13 +40,13 @@ export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.SECURE_KEY,
     APP_DOMAIN: process.env.APP_DOMAIN,
+    INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     config: {
       // Define your own OIDC-Provider config (https://github.com/panva/node-oidc-provider)
       clients: [
         {
           client_id: '123',
-          client_secret: 'somesecret',
           redirect_uris: [
             'https://jwt.io',
             'https://oauthdebugger.com/debug',
@@ -57,7 +63,7 @@ export const handler = serverless(
 
 3. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
 
-4.  Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
+4. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
 
 ```bash
 yarn rw setup auth dbAuth
@@ -72,10 +78,26 @@ yarn rw setup auth dbAuth
 
 <img width="400px" src="oauth-debugger.png">
 
-Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update the line in the `.env` file to point to your server:
+Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update `.env` to point to your server:
 
 ```
 OAUTH2_SERVER_REDWOOD_API_DOMAIN=http://localhost/oauth
+```
+
+## Configuration
+
+To enable refresh tokens, add grant_type 'refresh_token' to the client.
+
+> NOTE: You should only enable refresh tokens for confidential clients. To do this, set `token_endpoint_auth_method` to `client_secret_post`
+
+```js
+tokenEndpointAuthMethods: ['client_secret_post'],
+clientDefaults: {
+  grant_types: ['authorization_code', 'refresh_token'],
+  token_endpoint_auth_method: 'client_secret_post',
+  //...
+},
+scopes: ['openid', 'offline_access'],
 ```
 
 ## Contributing 💡
@@ -85,6 +107,7 @@ To run this repo locally:
 - Clone the repo and follow steps 2 & 3 above
 - Run `yarn build:watch` in `/packages/oauth2-server`
 - Run `yarn rw dev` to start the app
+
 ## TODO
 
 - [x] Validate rw session tokens during login
@@ -92,6 +115,7 @@ To run this repo locally:
 - [ ] Add dbAuth username/password option to make the demo simpler to understand
 - [ ] Show proper scopes for consent page
 - [ ] Improve the UI
+
 ## Resources 🧑‍💻
 
 - OAuth Server libraries: https://oauth.net/code/nodejs/
@@ -109,3 +133,6 @@ This project is MIT licensed.
 [sponsor-keyp]: https://UseKeyp.com
 [oauth2-client-redwood]: https://github.com/UseKeyp/oauth2-client-redwood
 
+```
+
+```
