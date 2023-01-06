@@ -1,6 +1,6 @@
 {
   "name": "oauth2-server-redwood",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "module": "dist/index.js",
   "main": "dist/index.js",
@@ -9,6 +9,8 @@
     "build:watch": "nodemon --watch src --ext \"js,ts,tsx\" --ignore dist --exec \"yarn build\""
   },
   "dependencies": {
+    "deepmerge": "^4.2.2",
+    "express": "^4.18.2",
     "oidc-provider": "^7.14.3"
   },
   "devDependencies": {
