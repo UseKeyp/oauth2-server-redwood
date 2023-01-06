@@ -7,13 +7,14 @@ export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.SECURE_KEY,
     APP_DOMAIN: process.env.APP_DOMAIN,
+    INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
       clients: [
         {
+          // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
           client_id: '123',
-          client_secret: 'somesecret',
           redirect_uris: [
             'https://jwt.io',
             'https://oauthdebugger.com/debug',
