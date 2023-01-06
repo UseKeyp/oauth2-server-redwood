@@ -8,7 +8,7 @@
 > OAuth2 server with dynamic client registration and test API, built with Oidc-Provider for RedwoodJS
 
 <p align="left">
-<img width="500px" src="demo.png"/>
+<img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/demo.png"/>
 </p>
 
 🚧 IN DEVELOPMENT 🚧
@@ -78,7 +78,7 @@ To test the Oauth2 server, you can use https://oauthdebugger.com/
 - Scope: openid email profile
 - Use PKCE: true
 
-<img width="400px" src="oauth-debugger.png">
+<img width="400px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/oauth-debugger.png">
 
 Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update `.env` to point to your server:
 
@@ -88,7 +88,7 @@ OAUTH2_SERVER_REDWOOD_API_DOMAIN=http://localhost/oauth
 
 To simulate an API request using the user's access token, create a request to `http://localhost/api/v1/sanity-check` using the access token from the client (eg. oauthdebugger or oauth2-client-redwood)
 
-<img width="500px" src="api-demo.png">
+<img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/api-demo.png">
 
 ## Test
 
