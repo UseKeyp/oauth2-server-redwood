@@ -4,6 +4,7 @@
   "description": "",
   "module": "dist/index.js",
   "main": "dist/index.js",
+  "include": "dist/views",
   "scripts": {
     "build": "babel src -d dist --copy-files",
     "build:watch": "nodemon --watch src --ext \"js,ts,tsx\" --ignore dist --exec \"yarn build\""
