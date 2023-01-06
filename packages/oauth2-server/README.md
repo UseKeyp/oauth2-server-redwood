@@ -90,9 +90,6 @@ To simulate an API request using the user's access token, create a request to `h
 
 <img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/api-demo.png">
 
-## Test
-
-
 
 ## Config
 
