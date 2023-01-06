@@ -1,12 +1,10 @@
 import assert from 'assert'
 import path from 'path'
 
-import { logger } from '@sentry/utils'
-import bodyParser from 'body-parser'
 import express from 'express'
 import fetch from 'node-fetch'
 
-import routes from './routes'
+import router from './router'
 
 const encodeBody = (body) =>
   Object.keys(body)
@@ -14,13 +12,13 @@ const encodeBody = (body) =>
     .join('&')
 
 const app = (db, settings) => {
-  // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
-  const app = express()
-  app.set('trust proxy', true)
-  app.set('view engine', 'ejs')
-  app.set('views', path.resolve(__dirname, 'views'))
+  // TODO: set cache policy
+  // function cachePolicy(req, res, next) {
+  //   res.set('Pragma', 'no-cache')
+  //   res.set('Cache-Control', 'no-cache, no-store')
+  //   next()
+  // }
 
-  // Validate token
   const validateToken = async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     const response = await fetch(
@@ -43,19 +41,12 @@ const app = (db, settings) => {
     next()
   }
 
-  const parse = bodyParser.urlencoded({ extended: false })
-
-  // TODO: set version route prefix
-  // app.get('/v1/sanity-check', validateToken, async (req, res) => {
-  //   return res.send({ success: true })
-  // })
-
-  // TODO: set cache policy
-  function cachePolicy(req, res, next) {
-    res.set('Pragma', 'no-cache')
-    res.set('Cache-Control', 'no-cache, no-store')
-    next()
-  }
+  // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
+  const app = express()
+  app.set('trust proxy', true)
+  app.use(validateToken)
+  console.log(settings.version)
+  app.use(`/${settings.version}`, router) // Prefix routes eg. /v1/sanity-check
 
   return app
 }

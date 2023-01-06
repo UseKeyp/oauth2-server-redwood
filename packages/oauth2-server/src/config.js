@@ -15,7 +15,7 @@ export const getConfig = (db, settings) => {
         {
           client_id: 'api-server',
           client_secret: settings.INTROSPECTION_SECRET,
-          redirect_uris: [],
+          redirect_uris: ['https://nowhere.foo'],
           token_endpoint_auth_method: 'client_secret_post',
         },
       ],

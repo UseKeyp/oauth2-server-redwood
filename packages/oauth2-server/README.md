@@ -69,7 +69,9 @@ export const handler = serverless(
 yarn rw setup auth dbAuth
 ```
 
-5. To test, you can use https://oauthdebugger.com/
+## Test
+
+To test the Oauth2 server, you can use https://oauthdebugger.com/
 
 - Authorize URI: http://localhost/oauth/auth
 - Client ID: 123
@@ -84,7 +86,15 @@ Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwo
 OAUTH2_SERVER_REDWOOD_API_DOMAIN=http://localhost/oauth
 ```
 
-## Configuration
+To simulate an API request using the user's access token, create a request to `http://localhost/api/v1/sanity-check` using the access token from the client (eg. oauthdebugger or oauth2-client-redwood)
+
+<img width="500px" src="api-demo.png">
+
+## Test
+
+
+
+## Config
 
 To enable refresh tokens, add grant_type 'refresh_token' to the client.
 
