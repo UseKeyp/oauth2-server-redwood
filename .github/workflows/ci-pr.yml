@@ -18,4 +18,5 @@ jobs:
         uses: UseKeyp/publish-pr-packages@v1.0.0
         with:
           token: ${{ secrets.PAT }}
+          registry: npm
 

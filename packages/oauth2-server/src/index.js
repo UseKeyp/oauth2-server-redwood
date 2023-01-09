@@ -4,12 +4,10 @@ import path from 'path'
 import bodyParser from 'body-parser'
 import express from 'express'
 import fetch from 'node-fetch'
+import Provider from 'oidc-provider'
 
 import { getConfig } from './config'
 import { dbAuthSession } from './shared'
-
-// const cors = require('cors')
-const Provider = require('oidc-provider')
 
 const app = (db, settings) => {
   assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')

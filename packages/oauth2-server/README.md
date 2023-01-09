@@ -63,7 +63,7 @@ export const handler = serverless(
 
 3. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
 
-4. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
+4. Setup dbAuth and update the graphql schema. Copy the schema here, which includes the needed models for both authentication and `Client`.
 
 ```bash
 yarn rw setup auth dbAuth
