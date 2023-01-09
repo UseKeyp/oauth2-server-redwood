@@ -15,10 +15,10 @@
     "oidc-provider": "^7.14.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.19.3",
-    "@babel/core": "^7.20.5",
-    "@babel/node": "^7.16.0",
-    "@babel/preset-env": "^7.16.0",
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
     "nodemon": "^2.0.20"
   },
   "author": "",

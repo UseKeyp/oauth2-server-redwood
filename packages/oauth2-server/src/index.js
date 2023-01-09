@@ -10,7 +10,8 @@ import { dbAuthSession } from './shared'
 
 // const cors = require('cors')
 const Provider = require('oidc-provider')
-
+global.window = null
+window = null
 const app = (db, settings) => {
   assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
   assert.equal(
