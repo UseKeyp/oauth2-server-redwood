@@ -1,4 +1,4 @@
-module.exports = {
+const jwks = {
   keys: [
     {
       crv: 'P-256',
@@ -34,3 +34,4 @@ module.exports = {
     },
   ],
 }
+export default jwks
