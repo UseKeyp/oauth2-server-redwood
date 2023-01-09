@@ -10,9 +10,11 @@ import { dbAuthSession } from './shared'
 
 // const cors = require('cors')
 const Provider = require('oidc-provider')
-global.window = null
-window = null
+
 const app = (db, settings) => {
+  global.window = null
+  global.document = null
+  window = null
   assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
   assert.equal(
     settings.SECURE_KEY.split(',').length,
@@ -41,8 +43,8 @@ const app = (db, settings) => {
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
-  expressApp.set('view engine', 'ejs')
-  expressApp.set('views', path.resolve(__dirname, 'views'))
+  // expressApp.set('view engine', 'ejs')
+  // expressApp.set('views', path.resolve(__dirname, 'views'))
 
   const parse = bodyParser.urlencoded({ extended: false })
 
