@@ -1,9 +1,9 @@
 {
   "name": "oauth2-server-redwood",
-  "version": "0.1.1",
+  "version": "0.1.2-alpha.0",
   "description": "",
   "main": "src/index",
-  "type":"module",
+  "type": "module",
   "include": "dist/views",
   "scripts": {
     "build": "babel src -d dist --copy-files",
