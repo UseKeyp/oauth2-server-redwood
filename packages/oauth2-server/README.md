@@ -5,7 +5,7 @@
   </a>
 </p>
 
-> OAuth2 server with dynamic client registration and test API, built with Oidc-Provider for RedwoodJS
+> OAuth2 server with dynamic client registration and test API, built with OIDC-Provider for RedwoodJS
 
 <p align="left">
 <img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/demo.png"/>
@@ -69,6 +69,48 @@ export const handler = serverless(
 yarn rw setup auth dbAuth
 ```
 
+5. Update how redirection works to properly send the user back to client app that initiated the OAuth2 request.
+
+- Copy the providers from `web/providers` "redirection" and "oAuthAuthority" to `web/src/providers`. Then update `web/src/providers/index.js` as shown:
+
+```js
+import { OAuthAuthorityProvider} from "./oAuthAuthority"
+import { RedirectionProvider } from './redirection'
+
+const AllContextProviders = ({ children }) => {
+  return (
+    <>
+      <OAuthProvider>
+        <OAuthAuthorityProvider>
+          <RedirectionProvider>{children}</RedirectionProvider>
+        </OAuthAuthorityProvider>
+      </OAuthProvider>
+    </>
+  )
+
+```
+
+- Update oauth library `api/src/lib/oauth` with `stateExtraData`
+
+```js
+export const oAuthUrl = async ( type, stateExtraData ) => {
+  try {
+    //...
+    const state = uuidv4() + (stateExtraData ? `:${stateExtraData}` : '')
+```
+
+- Update auth function `api/src/functions.auth.js` with `stateExtraData`
+
+```js
+authHandler.signup = async () => {
+    try {
+      const { type, stateExtraData } = authHandler.params
+      //...
+      const { url } = await oAuthUrl(type, stateExtraData)
+```
+
+- Add `AuthorizePage.js` to your `web/src/pages` folder, which allows the user to provide their consent.
+
 ## Test
 
 To test the Oauth2 server, you can use https://oauthdebugger.com/
@@ -80,13 +122,13 @@ To test the Oauth2 server, you can use https://oauthdebugger.com/
 
 <img width="400px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/oauth-debugger.png">
 
-Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update `.env` to point to your server:
+Alternatively, you can test using a Redwood-only stack. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update `.env` to point to your server:
 
 ```
 OAUTH2_SERVER_REDWOOD_API_DOMAIN=http://localhost/oauth
 ```
 
-To simulate an API request using the user's access token, create a request to `http://localhost/api/v1/sanity-check` using the access token from the client (eg. oauthdebugger or oauth2-client-redwood)
+Next, simulate an API request using the user's access token, create a request to `http://localhost/api/v1/sanity-check` using the access token from the client (eg. oauthdebugger or oauth2-client-redwood)
 
 <img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/api-demo.png">
 
@@ -111,7 +153,7 @@ scopes: ['openid', 'offline_access'],
 
 To run this repo locally:
 
-- Clone the repo and follow steps 2 & 3 above
+- Clone the repo and follow steps 2 & 3 above to setup the .env and nginx proxy
 - Run `yarn build:watch` in `/packages/oauth2-server`
 - Run `yarn rw dev` to start the app
 

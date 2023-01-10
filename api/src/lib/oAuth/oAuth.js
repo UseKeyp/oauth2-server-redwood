@@ -7,7 +7,7 @@ import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { providers, types } from 'src/lib/oAuth/providers'
 
-export const oAuthUrl = async ({ type, stateExtraData }) => {
+export const oAuthUrl = async (type, stateExtraData) => {
   try {
     if (!Object.values(types).includes(type))
       throw `OAuth Provider ${type} is not enabled.`

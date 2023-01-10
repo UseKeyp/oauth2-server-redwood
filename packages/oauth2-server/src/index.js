@@ -22,11 +22,11 @@ const app = (db, settings) => {
   const authenticate = async (req) => {
     try {
       const session = dbAuthSession(req.apiGateway.event)
-      console.log(session)
+      // console.log(session)
       assert(session?.id, 'invalid credentials provided')
       return session.id
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       return undefined
     }
   }
@@ -40,8 +40,8 @@ const app = (db, settings) => {
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
-  expressApp.set('view engine', 'ejs')
-  expressApp.set('views', path.resolve(__dirname, 'views'))
+  // expressApp.set('view engine', 'ejs')
+  // expressApp.set('views', path.resolve(__dirname, 'views'))
 
   const parse = bodyParser.urlencoded({ extended: false })
 
@@ -59,7 +59,7 @@ const app = (db, settings) => {
         const details = await oidc.interactionDetails(req, res)
         // eslint-disable-next-line no-console
         const { uid, prompt, params } = details
-        console.log('/oauth/interaction/:uid', prompt)
+        // console.log('/oauth/interaction/:uid', prompt)
         const client = await oidc.Client.find(params.client_id)
 
         const provider =
@@ -80,8 +80,20 @@ const app = (db, settings) => {
           }
           return res.redirect(`${settings.routes.login}?uid=${uid}`)
         }
+
         // Interaction is not logging in, so we must be authorizing
-        return res.redirect(`${settings.routes.authorize}?uid=${uid}`)
+        let path = `${settings.routes.authorize}?uid=${uid}`
+        const missingOIDCScope = prompt.details.missingOIDCScope.filter(
+          (scope) => !['openid', 'offline_access'].includes(scope)
+        )
+        missingOIDCScope && (path += `&scope=${missingOIDCScope}`)
+        client.name && (path += `&clientName=${client.name}`)
+        client.logoUri && (path += `&clientLogoUri=${client.logoUri}`)
+        client.policyUri && (path += `&clientPolicyUri=${client.policyUri}`)
+        client.tosUri && (path += `&clientTosUri=${client.tosUri}`)
+        // For more client metadata available see https://github.com/panva/node-oidc-provider/blob/main/lib/consts/client_attributes.js
+
+        return res.redirect(path)
       } catch (err) {
         return next(err)
       }
@@ -96,7 +108,7 @@ const app = (db, settings) => {
       try {
         const details = await oidc.interactionDetails(req, res)
         const { uid, prompt, params } = details
-        console.log('/oauth/interaction/:uid/login', prompt)
+        // console.log('/oauth/interaction/:uid/login', prompt)
         assert.strictEqual(prompt.name, 'login')
         // Lookup the client
         const client = await oidc.Client.find(params.client_id)
@@ -105,7 +117,7 @@ const app = (db, settings) => {
         const accountId = await authenticate(req)
 
         if (!accountId) {
-          console.log('invalid login attempt')
+          // console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
           return res.send({
             redirectTo: `http://localhost/redirect/keyp?error=invalid login attempt`,
@@ -198,7 +210,7 @@ const app = (db, settings) => {
         // NOTE: may be unnecessary to get the new uid
         const newUid = redirectTo.toString().split('/auth/')[1]
         const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
-        console.log(newRedirectTo)
+        // console.log(newRedirectTo)
         res.send({ redirectTo: newRedirectTo })
       } catch (err) {
         next(err)

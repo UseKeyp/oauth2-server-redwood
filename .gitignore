@@ -3,6 +3,7 @@
 .env
 .netlify
 .redwood
+lerna-debug.log
 dev.db*
 dist
 dist-babel
