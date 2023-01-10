@@ -12,9 +12,6 @@ import { dbAuthSession } from './shared'
 const Provider = require('oidc-provider')
 
 const app = (db, settings) => {
-  global.window = null
-  global.document = null
-  window = null
   assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
   assert.equal(
     settings.SECURE_KEY.split(',').length,
