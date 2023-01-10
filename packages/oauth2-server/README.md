@@ -5,7 +5,7 @@
   </a>
 </p>
 
-> OAuth2 server with dynamic client registration and test API, built with Oidc-Provider for RedwoodJS
+> OAuth2 server with dynamic client registration and test API, built with OIDC-Provider for RedwoodJS
 
 <p align="left">
 <img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/demo.png"/>
