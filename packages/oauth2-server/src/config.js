@@ -57,6 +57,7 @@ export const getConfig = (db, settings) => {
         AuthorizationCode: 60, //  1 minute
         IdToken: 3600, // 1 hour
         AccessToken: 86400, // 24 hours
+        Grant: 1209600, // 14 days in seconds
       },
       routes: {
         authorization: '/auth',
