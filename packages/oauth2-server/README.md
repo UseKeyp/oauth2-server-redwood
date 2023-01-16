@@ -32,7 +32,7 @@ yarn add oauth2-server-redwood serverless-http
 npx oauth2-server-redwood
 ```
 
-Place the output in `api/src/lib/jwks.js`
+Place the output in `api/src/lib/jwks.js`. WARNING: consider encrypting your jwks before checking into version-control. Anyone with these keys will have full access to your app's API. See my recommended approach to [Encrypted Environment Variables](https://community.redwoodjs.com/t/encrypted-environment-variables/2691) for more help.
 
 2. Create a new api function `oauth` and add the following code:
 

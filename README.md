@@ -21,9 +21,9 @@ Hosted demo coming soon
 
 ## Get Started
 
-Add an OAuth2 server to your own app --> [packages/oauth2-server/README.md](https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/README.md)
+To add an OAuth2 server to your own app see [the README.md](https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/README.md)
 
-Try it out first --> clone the repo, copy the `.env.example` to `.env`, and run `yarn rw dev`.
+To try it out first --> clone the repo, copy the `.env.example` to `.env`, and run `yarn rw dev`.
 ## Sponsors ❤️
 
 [<img height="65" align="left" src="https://github.com/UseKeyp/.github/blob/main/Keyp-Logo-Color.png?raw=true" alt="keyp-logo">][sponsor-keyp] Improve onboarding and payments in your games & web3 apps effortlessly with OAuth logins for wallets and debit card transactions. [Create a Keyp account; it's free!][sponsor-keyp]<br><br>
