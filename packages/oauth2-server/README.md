@@ -23,16 +23,28 @@ Hosted demo coming soon
 
 To add the OAuth2 server to your own app:
 
-1. Create a new api function `oauth` and install the packages
+1. Install the package and generate the jwks file needed to secure your server
 
 ```bash
 yarn add oauth2-server-redwood serverless-http
+
+yarn oauth2-server-redwood
+```
+
+Place the output in `api/src/lib/jwks.js`
+
+2. Create a new api function `oauth` and add the following code:
+
+```bash
+yarn rw g function oauth
 ```
 
 ```js
 // api/src/functions/oauth.js
 import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
+
+import jwks from 'src/lib/jwks'
 
 import { db } from 'src/lib/db'
 
@@ -41,6 +53,7 @@ export const handler = serverless(
     SECURE_KEY: process.env.SECURE_KEY,
     APP_DOMAIN: process.env.APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
+    jwks,
     routes: { login: '/login', authorize: '/authorize' },
     config: {
       // Define your own OIDC-Provider config (https://github.com/panva/node-oidc-provider)
@@ -59,17 +72,17 @@ export const handler = serverless(
 )
 ```
 
-2. Copy the .env.example to .env and update the values
+3. Copy the .env.example to .env and update the values
 
-3. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
+4. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
 
-4. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
+5. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
 
 ```bash
 yarn rw setup auth dbAuth
 ```
 
-5. Update how redirection works to properly send the user back to client app that initiated the OAuth2 request.
+6. Update how redirection works to properly send the user back to client app that initiated the OAuth2 request.
 
 - Copy the providers from `web/providers` "redirection" and "oAuthAuthority" to `web/src/providers`. Then update `web/src/providers/index.js` as shown:
 
@@ -110,6 +123,11 @@ authHandler.signup = async () => {
 ```
 
 - Add `AuthorizePage.js` to your `web/src/pages` folder, which allows the user to provide their consent.
+
+7. (Optional) Enable dynamic client registration
+
+- Copy the `api/src/services/clients.js` to your app
+- Copy `ProfilePage.js` and related components to your app to utilizie the client services
 
 ## Test
 
@@ -153,7 +171,7 @@ scopes: ['openid', 'offline_access'],
 
 To run this repo locally:
 
-- Clone the repo and follow steps 2 & 3 above to setup the .env and nginx proxy
+- Clone the repo and follow steps 3 & 4 above to setup the .env and nginx proxy
 - Run `yarn build:watch` in `/packages/oauth2-server`
 - Run `yarn rw dev` to start the app
 

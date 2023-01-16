@@ -2,6 +2,7 @@ import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'
+import jwks from 'src/lib/jwks'
 
 export const handler = serverless(
   oauth2Server(db, {
@@ -9,6 +10,7 @@ export const handler = serverless(
     APP_DOMAIN: process.env.APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
+    jwks,
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
       clients: [

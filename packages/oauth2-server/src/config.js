@@ -3,7 +3,6 @@ import merge from 'deepmerge'
 import { findAccount } from './account'
 import getAdapter from './adapter'
 import htmlSafe from './helpers'
-import jwks from './jwks'
 
 export const getConfig = (db, settings) => {
   const adapter = getAdapter(db)
@@ -41,7 +40,7 @@ export const getConfig = (db, settings) => {
         email: ['email', 'email_verified'],
       },
       cookies: { keys: settings.SECURE_KEY.split(',') },
-      jwks,
+      jwks: settings.jwks,
       ttl: {
         // Sessions
         Session: 1209600, // 14 days in seconds

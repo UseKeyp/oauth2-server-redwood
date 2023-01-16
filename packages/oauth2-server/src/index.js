@@ -18,6 +18,7 @@ const app = (db, settings) => {
     2,
     'settings.SECURE_KEY format invalid'
   )
+  assert(settings.jwks, 'settings.jwks is required')
 
   const authenticate = async (req) => {
     try {
