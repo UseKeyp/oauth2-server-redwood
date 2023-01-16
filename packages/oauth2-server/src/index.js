@@ -80,7 +80,7 @@ const app = (db, settings) => {
           (scope) => !['openid', 'offline_access'].includes(scope)
         )
         missingOIDCScope && (path += `&scope=${missingOIDCScope}`)
-        client.name && (path += `&clientName=${client.name}`)
+        client.clientName && (path += `&clientName=${client.clientName}`)
         client.logoUri && (path += `&clientLogoUri=${client.logoUri}`)
         client.policyUri && (path += `&clientPolicyUri=${client.policyUri}`)
         client.tosUri && (path += `&clientTosUri=${client.tosUri}`)
