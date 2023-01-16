@@ -12,14 +12,6 @@ import { dbAuthSession } from './shared'
 const Provider = require('oidc-provider')
 
 const app = (db, settings) => {
-  assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
-  assert.equal(
-    settings.SECURE_KEY.split(',').length,
-    2,
-    'settings.SECURE_KEY format invalid'
-  )
-  assert(settings.jwks, 'settings.jwks is required')
-
   const authenticate = async (req) => {
     try {
       const session = dbAuthSession(req.apiGateway.event)

@@ -3,16 +3,16 @@ export const findAccount = (db) => async (ctx, sub) => {
     where: { id: sub },
     select: { id: true, username: true, email: true },
   })
-  console.log('findAccount', account)
+  // console.log('findAccount', account)
   if (!account) {
-    console.log('Account not found for id:', sub)
+    // console.log('Account not found for id:', sub)
     return undefined
   }
 
   return {
     accountId: sub,
     claims: async (use, scope, claims, rejected) => {
-      console.log('claims', use, scope, claims, rejected)
+      // console.log('claims', use, scope, claims, rejected)
       return {
         sub,
         email: account.email,

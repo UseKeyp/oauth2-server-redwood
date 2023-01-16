@@ -35,7 +35,7 @@ export const decryptSession = (text) => {
   if (!text || text.trim() === '') {
     return []
   }
-  console.log('decryptSession', text)
+  // console.log('decryptSession', text)
   try {
     const decoded = CryptoJS.AES.decrypt(
       text,
@@ -43,7 +43,7 @@ export const decryptSession = (text) => {
     ).toString(CryptoJS.enc.Utf8)
     const [data, csrf] = decoded.split(';')
     const json = JSON.parse(data)
-    console.log(json)
+    // console.log(json)
     return [json, csrf]
   } catch (e) {
     throw new Error('Session Decrypt Error')
@@ -52,7 +52,7 @@ export const decryptSession = (text) => {
 
 // returns the actual value of the session cookie
 export const getSession = (text) => {
-  console.log('getSession', text)
+  // console.log('getSession', text)
   if (typeof text === 'undefined' || text === null) {
     return null
   }

@@ -5,6 +5,11 @@ import getAdapter from './adapter'
 import htmlSafe from './helpers'
 
 export const getConfig = (db, settings) => {
+  assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
+  assert(settings.INTROSPECTION_SECRET, 'settings.SECURE_KEY missing')
+  assert(settings.jwks, 'settings.jwks is required')
+  assert(db, 'settings.db is required')
+
   const adapter = getAdapter(db)
   return merge(
     {
@@ -83,8 +88,7 @@ export const getConfig = (db, settings) => {
           },
         },
       },
-      renderError: async (ctx, out, error) => {
-        console.error('renderError', error)
+      renderError: async (ctx, out) => {
         ctx.type = 'html'
         ctx.body = `<!DOCTYPE html>
         <head>
