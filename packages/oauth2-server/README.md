@@ -28,7 +28,8 @@ To add the OAuth2 server to your own app:
 ```bash
 yarn add oauth2-server-redwood serverless-http
 
-yarn oauth2-server-redwood
+# Generate jwks.js
+npx oauth2-server-redwood
 ```
 
 Place the output in `api/src/lib/jwks.js`
