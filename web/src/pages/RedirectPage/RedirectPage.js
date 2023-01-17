@@ -9,7 +9,12 @@ const Redirect = ({ type }) => {
   const state = url.searchParams.get('state')
   const uid = state?.split(':')[1]
 
-  if (!uid && (errorMessage === 'End-User aborted interaction' || errorMessage === 'The resource owner or authorization server denied the request')) {
+  if (
+    !uid &&
+    (errorMessage === 'End-User aborted interaction' ||
+      errorMessage ===
+        'The resource owner or authorization server denied the request')
+  ) {
     navigate(routes.home())
   }
 
