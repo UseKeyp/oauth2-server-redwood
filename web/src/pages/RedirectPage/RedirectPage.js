@@ -2,19 +2,19 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useRedirection } from 'src/providers/redirection'
-import { useOAuthAuthority } from 'src/providers/oAuthAuthority/oAuthAuthority'
 
 const Redirect = ({ type }) => {
   const { error, errorMessage, successMessage, isLoading } = useRedirection()
-  const { getInteractionUid } = useOAuthAuthority()
-  const interactionUid = getInteractionUid()
+  const url = new URL(window.location.href)
+  const state = url.searchParams.get('state')
+  const uid = state?.split(':')[1]
 
-  if (!interactionUid && (errorMessage === 'End-User aborted interaction' || errorMessage === 'The resource owner or authorization server denied the request')) {
+  if (!uid && (errorMessage === 'End-User aborted interaction' || errorMessage === 'The resource owner or authorization server denied the request')) {
     navigate(routes.home())
   }
 
-  if (interactionUid && errorMessage) {
-    const url = `/oauth/interaction/${interactionUid}/abort`
+  if (uid && errorMessage) {
+    const url = `/oauth/interaction/${uid}/abort`
     window.location.replace(url)
   }
 
