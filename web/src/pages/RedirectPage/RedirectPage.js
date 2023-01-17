@@ -2,7 +2,7 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useRedirection } from 'src/providers/redirection'
-import { useOAuthAuthority } from "src/providers/oAuthAuthority/oAuthAuthority";
+import { useOAuthAuthority } from 'src/providers/oAuthAuthority/oAuthAuthority'
 
 const Redirect = ({ type }) => {
   const { error, errorMessage, successMessage, isLoading } = useRedirection()
