@@ -1,12 +1,4 @@
-import {
-  FieldError,
-  Form,
-  Label,
-  TextField,
-  TextAreaField,
-  Submit,
-} from '@redwoodjs/forms'
-import { MetaTags } from '@redwoodjs/web'
+import { FieldError, Form, Label, TextField, Submit } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -30,19 +22,39 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
+/* eslint-disable-next-line camelcase */
 const UPDATE_ClIENT = gql`
-  mutation UpdateClientMutation($id: String!, $redirectUrls: String!, $clientURI: String!, $clientName: String!, $tosURI: String!, $logoURI: String!, $policyURI: String!) {
-    updateClient(id: $id, redirectUrls: $redirectUrls, clientURI: $clientURI, clientName: $clientName, tosURI: $tosURI, logoURI: $logoURI, policyURI: $policyURI) {
+  mutation UpdateClientMutation(
+    $id: String!
+    $redirectUrls: String!
+    $clientURI: String!
+    $clientName: String!
+    $tosURI: String!
+    $logoURI: String!
+    $policyURI: String!
+  ) {
+    updateClient(
+      id: $id
+      redirectUrls: $redirectUrls
+      clientURI: $clientURI
+      clientName: $clientName
+      tosURI: $tosURI
+      logoURI: $logoURI
+      policyURI: $policyURI
+    ) {
       id
     }
   }
 `
 
 export const Success = ({ clients }) => {
-  const [updateClient, { loading, error }] = useMutation(UPDATE_ClIENT, {
+  const [updateClient, { loading }] = useMutation(UPDATE_ClIENT, {
     onCompleted: () => {
       toast.success('Client updated!')
     },
+    onError: (error) => {
+      toast.error(error.message)
+    }
   })
 
   const onSubmit = (data) => {
