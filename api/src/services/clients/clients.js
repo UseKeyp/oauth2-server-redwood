@@ -48,7 +48,7 @@ export const createClient = async () => {
   return client
 }
 
-export const updateClient = async ({ id, redirectUrls }) => {
+export const updateClient = async ({ id, redirectUrls, clientURI, clientName, tosURI, logoURI, policyURI }) => {
   const client = await db.oidc.findUnique({
     where: { id_type: { id, type: 7 } },
     select: { developers: true, payload: true },
@@ -60,7 +60,13 @@ export const updateClient = async ({ id, redirectUrls }) => {
   // TODO validate list as https urls, or http for localhost
   return db.oidc.update({
     where: { id_type: { id, type: 7 } },
-    data: { payload: { ...client.payload, redirect_uris: list } },
+    data: { payload: { ...client.payload,
+        client_uri: clientURI,
+        client_name: clientName,
+        tos_uri: tosURI,
+        logo_uri: logoURI,
+        policy_uri: policyURI,
+        redirect_uris: list } },
   })
 }
 
