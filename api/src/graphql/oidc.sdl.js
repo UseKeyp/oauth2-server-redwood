@@ -12,11 +12,11 @@ export const schema = gql`
     updateClient(
       id: String!
       redirectUrls: String!
-      clientURI: String!
-      clientName: String!
-      tosURI: String!
-      logoURI: String!
-      policyURI: String!
+      clientURI: String
+      clientName: String
+      tosURI: String
+      logoURI: String
+      policyURI: String
     ): Oidc! @requireAuth
     deleteClient(id: String!): Oidc! @requireAuth
   }

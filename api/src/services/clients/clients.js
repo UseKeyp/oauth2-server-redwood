@@ -71,11 +71,11 @@ export const updateClient = async ({
     data: {
       payload: {
         ...client.payload,
-        client_uri: clientURI,
-        client_name: clientName,
-        tos_uri: tosURI,
-        logo_uri: logoURI,
-        policy_uri: policyURI,
+        ...(clientURI && { client_uri: clientURI }),
+        ...(clientName && { client_name: clientName }),
+        ...(tosURI && { tos_uri: tosURI }),
+        ...(logoURI && { logo_uri: logoURI }),
+        ...(policyURI && { policy_uri: policyURI }),
         redirect_uris: list,
       },
     },

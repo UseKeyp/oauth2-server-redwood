@@ -27,11 +27,11 @@ const UPDATE_ClIENT = gql`
   mutation UpdateClientMutation(
     $id: String!
     $redirectUrls: String!
-    $clientURI: String!
-    $clientName: String!
-    $tosURI: String!
-    $logoURI: String!
-    $policyURI: String!
+    $clientURI: String
+    $clientName: String
+    $tosURI: String
+    $logoURI: String
+    $policyURI: String
   ) {
     updateClient(
       id: $id
@@ -54,7 +54,7 @@ export const Success = ({ clients }) => {
     },
     onError: (error) => {
       toast.error(error.message)
-    }
+    },
   })
 
   const onSubmit = (data) => {
@@ -95,51 +95,31 @@ export const Success = ({ clients }) => {
             <Label name="clientURI" errorClassName="error">
               Client Uri
             </Label>
-            <TextField
-              name="clientURI"
-              errorClassName="error"
-              validation={{ required: true }}
-            />
+            <TextField name="clientURI" errorClassName="error" />
             <FieldError name="clientURI" className="error" />
             <br />
             <Label name="clientName" errorClassName="error">
               Client Name
             </Label>
-            <TextField
-              name="clientName"
-              errorClassName="error"
-              validation={{ required: true }}
-            />
+            <TextField name="clientName" errorClassName="error" />
             <FieldError name="clientName" className="error" />
             <br />
             <Label name="tosURI" errorClassName="error">
               TOS Uri
             </Label>
-            <TextField
-              name="tosURI"
-              errorClassName="error"
-              validation={{ required: true }}
-            />
+            <TextField name="tosURI" errorClassName="error" />
             <FieldError name="tosURI" className="error" />
             <br />
             <Label name="logoURI" errorClassName="error">
               Logo Uri
             </Label>
-            <TextField
-              name="logoURI"
-              errorClassName="error"
-              validation={{ required: true }}
-            />
+            <TextField name="logoURI" errorClassName="error" />
             <FieldError name="logoURI" className="error" />
             <br />
             <Label name="policyURI" errorClassName="error">
               Policy Uri
             </Label>
-            <TextField
-              name="policyURI"
-              errorClassName="error"
-              validation={{ required: true }}
-            />
+            <TextField name="policyURI" errorClassName="error" />
             <FieldError name="policyURI" className="error" />
             <br />
             <Submit disabled={loading}>Update</Submit>
