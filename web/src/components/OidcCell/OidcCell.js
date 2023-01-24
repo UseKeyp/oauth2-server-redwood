@@ -1,12 +1,4 @@
-import {
-  FieldError,
-  Form,
-  Label,
-  TextField,
-  TextAreaField,
-  Submit,
-} from '@redwoodjs/forms'
-import { MetaTags } from '@redwoodjs/web'
+import { FieldError, Form, Label, TextField, Submit } from '@redwoodjs/forms'
 import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -30,18 +22,38 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
+/* eslint-disable-next-line camelcase */
 const UPDATE_ClIENT = gql`
-  mutation UpdateClientMutation($id: String!, $redirectUrls: String!) {
-    updateClient(id: $id, redirectUrls: $redirectUrls) {
+  mutation UpdateClientMutation(
+    $id: String!
+    $redirectUrls: String!
+    $clientURI: String
+    $clientName: String
+    $tosURI: String
+    $logoURI: String
+    $policyURI: String
+  ) {
+    updateClient(
+      id: $id
+      redirectUrls: $redirectUrls
+      clientURI: $clientURI
+      clientName: $clientName
+      tosURI: $tosURI
+      logoURI: $logoURI
+      policyURI: $policyURI
+    ) {
       id
     }
   }
 `
 
 export const Success = ({ clients }) => {
-  const [updateClient, { loading, error }] = useMutation(UPDATE_ClIENT, {
+  const [updateClient, { loading }] = useMutation(UPDATE_ClIENT, {
     onCompleted: () => {
       toast.success('Client updated!')
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
@@ -49,6 +61,8 @@ export const Success = ({ clients }) => {
     console.log(data)
     updateClient({ variables: data })
   }
+
+  console.log(clients)
 
   return (
     <div>
@@ -77,6 +91,37 @@ export const Success = ({ clients }) => {
               validation={{ required: true }}
             />
             <FieldError name="redirectUrls" className="error" />
+            <br />
+            <Label name="clientURI" errorClassName="error">
+              Client Uri
+            </Label>
+            <TextField name="clientURI" errorClassName="error" />
+            <FieldError name="clientURI" className="error" />
+            <br />
+            <Label name="clientName" errorClassName="error">
+              Client Name
+            </Label>
+            <TextField name="clientName" errorClassName="error" />
+            <FieldError name="clientName" className="error" />
+            <br />
+            <Label name="tosURI" errorClassName="error">
+              TOS Uri
+            </Label>
+            <TextField name="tosURI" errorClassName="error" />
+            <FieldError name="tosURI" className="error" />
+            <br />
+            <Label name="logoURI" errorClassName="error">
+              Logo Uri
+            </Label>
+            <TextField name="logoURI" errorClassName="error" />
+            <FieldError name="logoURI" className="error" />
+            <br />
+            <Label name="policyURI" errorClassName="error">
+              Policy Uri
+            </Label>
+            <TextField name="policyURI" errorClassName="error" />
+            <FieldError name="policyURI" className="error" />
+            <br />
             <Submit disabled={loading}>Update</Submit>
           </Form>
         </div>

@@ -5,7 +5,7 @@
   </a>
 </p>
 
-> OAuth2 server with dynamic client registration and test API, built with Oidc-Provider for RedwoodJS
+> OAuth2 server with dynamic client registration and test API, built with OIDC-Provider for RedwoodJS
 
 <p align="left">
 <img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/demo.png"/>
@@ -23,16 +23,29 @@ Hosted demo coming soon
 
 To add the OAuth2 server to your own app:
 
-1. Create a new api function `oauth` and install the packages
+1. Install the package and generate the jwks file needed to secure your server
 
 ```bash
 yarn add oauth2-server-redwood serverless-http
+
+# Generate jwks.js
+npx oauth2-server-redwood
+```
+
+Place the output in `api/src/lib/jwks.js`. WARNING: consider encrypting your jwks before checking into version-control. Anyone with these keys will have full access to your app's API. See my recommended approach to [Encrypted Environment Variables](https://community.redwoodjs.com/t/encrypted-environment-variables/2691) for more help.
+
+2. Create a new api function `oauth` and add the following code:
+
+```bash
+yarn rw g function oauth
 ```
 
 ```js
 // api/src/functions/oauth.js
 import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
+
+import jwks from 'src/lib/jwks'
 
 import { db } from 'src/lib/db'
 
@@ -41,6 +54,7 @@ export const handler = serverless(
     SECURE_KEY: process.env.SECURE_KEY,
     APP_DOMAIN: process.env.APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
+    jwks,
     routes: { login: '/login', authorize: '/authorize' },
     config: {
       // Define your own OIDC-Provider config (https://github.com/panva/node-oidc-provider)
@@ -59,15 +73,62 @@ export const handler = serverless(
 )
 ```
 
-2. Copy the .env.example to .env and update the values
+3. Copy the .env.example to .env and update the values
 
-3. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
+4. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
 
-4. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
+5. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
 
 ```bash
 yarn rw setup auth dbAuth
 ```
+
+6. Update how redirection works to properly send the user back to client app that initiated the OAuth2 request.
+
+- Copy the providers from `web/providers` "redirection" and "oAuthAuthority" to `web/src/providers`. Then update `web/src/providers/index.js` as shown:
+
+```js
+import { OAuthAuthorityProvider} from "./oAuthAuthority"
+import { RedirectionProvider } from './redirection'
+
+const AllContextProviders = ({ children }) => {
+  return (
+    <>
+      <OAuthProvider>
+        <OAuthAuthorityProvider>
+          <RedirectionProvider>{children}</RedirectionProvider>
+        </OAuthAuthorityProvider>
+      </OAuthProvider>
+    </>
+  )
+
+```
+
+- Update oauth library `api/src/lib/oauth` with `stateExtraData`
+
+```js
+export const oAuthUrl = async ( type, stateExtraData ) => {
+  try {
+    //...
+    const state = uuidv4() + (stateExtraData ? `:${stateExtraData}` : '')
+```
+
+- Update auth function `api/src/functions.auth.js` with `stateExtraData`
+
+```js
+authHandler.signup = async () => {
+    try {
+      const { type, stateExtraData } = authHandler.params
+      //...
+      const { url } = await oAuthUrl(type, stateExtraData)
+```
+
+- Add `AuthorizePage.js` to your `web/src/pages` folder, which allows the user to provide their consent.
+
+7. (Optional) Enable dynamic client registration
+
+- Copy the `api/src/services/clients.js` to your app
+- Copy `ProfilePage.js` and related components to your app to utilizie the client services
 
 ## Test
 
@@ -80,13 +141,13 @@ To test the Oauth2 server, you can use https://oauthdebugger.com/
 
 <img width="400px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/oauth-debugger.png">
 
-Alternatively, you can test using only Redwood apps. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update `.env` to point to your server:
+Alternatively, you can test using a Redwood-only stack. Clone [`oauth2-client-redwood`][oauth2-client-redwood] and update `.env` to point to your server:
 
 ```
 OAUTH2_SERVER_REDWOOD_API_DOMAIN=http://localhost/oauth
 ```
 
-To simulate an API request using the user's access token, create a request to `http://localhost/api/v1/sanity-check` using the access token from the client (eg. oauthdebugger or oauth2-client-redwood)
+Next, simulate an API request using the user's access token, create a request to `http://localhost/api/v1/sanity-check` using the access token from the client (eg. oauthdebugger or oauth2-client-redwood)
 
 <img width="500px" src="https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/api-demo.png">
 
@@ -111,7 +172,7 @@ scopes: ['openid', 'offline_access'],
 
 To run this repo locally:
 
-- Clone the repo and follow steps 2 & 3 above
+- Clone the repo and follow steps 3 & 4 above to setup the .env and nginx proxy
 - Run `yarn build:watch` in `/packages/oauth2-server`
 - Run `yarn rw dev` to start the app
 

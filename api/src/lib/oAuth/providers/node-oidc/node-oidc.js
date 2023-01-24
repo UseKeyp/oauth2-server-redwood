@@ -6,7 +6,10 @@ import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 
 export const NODE_OIDC = 'NODE_OIDC'
-const NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
+
+let NODE_OIDC_API_DOMAIN = 'https://node-oidc-provider-example.vercel.app'
+if (process.env.NODE_OIDC_API_DOMAIN)
+  NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
 
 export const NODE_OIDC_OAUTH_URL_AUTHORIZE = `${NODE_OIDC_API_DOMAIN}/auth`
 

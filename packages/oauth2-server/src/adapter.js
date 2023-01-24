@@ -58,7 +58,7 @@ const getAdapter = (db) => {
       },
 
       find: async (id) => {
-        console.log(`find ${name} (${type}): ${id}`)
+        // console.log(`find ${name} (${type}): ${id}`)
         const doc = await db.oidc.findUnique({
           where: { id_type: { id, type } },
         })
@@ -102,9 +102,9 @@ const getAdapter = (db) => {
           await db.oidc.delete({ where: { id_type: { id, type } } })
         } catch (e) {
           // TODO: throw if not type RecordNotFound
-          console.log(e.code)
-          console.log(e.type)
-          console.log(e)
+          // console.log(e.code)
+          // console.log(e.type)
+          // console.log(e)
         }
       },
 

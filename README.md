@@ -5,7 +5,7 @@
   </a>
 </p>
 
-> OAuth2 server with dynamic client registration and test API, built with Oidc-Provider for RedwoodJS
+> OAuth2 server with dynamic client registration and test API, built with OIDC-Provider for RedwoodJS
 
 <p align="left">
 <img width="500px" src="./packages/oauth2-server/demo.png"/>
@@ -19,12 +19,11 @@
 
 Hosted demo coming soon
 
-## Usage
+## Get Started
 
-To run this example app locally, clone this repo, copy the `.env.example` to `.env`, and run `yarn rw dev`.
+To add an OAuth2 server to your own app see [the README.md](https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/README.md)
 
-To add the OAuth2 server to your own app, see the Readme: [packages/oauth2-server/README.md](https://github.com/UseKeyp/oauth2-server-redwood/blob/dev/packages/oauth2-server/README.md)
-
+To try it out first --> clone the repo, copy the `.env.example` to `.env`, and run `yarn rw dev`.
 ## Sponsors ❤️
 
 [<img height="65" align="left" src="https://github.com/UseKeyp/.github/blob/main/Keyp-Logo-Color.png?raw=true" alt="keyp-logo">][sponsor-keyp] Improve onboarding and payments in your games & web3 apps effortlessly with OAuth logins for wallets and debit card transactions. [Create a Keyp account; it's free!][sponsor-keyp]<br><br>

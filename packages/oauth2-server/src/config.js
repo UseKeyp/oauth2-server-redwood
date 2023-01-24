@@ -1,11 +1,17 @@
+import assert from 'assert'
+
 import merge from 'deepmerge'
 
 import { findAccount } from './account'
 import getAdapter from './adapter'
 import htmlSafe from './helpers'
-import jwks from './jwks'
 
 export const getConfig = (db, settings) => {
+  assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
+  assert(settings.INTROSPECTION_SECRET, 'settings.SECURE_KEY missing')
+  assert(settings.jwks, 'settings.jwks is required')
+  assert(db, 'settings.db is required')
+
   const adapter = getAdapter(db)
   return merge(
     {
@@ -41,7 +47,7 @@ export const getConfig = (db, settings) => {
         email: ['email', 'email_verified'],
       },
       cookies: { keys: settings.SECURE_KEY.split(',') },
-      jwks,
+      jwks: settings.jwks,
       ttl: {
         // Sessions
         Session: 1209600, // 14 days in seconds
@@ -51,6 +57,7 @@ export const getConfig = (db, settings) => {
         AuthorizationCode: 60, //  1 minute
         IdToken: 3600, // 1 hour
         AccessToken: 86400, // 24 hours
+        Grant: 1209600, // 14 days in seconds
       },
       routes: {
         authorization: '/auth',
@@ -84,26 +91,13 @@ export const getConfig = (db, settings) => {
           },
         },
       },
-      renderError: async (ctx, out, error) => {
-        console.error('renderError', error)
-        ctx.type = 'html'
-        ctx.body = `<!DOCTYPE html>
-        <head>
-          <title>oops! something went wrong</title>
-          <style>/* css and html classes omitted for brevity, see lib/helpers/defaults.js */</style>
-        </head>
-        <body>
-          <div>
-            <h1>oops! something went wrong</h1>
-            ${Object.entries(out)
-              .map(
-                ([key, value]) =>
-                  `<pre><strong>${key}</strong>: ${htmlSafe(value)}</pre>`
-              )
-              .join('')}
-          </div>
-        </body>
-        </html>`
+      renderError: (ctx, out) => {
+        ctx.res.redirect(
+          '/redirect/oauth?' +
+            Object.entries(out)
+              .map(([key, value]) => `${key}=${encodeURIComponent(value)}&`)
+              .reduce((a, b) => a + b, '')
+        )
       },
     },
     settings.config

@@ -46,9 +46,7 @@ const ProfilePage = () => {
         <li>refreshToken: {currentUser?.refreshToken}</li>
       </ul>
       <h3>Create a Client</h3>
-      <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-        <Submit disabled={loading}>Create</Submit>
-      </Form>
+
       <h3>Clients</h3>
       <OidcCell />
     </>

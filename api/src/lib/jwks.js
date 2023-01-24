@@ -1,0 +1,36 @@
+module.exports = {
+  keys: [
+    {
+      crv: 'P-256',
+      x: 'cMC_ktPpA3KMkN12pYVgx9QSWys8AiljBOVYsggNo9o',
+      y: '1kPyCLl6-vQbKhvHVOPzXYlX2pUSNRX2eOvllJDqk9s',
+      d: '9XV52V5eY0raJV_F8hyFLW5OX1jG3ynBKFGLgbLRcX0',
+      kty: 'EC',
+      kid: '-tlmuieAVdN4XPOoC0khikj50-rECjDZOfJv4-9GjIY',
+      alg: 'ES256',
+      use: 'sig',
+    },
+    {
+      crv: 'Ed25519',
+      x: 'u9XoVt9isH-ZLQQR419mQXPOv_eIAy46oxEFWLkO3q0',
+      d: '9OsROqlqsn2EF5m9WLOa9cq2uaYrKPWMYUlWXuvHKGw',
+      kty: 'OKP',
+      kid: 'YP-G98PF_XeX8a7KFU_6_CH_5OqYWsJ6uMvJIBUA2rM',
+      alg: 'EdDSA',
+      use: 'sig',
+    },
+    {
+      e: 'AQAB',
+      n: 'w6wGCRnmDWh76AMWBPk75FJqxcSboDbsZRZmKVcREsQ7l2p45VZjA-d8GBq-b0H5mSHokEQT5-pJrqr4vCTsx7j04F42nFt5n5uvLQXUAKcQwfVCSI65EtwjCyQZnsdCZVvm-Judpq7rb49kk5l8xweJ34i7mxobAWDF4E_rTggEZgzEFkSCEBOjs85Rvyc5AF0ZCBwb3EL-ZRmk6odisdT4mTkUuT_PILhvgYMpyZ97F9pj6Y0Q7kIR2x6s-V5nQKeH8XwqdlJSQ7a1_H9Lq42z9ttMgDV4QEsR3psYywRTTaZHWZIx7_s4-6P_DvkI_x5xBSf99ln1OiQZRXNTQQ',
+      d: 'jW2j-yYOArj3fg3k93lRkckERafCuH2aRcJ32v-EZqURUXLyqQjUjnjdV-rUpEPybX11w_iAzsqnsSkAmbSys_T6gcV3AXKYqQV1CzzALCyUzyw_WYRXPsuARMg2AG6TjgFsI1sPCvA5WawyDQEOkCjhvYDt4MBwroFM5MG_GOkrX09UA6Lrr8EAQV9LAQXJOdyR-PqInhgrgZbMaWm98HL26kNNpLJiqbPuaAxHTrJ7XA4o8-1552Q51OZExbbdEwDe-HtyLZ4SwClGxpsdMFZgU47O1Ht7hLefsk65E2GMr2gfuLiy-Axj8UVFRBqsxUV6kLI93zHf8Tpa57VDAQ',
+      p: '93zVsSVAg0VTx-7hzuxsi5fH6cbWit1gEgcU6iAQaFEnyd7x9fWVrnst1q2syhx79iMi1EaOUQRj91EKvyx8Tt0d2Q7bqXDsQmRa_gHClGeN0LAllmFl5J25K_ANkrPjpQWvd3d-YQqA6oj9vRLnvRjxkxZ3WWYBJkaxCoRu3HE',
+      q: 'ymbxt8URSzCmk6VSTk08nnC3qlj3muHcU6QNWuOYIyycecLEVE40pSweNipPJLm6B-78T2T2GoNk_CT7phhaFZyXlrhqoSvgYfl7nv1_2PQ-fRBFUeI_aNTO6U9ZL4tH1Gol2HzbRYu91CuTR7NQa5iZdqByS3srJAKK0elAi9E',
+      dp: 'Lu2Z66Q_rmSX9WJjqQQFtRaLztVoWx6NF_4FxjtcQRuaatn-kYAG6PXshDecexqZmtugwBW86LnnZr8URZne3GlrPnxlxKRn-FLlOiMFTXSxXG_6QKCpXIdX1HAJctbvhJwmYIXlDeua9F4TlyWdkarIK_bnnKkN8L8Y1QC1sNE',
+      dq: 'jJBVynR4ACn3ZY5ozKxjLv3E7-79dnjpFMVX6QkqvTLcMMuMoaf2c8dh6-gSMsUxZxUX8OOC7wLVfS8J_V3oIh4wQKIum2PnXuNucQpIYZmuVBiaq7VeqCUy1WEf5R7rcZ-OTPzZI0FbQiBJFoB3l2HRIktnVPhjC40gb4t4IiE',
+      qi: 'btNHLRnT34EYqNzgJcdtQlZtEzPVWW_TgUvLgXdf2_rARyaieVGqMgfJJh2Qt-I8oUj1bMZTI1rkHL-mOwpq9rHKfckiYwzvGq_HEQXUzqpFzKGusVJrns6IGQwBTQsCep5gLsq9Kl7esN2qmNYCxjalZIvZTvEqraRMZgViSS0',
+      kty: 'RSA',
+      kid: 'nDRkjeCIfTfCQUhKa-7hQWJQussUJMpRobELfaYT8Po',
+      use: 'sig',
+    },
+  ],
+}
