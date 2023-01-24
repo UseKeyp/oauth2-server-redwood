@@ -2,7 +2,8 @@
   "github": {
     "silent": true
   },
-  "rewrites": [
+
+  "redirects": [
     { "source": "/oauth/(.*)", "destination": "/api/oauth/$1" },
     { "source": "/oauth/:match*", "destination": "/api/oauth/:match*" },
 
