@@ -16,4 +16,4 @@
 [api]
   port = 3001
 [browser]
-  open = true
+  open = false
