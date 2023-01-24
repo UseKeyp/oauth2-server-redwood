@@ -4,10 +4,15 @@ import serverless from 'serverless-http'
 import { db } from 'src/lib/db'
 import jwks from 'src/lib/jwks'
 
+let APP_DOMAIN = process.env.APP_DOMAIN
+if (process.env.VERCEL) {
+  APP_DOMAIN = `https://${process.env.VERCEL_URL}`
+}
+
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.SECURE_KEY,
-    APP_DOMAIN: process.env.APP_DOMAIN,
+    APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,
