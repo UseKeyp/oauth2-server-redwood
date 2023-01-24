@@ -1,5 +1,9 @@
 {
   "private": true,
+  "scripts": {
+    "build:oauth2-server": "babel packages/oauth2-server -d packages/oauth2-server/dist --copy-files",
+    "build:watch": "nodemon --watch packages --ext \"js,ts,tsx\" --ignore packages/oauth2-server/dist --exec \"yarn --cwd packages/oauth2-server build:oauth2-server && yarn rw dev\""
+  },
   "workspaces": {
     "packages": [
       "api",

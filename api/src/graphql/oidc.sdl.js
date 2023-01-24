@@ -9,7 +9,15 @@ export const schema = gql`
 
   type Mutation {
     createClient: Oidc! @requireAuth
-    updateClient(id: String!, redirectUrls: String!): Oidc! @requireAuth
+    updateClient(
+      id: String!
+      redirectUrls: String!
+      clientURI: String
+      clientName: String
+      tosURI: String
+      logoURI: String
+      policyURI: String
+    ): Oidc! @requireAuth
     deleteClient(id: String!): Oidc! @requireAuth
   }
 
