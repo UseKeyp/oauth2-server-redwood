@@ -1,12 +1,11 @@
 {
-  "github": {
-    "silent": true
-  },
-
-  "redirects": [
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
     { "source": "/oauth/(.*)", "destination": "/api/oauth/$1" },
     { "source": "/oauth/:match*", "destination": "/api/oauth/:match*" },
 
     { "source": "/foo", "destination": "/login"}
-  ]
+  ],
+  "build": "cd packages/oauth2-server && yarn build && yarn rw deploy vercel"
 }
