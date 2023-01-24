@@ -1,11 +1,7 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
   "rewrites": [
-    { "source": "/oauth/(.*)", "destination": "/api/oauth/$1" },
     { "source": "/oauth/:match*", "destination": "/api/oauth/:match*" },
-
-    { "source": "/foo", "destination": "/login"}
+    { "source": "/foo", "destination": "/"}
   ],
   "buildCommand": "cd packages/oauth2-server && yarn build && cd ../../ && yarn rw deploy vercel"
 }
