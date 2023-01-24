@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/oauth/:match*", "destination": "/api/oauth/:match*" },
+    { "source": "/oauth/", "destination": "/api/oauth/" },
     { "source": "/foo", "destination": "/"}
   ],
   "buildCommand": "cd packages/oauth2-server && yarn build && cd ../../ && yarn rw deploy vercel"
