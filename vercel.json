@@ -7,5 +7,5 @@
 
     { "source": "/foo", "destination": "/login"}
   ],
-  "build": "cd packages/oauth2-server && yarn build && yarn rw deploy vercel"
+  "buildCommand": "cd packages/oauth2-server && yarn build && cd ../../ && yarn rw deploy vercel"
 }
