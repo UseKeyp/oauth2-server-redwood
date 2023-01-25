@@ -5,9 +5,7 @@ import { toast } from '@redwoodjs/web/toast'
 
 import Button from 'src/components/Button/Button'
 import { QUERY as clientQuery } from 'src/components/ClientCell'
-import Icon from 'src/components/Icon/Icon'
 import TextInput from 'src/components/TextInput/TextInput'
-import Tooltip from 'src/components/Tooltip/Tooltip'
 
 const UPDATE_ClIENT = gql`
   mutation UpdateClientMutation($id: String!, $redirectUrls: String!) {

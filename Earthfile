@@ -18,7 +18,6 @@ deps:
     COPY graphql.config.js .
     # Install dependencies
     RUN yarn install --immutable
-    RUN ls -la .yarn
 
 build-packages:
     FROM +deps
@@ -41,9 +40,9 @@ build-app:
     FROM +deps
     COPY +build-packages/packages packages
     BUILD +test
-    # TODO: figure out arguments
-    ARG ENVIRONMENT='local'
-    ARG VERSION='latest'
+    # TODO: Pull arguments
+    ARG ENVIRONMENT='prod'
+    ARG VERSION='latest' # Used on web side to display the current version
     RUN yarn rw build
     # Optional "AS LOCAL" to save output locally, for testing with "rw serve"
     SAVE ARTIFACT web/dist web/dist # AS LOCAL ./web/dist
@@ -68,13 +67,12 @@ docker-api:
     ENV ENVIRONMENT='local'
     COPY +build-app/api/dist /api/dist
     COPY +build-app/api/db /api/db
-    COPY serve-api.sh .
     COPY redwood.toml .
     COPY graphql.config.js .
     RUN yarn global add @redwoodjs/api-server @redwoodjs/internal prisma && \
       apt-get update && apt install -y nano ncdu
     EXPOSE 8911
-    ENTRYPOINT ["./serve-api.sh"]
+    ENTRYPOINT ["yarn", "rw", "serve", "api", "--port", "8911"]
     SAVE IMAGE --push ghcr.io/pi0neerpat/treasure-chess-api:$VERSION
 
 docker:

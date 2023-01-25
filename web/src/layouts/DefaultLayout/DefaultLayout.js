@@ -5,9 +5,9 @@ const DefaultLayout = ({ children, background }) => {
   const { isAuthenticated, logOut } = useAuth()
   return (
     <div className={background ? background : 'chess-background'}>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-screen flex-col">
         <div className="flex-grow">
-          <div className="max-w-7xl mx-4 sm:mx-auto px-0 sm:px-4 sm:max-w-screen">
+          <div className="sm:max-w-screen mx-4 max-w-7xl px-0 sm:mx-auto sm:px-4">
             <header className="relative mb-8 mt-4 w-full">
               <div>
                 <Link to={routes.home()}>OAuth2 Server Redwood</Link>
@@ -20,7 +20,7 @@ const DefaultLayout = ({ children, background }) => {
                 )}
               </div>
             </header>
-            <div className="mx-4 min-h-screen mb-15 md:mb-0">{children}</div>
+            <div className="mb-15 mx-4 min-h-screen md:mb-0">{children}</div>
           </div>
         </div>
       </div>

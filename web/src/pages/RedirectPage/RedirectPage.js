@@ -7,7 +7,7 @@ const Redirect = ({ type }) => {
   const { errorMessage, successMessage, isLoading } = useRedirection()
   if (isLoading)
     return (
-      <div className="min-w-full min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen min-w-full items-center justify-center">
         Loading...
       </div>
     )
@@ -39,12 +39,12 @@ const Redirect = ({ type }) => {
     }
   }
   return (
-    <div className="flex flex-col min-h-screen chess-background">
-      <div className="flex flex-grow flex-col w-full justify-center align-center items-center">
+    <div className="chess-background flex min-h-screen flex-col">
+      <div className="align-center flex w-full flex-grow flex-col items-center justify-center">
         <div className="redirect-container w-80 sm:w-96">
           <div className="redirect-contents w-full">
             <div
-              className={`flex align-center bg-black p-4 rounded-lg border-2 border-${
+              className={`align-center flex rounded-lg border-2 bg-black p-4 border-${
                 successMessage ? `green` : `[#FFBB0D]`
               }`}
             >
@@ -57,7 +57,7 @@ const Redirect = ({ type }) => {
                   <h2 className="mt-6 tracking-tight">
                     Oops - there was an issue
                   </h2>
-                  <h3 className="mt-8 font-bold text-errorYellow">
+                  <h3 className="text-errorYellow mt-8 font-bold">
                     {errorMessage.substring(0, 200)}
                   </h3>
                 </>

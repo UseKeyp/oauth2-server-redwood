@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "build-packages": "babel packages/oauth2-server -d packages/oauth2-server/dist",
+    "build-packages": "lerna exec --no-private -- yarn build",
     "build:watch": "nodemon --watch packages --ext \"js,ts,tsx\" --ignore packages/oauth2-server/dist --exec \"cd packages/oauth2-server && yarn build && cd ../../ && yarn rw dev\""
   },
   "workspaces": {
