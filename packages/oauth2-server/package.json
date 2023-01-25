@@ -1,6 +1,6 @@
 {
   "name": "oauth2-server-redwood",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "",
   "module": "dist/index.js",
   "main": "dist/index.js",
