@@ -17,7 +17,21 @@
 
 ## Demo ⏯️
 
-Hosted demo coming soon
+Point your `oauth2-client-redwood` or `passport.js` app to the demo server:
+
+https://oauth2-server-redwood.vercel.app/
+
+Here is the available client config. Let me know if you want to add your own client to the demo server, or make a PR.
+
+```
+client_id: '123',
+redirect_uris: [
+            'https://jwt.io',
+            'https://oauthdebugger.com/debug',
+            'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
+            'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
+          ],
+```
 
 ## Usage
 

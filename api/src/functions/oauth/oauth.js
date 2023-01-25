@@ -2,12 +2,8 @@ import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import jwks from 'src/lib/jwks'
-
-let APP_DOMAIN = process.env.APP_DOMAIN
-if (process.env.VERCEL) {
-  APP_DOMAIN = `https://${process.env.VERCEL_URL}`
-}
 
 export const handler = serverless(
   oauth2Server(db, {
