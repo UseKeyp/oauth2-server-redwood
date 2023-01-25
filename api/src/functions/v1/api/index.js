@@ -50,7 +50,6 @@ const app = (db, settings) => {
   const app = express()
   app.set('trust proxy', true)
   app.use(validateToken)
-  console.log(settings.version)
   app.use(`/${settings.version}`, router) // Prefix routes eg. /v1/sanity-check
 
   return app
