@@ -1,7 +1,8 @@
 {
+  "trailingSlash": true,
   "rewrites": [
     { "source": "/oauth/auth", "destination": "https://oauth2-server-redwood.vercel.app/api/oauth/auth" },
-    { "source": "/oauth/interaction/:path*", "destination": "/api/oauth/interaction/:path*" },
+    { "source": "/oauth/interaction/:path*/", "destination": "/api/oauth/interaction/:path*/" },
     { "source": "/foo", "destination": "/login"}
   ],
   "buildCommand": "cd packages/oauth2-server && yarn build && cd ../../ && yarn rw deploy vercel"
