@@ -3,26 +3,11 @@ FROM node:16.16.0-alpine
 WORKDIR /app
 
 deps:
-    # ENV PYTHONUNBUFFERED=1
-    # RUN apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python
-    # RUN python3 -m ensurepip
-    # RUN pip3 install --no-cache --upgrade pip setuptools
-
-    # RUN apk --no-cache --virtual build-dependencies add \
-    #     jpeg-dev \
-    #     cairo-dev \
-    #     giflib-dev \
-    #     pango-dev \
-    #     make \
-    #     g++ \
-    #     && npm_config_build_from_source=true yarn
     # Installation requirements
     COPY package.json .
     COPY yarn.lock .
     COPY .yarn .yarn
     COPY .nvmrc .
-    COPY .pnp.cjs .
-    COPY .pnp.loader.mjs .
     COPY .yarnrc.yml .
     # Application
     COPY api api
@@ -32,13 +17,8 @@ deps:
     COPY lerna.json .
     COPY graphql.config.js .
     # Install dependencies
-    RUN ls .yarn/unplugged
-    RUN ls -la
+    RUN yarn install --immutable
     RUN ls -la .yarn
-    RUN yarn --version
-    RUN yarn install --immutable --immutable-cache
-    # TODO need cache clean?
-    # RUN yarn && yarn cache clean
 
 build-packages:
     FROM +deps

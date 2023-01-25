@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build:oauth2-server": "babel packages/oauth2-server -d packages/oauth2-server/dist --copy-files",
-    "build:watch": "nodemon --watch packages --ext \"js,ts,tsx\" --ignore packages/oauth2-server/dist --exec \"yarn --cwd packages/oauth2-server build:oauth2-server && yarn rw dev\""
+    "build-packages": "babel packages/oauth2-server -d packages/oauth2-server/dist",
+    "build:watch": "nodemon --watch packages --ext \"js,ts,tsx\" --ignore packages/oauth2-server/dist --exec \"cd packages/oauth2-server && yarn build && cd ../../ && yarn rw dev\""
   },
   "workspaces": {
     "packages": [
@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.7.1",
-    "@yarnpkg/pnpify": "^4.0.0-rc.36",
     "lerna": "^6.2.0"
   },
   "eslintConfig": {
@@ -27,16 +26,5 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "resolutions": {
-    "@prisma/client/.prisma": "link:node_modules/.prisma"
-  },
-  "packageManager": "yarn@3.2.3",
-  "dependenciesMeta": {
-    "@prisma/client@4.9.0": {
-      "unplugged": true
-    },
-    "prisma@4.9.0": {
-      "unplugged": true
-    }
-  }
+  "packageManager": "yarn@3.2.3"
 }

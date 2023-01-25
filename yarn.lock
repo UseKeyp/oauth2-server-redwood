@@ -23898,13 +23898,7 @@ __metadata:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@redwoodjs/core": ^3.7.1
-    "@yarnpkg/pnpify": ^4.0.0-rc.36
     lerna: ^6.2.0
-  dependenciesMeta:
-    "@prisma/client@4.9.0":
-      unplugged: true
-    prisma@4.9.0:
-      unplugged: true
   languageName: unknown
   linkType: soft
 

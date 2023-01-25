@@ -1,22 +1,17 @@
 import { useEffect } from 'react'
 
 import { useAuth } from '@redwoodjs/auth'
-import {
-  useParams,
-  // navigate,
-  // routes
-} from '@redwoodjs/router'
+import { useParams } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
-import { saveRedirectTo } from 'src/providers/redirection'
 import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
-  const { signUp, isAuthenticated, reauthenticate } = useAuth()
+  const { signUp, isAuthenticated } = useAuth()
   const { getInteractionUid } = useOAuthAuthority()
 
-  const { error, redirectTo } = useParams()
+  const { error } = useParams()
   const { toast } = useToast()
   const [errorText, setErrorText] = React.useState('')
   const getErrorText = (error) => {
@@ -33,21 +28,9 @@ const LoginPortal = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (redirectTo) {
-  //     saveRedirectTo(redirectTo) && reauthenticate()
-  //   }
-  // }, [redirectTo, reauthenticate])
-
   useEffect(() => {
     error && setErrorText(getErrorText(error))
   }, [error])
-
-  useEffect(() => {
-    // if (isAuthenticated) {
-    //   navigate(routes.profile())
-    // }
-  }, [isAuthenticated])
 
   const getButton = (type, text) => (
     <button
