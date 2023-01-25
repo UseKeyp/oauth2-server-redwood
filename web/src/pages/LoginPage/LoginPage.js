@@ -8,7 +8,7 @@ import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
-  const { signUp, isAuthenticated } = useAuth()
+  const { signUp } = useAuth()
   const { getInteractionUid } = useOAuthAuthority()
 
   const { error } = useParams()
