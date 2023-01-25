@@ -9096,7 +9096,7 @@ __metadata:
     "@sentry/node": ^7.24.2
     "@sentry/tracing": ^7.24.2
     express: ^4.18.2
-    oauth2-server-redwood: ^0.3.2
+    oauth2-server-redwood: ^0.3.3
     pkce-challenge: ^3.0.0
     serverless-http: ^3.1.0
   languageName: unknown
@@ -20501,7 +20501,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth2-server-redwood@^0.3.2, oauth2-server-redwood@workspace:packages/oauth2-server":
+"oauth2-server-redwood@^0.3.3, oauth2-server-redwood@workspace:packages/oauth2-server":
   version: 0.0.0-use.local
   resolution: "oauth2-server-redwood@workspace:packages/oauth2-server"
   dependencies:
