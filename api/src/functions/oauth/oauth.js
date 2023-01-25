@@ -7,7 +7,7 @@ import jwks from 'src/lib/jwks'
 
 export const handler = serverless(
   oauth2Server(db, {
-    SECURE_KEY: process.env.SECURE_KEY,
+    SECURE_KEY: process.env.OAUTH_SECRET_KEY,
     APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
