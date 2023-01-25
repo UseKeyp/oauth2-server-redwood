@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.7.1",
-    "lerna": "^6.2.0"
+    "lerna": "^6.2.0",
+    "prisma": "^4.9.0"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
