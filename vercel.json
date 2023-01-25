@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    { "source": "/oauth/:path*", "destination": "/api/oauth/:path*" },
+    { "source": "/oauth/auth", "destination": "/api/oauth/auth" },
+    { "source": "/oauth/interaction/:path*", "destination": "/api/oauth/interaction/:path*" },
     { "source": "/foo", "destination": "/login"}
   ],
   "buildCommand": "cd packages/oauth2-server && yarn build && cd ../../ && yarn rw deploy vercel"

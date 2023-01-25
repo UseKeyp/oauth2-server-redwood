@@ -4,6 +4,12 @@ export const isDevelopment =
 
 export const isProduction = !isDevelopment
 
+let appDomain = process.env.APP_DOMAIN
+if (process.env.REDWOOD_ENV_VERCEL_URL) {
+  appDomain = `https://${process.env.REDWOOD_ENV_VERCEL_URL}`
+}
+export const APP_DOMAIN = appDomain
+
 export const cors = {
   origin: isProduction
     ? APP_DOMAIN
@@ -16,9 +22,3 @@ export const cors = {
       ],
   credentials: true,
 }
-
-let appDomain = process.env.APP_DOMAIN
-if (process.env.REDWOOD_ENV_VERCEL_URL) {
-  appDomain = `https://${process.env.REDWOOD_ENV_VERCEL_URL}`
-}
-export const APP_DOMAIN = appDomain
