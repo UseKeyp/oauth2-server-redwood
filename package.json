@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.7.1",
-    "lerna": "^6.2.0",
-    "prisma": "^4.9.0"
+    "@yarnpkg/pnpify": "^4.0.0-rc.36",
+    "lerna": "^6.2.0"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
@@ -27,5 +27,16 @@
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.2.3"
+  "resolutions": {
+    "@prisma/client/.prisma": "link:node_modules/.prisma"
+  },
+  "packageManager": "yarn@3.2.3",
+  "dependenciesMeta": {
+    "@prisma/client@4.9.0": {
+      "unplugged": true
+    },
+    "prisma@4.9.0": {
+      "unplugged": true
+    }
+  }
 }
