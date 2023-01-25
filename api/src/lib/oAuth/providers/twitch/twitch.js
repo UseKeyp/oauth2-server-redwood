@@ -2,6 +2,7 @@ import fetch from 'cross-fetch'
 
 import { db } from 'src/lib/db'
 import { isDevelopment } from 'src/lib/helpers'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import { processPromotion } from 'src/lib/promotions'
@@ -16,7 +17,7 @@ const TWITCH_OAUTH_URL_REVOKE = 'https://id.twitch.tv/oauth2/revoke'
 const TWITCH_SCOPE = 'user:read:email'
 const TWITCH_REDIRECT_URI = isDevelopment
   ? 'http://localhost:8910/redirect/twitch'
-  : process.env.APP_DOMAIN + '/redirect/twitch'
+  : APP_DOMAIN + '/redirect/twitch'
 
 const responseType = 'code'
 const params = {

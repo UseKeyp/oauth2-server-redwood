@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/oauth/auth", "destination": "/api/oauth/auth" },
+    { "source": "/oauth/auth", "destination": "https://oauth2-server-redwood.vercel.app/api/oauth/auth" },
     { "source": "/oauth/interaction/:path*", "destination": "/api/oauth/interaction/:path*" },
     { "source": "/foo", "destination": "/login"}
   ],

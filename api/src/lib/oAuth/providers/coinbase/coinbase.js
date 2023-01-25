@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch'
 
 import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import Sentry from 'src/lib/sentry'
 
@@ -11,7 +12,7 @@ export const COINBASE_OAUTH_URL_AUTHORIZE =
 const COINBASE_OAUTH_URL_TOKEN = 'https://www.coinbase.com/oauth/token'
 const COINBASE_SCOPE =
   'wallet:accounts:read,wallet:accounts:create,wallet:addresses:read,wallet:addresses:create,wallet:user:email'
-const COINBASE_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
+const COINBASE_REDIRECT_URI = APP_DOMAIN + '/redirect/coinbase'
 
 const responseType = 'code'
 const params = {
