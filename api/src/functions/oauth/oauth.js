@@ -25,6 +25,11 @@ export const handler = serverless(
             'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
           ],
         },
+        {
+          // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
+          client_id: 'dev-portal',
+          redirect_uris: ['http://0.0.0.0:8910/redirect/keyp'],
+        },
       ],
     },
   })

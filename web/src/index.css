@@ -11,3 +11,7 @@
 /**
  * END --- SETUP TAILWINDCSS EDIT
  */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
