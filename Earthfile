@@ -58,17 +58,19 @@ docker-web:
     RUN ls -la
     ARG ENVIRONMENT='local'
     ARG VERSION='latest'
+    ARG REDWOOD_API_URL='http://localhost:3001'
     COPY +build-app/web/config/nginx/default.conf /etc/nginx/conf.d/default.conf
     COPY +build-app/web/dist /usr/share/nginx/html
     RUN ls -lA /usr/share/nginx/html
-    EXPOSE 8910
+    EXPOSE 3000
+    LABEL org.opencontainers.image.source=https://github.com/usekeyp/oauth2-server-redwood
     SAVE IMAGE --push ghcr.io/usekeyp/oauth2-server-redwood-web:$VERSION
 
 docker-api:
     FROM +deps
     BUILD +build-app
     ARG VERSION='latest'
-    ENV ENVIRONMENT='local'
+    ENV ENVIRONMENT='prod'
     COPY +build-app/api/dist /api/dist
     COPY +build-app/api/db /api/db
     COPY +build-app/node_modules/.prisma /node_modules/.prisma
@@ -77,8 +79,10 @@ docker-api:
     RUN ls -la
     RUN yarn add @redwoodjs/api-server @redwoodjs/internal prisma && \
       apt-get update && apt install -y nano ncdu
-    EXPOSE 8911
-    ENTRYPOINT ["yarn", "rw", "serve", "api", "--port", "8911"]
+    RUN yarn rw prisma generate
+    EXPOSE 3001
+    ENTRYPOINT ["yarn", "rw", "serve", "api", "--port", "3001"]
+    LABEL org.opencontainers.image.source=https://github.com/usekeyp/oauth2-server-redwood
     SAVE IMAGE --push ghcr.io/usekeyp/oauth2-server-redwood-api:$VERSION
 
 docker:
