@@ -9,8 +9,8 @@
   title = "oauth2-server-redwood"
   port = 3000
   host = "0.0.0.0"
-  apiUrl = "/.redwood/functions"
-  # apiUrl = "${REDWOOD_API_URL:/api}"
+  # apiUrl = "/.redwood/functions"
+  apiUrl = "${REDWOOD_API_URL:/api}"
   includeEnvironmentVariables = [] # any ENV vars that should be available to the web side, see https://redwoodjs.com/docs/environment-variables#web
 [api]
   port = 3001

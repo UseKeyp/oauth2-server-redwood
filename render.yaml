@@ -18,12 +18,7 @@ services:
   routes:
   - type: rewrite
     source: /.redwood/functions/*
-#####
-# NOTE: replace destination api url after first deploy to Render
-# example:
-#   destination: https://myredwoodproject-api.onrender.com/*
-#####
-    destination: replace_with_api_url/*
+    destination: https://oauth2-server-redwood-api.onrender.com/*
   - type: rewrite
     source: /*
     destination: /index.html
@@ -33,7 +28,7 @@ services:
   plan: free
   env: node
   region: oregon
-  buildCommand: yarn && yarn rw build api
+  buildCommand: yarn && yarn build-packages && yarn rw build api
   startCommand: yarn rw deploy render api
   envVars:
   - key: NODE_VERSION
@@ -42,6 +37,13 @@ services:
     fromDatabase:
       name: oauth2-server-redwood-db
       property: connectionString
+  routes:
+  - type: rewrite
+    source: /redirect/*
+    destination: https://oauth2-server-redwood-web.onrender.com/redirect/*
+  - type: rewrite
+    source: /login/*
+    destination: https://oauth2-server-redwood-web.onrender.com/login/*
 
 databases:
   - name: oauth2-server-redwood-db
