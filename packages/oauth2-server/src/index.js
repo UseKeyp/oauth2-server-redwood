@@ -55,7 +55,7 @@ const app = (db, settings) => {
           req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
           if (provider) {
-            const response = await fetch(settings.REDWOOD_API_URL, {
+            const response = await fetch(`${settings.REDWOOD_API_URL}/auth`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
