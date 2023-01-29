@@ -5,10 +5,16 @@ import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import jwks from 'src/lib/jwks'
 
+console.log(
+  process.env.REDWOOD_API_URL || `${process.env.APP_DOMAIN}/.redwood/functions`
+)
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.OAUTH_SECRET_KEY,
-    APP_DOMAIN,
+    ISSUER_URL: APP_DOMAIN,
+    REDWOOD_API_URL:
+      process.env.REDWOOD_API_URL ||
+      `${process.env.APP_DOMAIN}/.redwood/functions`,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,

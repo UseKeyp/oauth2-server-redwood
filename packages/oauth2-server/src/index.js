@@ -23,7 +23,7 @@ const app = (db, settings) => {
     }
   }
 
-  const oidc = new Provider(settings.APP_DOMAIN, getConfig(db, settings))
+  const oidc = new Provider(settings.ISSUER_URL, getConfig(db, settings))
   oidc.proxy = true
 
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
@@ -55,7 +55,7 @@ const app = (db, settings) => {
           req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
           if (provider) {
-            const response = await fetch(`${settings.APP_DOMAIN}/api/auth`, {
+            const response = await fetch(settings.REDWOOD_API_URL, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -64,7 +64,8 @@ const app = (db, settings) => {
                 stateExtraData: uid,
               }),
             }).then((res) => res.json())
-            if (!response.url) throw "Error during sign up. Couldn't fetch url."
+            if (!response.url)
+              return res.redirect(`${settings.routes.login}?uid=${uid}`) //throw "Error during sign up. Couldn't fetch url."
             return res.redirect(response.url)
           }
           return res.redirect(`${settings.routes.login}?uid=${uid}`)

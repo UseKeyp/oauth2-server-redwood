@@ -66,7 +66,9 @@ import { db } from 'src/lib/db'
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.SECURE_KEY,
-    APP_DOMAIN: process.env.APP_DOMAIN,
+    ISSUER_URL: process.env.APP_DOMAIN,
+    REDWOOD_API_URL: process.env.REDWOOD_API_URL ||
+       `${process.env.APP_DOMAIN}/.redwood/functions`,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     jwks,
     routes: { login: '/login', authorize: '/authorize' },
