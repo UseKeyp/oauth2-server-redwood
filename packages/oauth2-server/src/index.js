@@ -110,7 +110,7 @@ const app = (db, settings) => {
           // console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
           return res.send({
-            redirectTo: `http://localhost/redirect/keyp?error=invalid login attempt`,
+            redirectTo: `/redirect/keyp?error=invalid login attempt`,
           })
         }
 
@@ -129,7 +129,7 @@ const app = (db, settings) => {
 
         // NOTE: may be unnecessary to get the new uid
         const newUid = redirectTo.toString().split('/auth/')[1]
-        const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
+        const newRedirectTo = `/oauth/auth/${newUid}`
         res.send({ redirectTo: newRedirectTo })
       } catch (err) {
         next(err)
@@ -199,7 +199,7 @@ const app = (db, settings) => {
 
         // NOTE: may be unnecessary to get the new uid
         const newUid = redirectTo.toString().split('/auth/')[1]
-        const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
+        const newRedirectTo = `/oauth/auth/${newUid}`
         // console.log(newRedirectTo)
         res.send({ redirectTo: newRedirectTo })
       } catch (err) {
