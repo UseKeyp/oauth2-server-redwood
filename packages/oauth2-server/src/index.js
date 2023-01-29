@@ -1,5 +1,4 @@
 import assert from 'assert'
-import path from 'path'
 
 import bodyParser from 'body-parser'
 import express from 'express'
@@ -97,7 +96,7 @@ const app = (db, settings) => {
     async (req, res, next) => {
       try {
         const details = await oidc.interactionDetails(req, res)
-        const { uid, prompt, params } = details
+        const { prompt, params } = details
         // console.log('/oauth/interaction/:uid/login', prompt)
         assert.strictEqual(prompt.name, 'login')
         // Lookup the client

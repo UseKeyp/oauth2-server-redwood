@@ -37,13 +37,6 @@ services:
     fromDatabase:
       name: oauth2-server-redwood-db
       property: connectionString
-  routes:
-  - type: rewrite
-    source: /redirect/*
-    destination: https://oauth2-server-redwood-web.onrender.com/redirect/*
-  - type: rewrite
-    source: /login/*
-    destination: https://oauth2-server-redwood-web.onrender.com/login/*
 
 databases:
   - name: oauth2-server-redwood-db
