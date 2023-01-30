@@ -21,7 +21,7 @@ const OAuthAuthorityProvider = ({ children }) => {
       if (!interactionUid) throw 'No uid for continueInteraction'
       if (!['login', 'confirm', 'abort'].includes(type))
         throw 'Invalid type for continueInteraction'
-      const url = `${global.RWJS_API_URL}/oauth/interaction/${interactionUid}/${type}`
+      const url = `/oauth/interaction/${interactionUid}/${type}`
       if (type === 'abort') return window.location.replace(url)
       const response = await fetch(url, {
         method: 'POST',

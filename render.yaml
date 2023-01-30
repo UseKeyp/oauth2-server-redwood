@@ -18,7 +18,10 @@ services:
   routes:
   - type: rewrite
     source: /.redwood/functions/*
-    destination: https://oauth2-server-redwood-api.onrender.com/*
+    destination: https://api.oauth-demo.keyp.gg/*
+  - type: rewrite
+    source: /oauth/*
+    destination: https://api.oauth-demo.keyp.gg/oauth/*
   - type: rewrite
     source: /*
     destination: /index.html
