@@ -4,17 +4,12 @@ import { MetaTags } from '@redwoodjs/web'
 import { useRedirection } from 'src/providers/redirection'
 
 const Redirect = ({ type }) => {
-  const { error, errorMessage, successMessage, isLoading } = useRedirection()
+  const { errorMessage, successMessage, isLoading } = useRedirection()
   const url = new URL(window.location.href)
-  const state = url.searchParams.get('state')
-  const uid = state?.split(':')[1]
+  const state = decodeURIComponent(url.searchParams.get('state'))
+  let uid = state.split(":")[1];
 
-  if (
-    !uid &&
-    (errorMessage === 'End-User aborted interaction' ||
-      errorMessage ===
-        'The resource owner or authorization server denied the request')
-  ) {
+  if (!uid && (errorMessage === 'End-User aborted interaction' || errorMessage === 'The resource owner or authorization server denied the request')) {
     navigate(routes.home())
   }
 
