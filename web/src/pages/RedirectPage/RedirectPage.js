@@ -5,6 +5,20 @@ import { useRedirection } from 'src/providers/redirection'
 
 const Redirect = ({ type }) => {
   const { errorMessage, successMessage, isLoading } = useRedirection()
+
+  const url = new URL(window.location.href)
+  const state = decodeURIComponent(url.searchParams.get('state'))
+  let uid = state.split(":")[1];
+
+  if (!uid && (errorMessage === 'End-User aborted interaction' || errorMessage === 'The resource owner or authorization server denied the request')) {
+    navigate(routes.home())
+  }
+
+  if (uid && errorMessage) {
+    const url = `/oauth/interaction/${uid}/abort`
+    window.location.replace(url)
+  }
+
   if (isLoading)
     return (
       <div className="flex min-h-screen min-w-full items-center justify-center">
