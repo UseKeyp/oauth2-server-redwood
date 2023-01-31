@@ -24,10 +24,7 @@ const app = (db, settings) => {
     }
   }
 
-  const oidc = new Provider(
-    `${settings.APP_DOMAIN}/api/oauth`,
-    getConfig(db, settings)
-  )
+  const oidc = new Provider(settings.APP_DOMAIN, getConfig(db, settings))
   oidc.proxy = true
 
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table

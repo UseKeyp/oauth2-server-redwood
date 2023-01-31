@@ -1,6 +1,7 @@
-import { oAuthUrl, codeGrant } from './oAuth'
 import { COINBASE } from 'src/lib/oAuth/providers/coinbase'
 import { PLAID, getSandboxPublicToken } from 'src/lib/oAuth/providers/plaid'
+
+import { oAuthUrl, codeGrant } from './oAuth'
 jest.setTimeout(60000)
 
 /* eslint-disable no-console */

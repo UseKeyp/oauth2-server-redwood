@@ -1,37 +1,10 @@
 import { useAuth } from '@redwoodjs/auth'
-import {
-  FieldError,
-  Form,
-  Label,
-  TextField,
-  TextAreaField,
-  Submit,
-} from '@redwoodjs/forms'
 import { MetaTags } from '@redwoodjs/web'
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
-import OidcCell from 'src/components/OidcCell'
+import ClientCell from 'src/components/ClientCell'
 
-const CREATE_ClIENT = gql`
-  mutation CreateContactMutation {
-    createClient {
-      id
-    }
-  }
-`
 const ProfilePage = () => {
   const { currentUser } = useAuth()
-
-  const [createClient, { loading, error }] = useMutation(CREATE_ClIENT, {
-    onCompleted: () => {
-      toast.success('Client created!')
-    },
-  })
-
-  const onSubmit = () => {
-    createClient()
-  }
 
   return (
     <>
@@ -45,12 +18,7 @@ const ProfilePage = () => {
         <li>accessToken: {currentUser?.accessToken}</li>
         <li>refreshToken: {currentUser?.refreshToken}</li>
       </ul>
-      <h3>Create a Client</h3>
-      <Form onSubmit={onSubmit} config={{ mode: 'onBlur' }}>
-        <Submit disabled={loading}>Create</Submit>
-      </Form>
-      <h3>Clients</h3>
-      <OidcCell />
+      <ClientCell />
     </>
   )
 }

@@ -4,11 +4,10 @@ import merge from 'deepmerge'
 
 import { findAccount } from './account'
 import getAdapter from './adapter'
-import htmlSafe from './helpers'
 
 export const getConfig = (db, settings) => {
   assert(settings.SECURE_KEY, 'settings.SECURE_KEY missing')
-  assert(settings.INTROSPECTION_SECRET, 'settings.SECURE_KEY missing')
+  assert(settings.INTROSPECTION_SECRET, 'settings.INTROSPECTION_SECRET missing')
   assert(settings.jwks, 'settings.jwks is required')
   assert(db, 'settings.db is required')
 
@@ -41,7 +40,6 @@ export const getConfig = (db, settings) => {
       },
       pkce: { require: true, methods: ['S256'] },
       responseTypes: ['code id_token', 'code', 'id_token'],
-      scopes: ['openid', 'offline_access'],
       claims: {
         openid: ['sub'],
         email: ['email', 'email_verified'],

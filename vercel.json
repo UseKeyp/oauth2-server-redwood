@@ -1,0 +1,10 @@
+{
+    "github": {
+    "silent": true
+  },
+  "rewrites": [
+    { "source": "/oauth/(.*)", "destination": "/api/oauth" },
+    { "source": "/api/v1/(.*)", "destination": "/api/v1" }
+  ],
+  "buildCommand": "cd packages/oauth2-server && yarn build && cd ../../ && yarn rw deploy vercel"
+}

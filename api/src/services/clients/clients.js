@@ -1,7 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { validate } from '@redwoodjs/api'
-
 import { db } from 'src/lib/db'
 
 const getAccessLevel = (developers) => {
@@ -48,7 +46,15 @@ export const createClient = async () => {
   return client
 }
 
-export const updateClient = async ({ id, redirectUrls }) => {
+export const updateClient = async ({
+  id,
+  redirectUrls,
+  clientURI,
+  clientName,
+  tosURI,
+  logoURI,
+  policyURI,
+}) => {
   const client = await db.oidc.findUnique({
     where: { id_type: { id, type: 7 } },
     select: { developers: true, payload: true },
@@ -60,7 +66,17 @@ export const updateClient = async ({ id, redirectUrls }) => {
   // TODO validate list as https urls, or http for localhost
   return db.oidc.update({
     where: { id_type: { id, type: 7 } },
-    data: { payload: { ...client.payload, redirect_uris: list } },
+    data: {
+      payload: {
+        ...client.payload,
+        ...(clientURI && { client_uri: clientURI }),
+        ...(clientName && { client_name: clientName }),
+        ...(tosURI && { tos_uri: tosURI }),
+        ...(logoURI && { logo_uri: logoURI }),
+        ...(policyURI && { policy_uri: policyURI }),
+        redirect_uris: list,
+      },
+    },
   })
 }
 

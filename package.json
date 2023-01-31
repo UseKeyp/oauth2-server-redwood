@@ -1,5 +1,9 @@
 {
   "private": true,
+  "scripts": {
+    "build-packages": "lerna exec --no-private -- yarn build",
+    "build:watch": "nodemon --watch packages --ext \"js,ts,tsx\" --ignore packages/oauth2-server/dist --exec \"cd packages/oauth2-server && yarn build && cd ../../ && yarn rw dev\""
+  },
   "workspaces": {
     "packages": [
       "api",
@@ -9,7 +13,8 @@
   },
   "devDependencies": {
     "@redwoodjs/core": "^3.7.1",
-    "lerna": "^6.2.0"
+    "lerna": "^6.2.0",
+    "prettier-plugin-tailwindcss": "^0.2.2"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",

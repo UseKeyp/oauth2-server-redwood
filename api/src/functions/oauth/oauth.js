@@ -2,12 +2,13 @@ import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import jwks from 'src/lib/jwks'
 
 export const handler = serverless(
   oauth2Server(db, {
-    SECURE_KEY: process.env.SECURE_KEY,
-    APP_DOMAIN: process.env.APP_DOMAIN,
+    SECURE_KEY: process.env.OAUTH_SECRET_KEY,
+    APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,
@@ -23,6 +24,11 @@ export const handler = serverless(
             'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
             'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
           ],
+        },
+        {
+          // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
+          client_id: 'dev-portal',
+          redirect_uris: ['http://0.0.0.0:8910/redirect/keyp'],
         },
       ],
     },

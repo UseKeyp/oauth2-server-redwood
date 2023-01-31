@@ -1,6 +1,6 @@
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
-import { navigate, routes } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'

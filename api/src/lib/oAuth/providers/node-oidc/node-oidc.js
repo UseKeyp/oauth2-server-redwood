@@ -2,18 +2,22 @@ import fetch from 'cross-fetch'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
 import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 
 export const NODE_OIDC = 'NODE_OIDC'
-const NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
+
+let NODE_OIDC_API_DOMAIN = 'https://node-oidc-provider-example.vercel.app'
+if (process.env.NODE_OIDC_API_DOMAIN)
+  NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
 
 export const NODE_OIDC_OAUTH_URL_AUTHORIZE = `${NODE_OIDC_API_DOMAIN}/auth`
 
 const NODE_OIDC_OAUTH_URL_TOKEN = `${NODE_OIDC_API_DOMAIN}/token`
 
 const NODE_OIDC_SCOPE = 'openid profile email'
-const NODE_OIDC_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/node_oidc'
+const NODE_OIDC_REDIRECT_URI = APP_DOMAIN + '/redirect/node_oidc'
 
 const responseType = 'code'
 const params = {
