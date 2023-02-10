@@ -12,7 +12,7 @@ export const APP_DOMAIN = appDomain
 
 export const cors = {
   origin: isProduction
-    ? APP_DOMAIN
+    ? [APP_DOMAIN, 'https://oauth2-server-redwood-web.onrender.com']
     : [
         APP_DOMAIN,
         'http://0.0.0.0:3000',

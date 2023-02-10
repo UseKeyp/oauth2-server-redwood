@@ -1,5 +1,4 @@
 import assert from 'assert'
-import path from 'path'
 
 import bodyParser from 'body-parser'
 import express from 'express'
@@ -24,7 +23,7 @@ const app = (db, settings) => {
     }
   }
 
-  const oidc = new Provider(settings.APP_DOMAIN, getConfig(db, settings))
+  const oidc = new Provider(settings.ISSUER_URL, getConfig(db, settings))
   oidc.proxy = true
 
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
@@ -56,7 +55,7 @@ const app = (db, settings) => {
           req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
           if (provider) {
-            const response = await fetch(`${settings.APP_DOMAIN}/api/auth`, {
+            const response = await fetch(`${settings.REDWOOD_API_URL}/auth`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -65,7 +64,8 @@ const app = (db, settings) => {
                 stateExtraData: uid,
               }),
             }).then((res) => res.json())
-            if (!response.url) throw "Error during sign up. Couldn't fetch url."
+            if (!response.url)
+              return res.redirect(`${settings.routes.login}?uid=${uid}`) //throw "Error during sign up. Couldn't fetch url."
             return res.redirect(response.url)
           }
           return res.redirect(`${settings.routes.login}?uid=${uid}`)
@@ -97,7 +97,7 @@ const app = (db, settings) => {
     async (req, res, next) => {
       try {
         const details = await oidc.interactionDetails(req, res)
-        const { uid, prompt, params } = details
+        const { prompt, params } = details
         // console.log('/oauth/interaction/:uid/login', prompt)
         assert.strictEqual(prompt.name, 'login')
         // Lookup the client
@@ -110,7 +110,7 @@ const app = (db, settings) => {
           // console.log('invalid login attempt')
           // TODO: redirect to signin page with error message
           return res.send({
-            redirectTo: `http://localhost/redirect/keyp?error=invalid login attempt`,
+            redirectTo: `/redirect/keyp?error=invalid login attempt`,
           })
         }
 
@@ -129,7 +129,7 @@ const app = (db, settings) => {
 
         // NOTE: may be unnecessary to get the new uid
         const newUid = redirectTo.toString().split('/auth/')[1]
-        const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
+        const newRedirectTo = `/oauth/auth/${newUid}`
         res.send({ redirectTo: newRedirectTo })
       } catch (err) {
         next(err)
@@ -199,7 +199,7 @@ const app = (db, settings) => {
 
         // NOTE: may be unnecessary to get the new uid
         const newUid = redirectTo.toString().split('/auth/')[1]
-        const newRedirectTo = `http://localhost/oauth/auth/${newUid}`
+        const newRedirectTo = `/oauth/auth/${newUid}`
         // console.log(newRedirectTo)
         res.send({ redirectTo: newRedirectTo })
       } catch (err) {
