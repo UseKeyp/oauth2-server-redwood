@@ -25,6 +25,7 @@ export const handler = serverless(
             'https://jwt.io',
             'https://oauthdebugger.com/debug',
             'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
+            'http://0.0.0.0:8910/redirect/keyp',
             'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
           ],
         },
