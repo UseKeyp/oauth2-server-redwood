@@ -6,6 +6,7 @@ export const findAccount = (db) => async (ctx, sub) => {
         id: true,
         username: true,
         email: true,
+        address: true,
       },
     })
 
@@ -19,11 +20,13 @@ export const findAccount = (db) => async (ctx, sub) => {
       claims: async (use, scope, claims, rejected) => {
         // console.log('claims', use, scope, claims, rejected)
         // TODO return claims based on use, scope, claims, rejected
+        // use: userinfo
+        // scope: openid, email
         return {
           sub,
-          email: account.email,
           username: account.username,
-          ...(loginProvider && { provider: loginProvider }), // Can remove. Used for our internal testing
+          email: account.email,
+          address: account.address,
         }
       },
     }
