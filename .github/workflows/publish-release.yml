@@ -57,12 +57,12 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PAT_GITHUB }}
+          token: ${{ secrets.PAT }}
           ref: ${{ steps.get_variables.outputs.BRANCH }}
       - name: Get version
         id: get_version
         env:
-          GH_TOKEN: ${{ secrets.PAT_GITHUB }}
+          GH_TOKEN: ${{ secrets.PAT }}
         run: |
           VERSION=${{ steps.get_variables.outputs.BRANCH }}
           if [ ${{ github.event.inputs.image_tag_prefix }} ] ;  then
@@ -83,7 +83,7 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PAT_GITHUB }}
+          token: ${{ secrets.PAT }}
           ref: ${{ needs.setup.outputs.BRANCH }}
 
       - name: Setup Earthly
@@ -94,7 +94,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.PAT }}
 
       - name: Build and push images
         run: earthly --ci --push -P +docker --VERSION=${{ needs.setup.outputs.VERSION }}
