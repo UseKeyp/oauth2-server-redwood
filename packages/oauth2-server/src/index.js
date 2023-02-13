@@ -26,12 +26,11 @@ const app = (db, settings) => {
   const oidc = new Provider(settings.ISSUER_URL, getConfig(db, settings))
   oidc.proxy = true
 
+  settings.middlewares && oidc.use(settings.middlewares(oidc))
+
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const expressApp = express()
   expressApp.set('trust proxy', true)
-  // expressApp.set('view engine', 'ejs')
-  // expressApp.set('views', path.resolve(__dirname, 'views'))
-
   const parse = bodyParser.urlencoded({ extended: false })
 
   function setNoCache(req, res, next) {
@@ -98,7 +97,9 @@ const app = (db, settings) => {
       try {
         const details = await oidc.interactionDetails(req, res)
         const { prompt, params } = details
+
         // console.log('/oauth/interaction/:uid/login', prompt)
+
         assert.strictEqual(prompt.name, 'login')
         // Lookup the client
         const client = await oidc.Client.find(params.client_id)

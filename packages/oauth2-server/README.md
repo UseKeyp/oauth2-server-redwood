@@ -46,7 +46,7 @@ yarn add oauth2-server-redwood serverless-http
 npx oauth2-server-redwood
 ```
 
-Place the output in `api/src/lib/jwks.js`. WARNING: consider encrypting your jwks before checking into version-control. Anyone with these keys will have full access to your app's API. See my recommended approach to [Encrypted Environment Variables](https://community.redwoodjs.com/t/encrypted-environment-variables/2691) for more help.
+Place the output in `api/src/lib/jwks.js`. WARNING: consider using environment variables ([example](https://github.com/kwajiehao/node-oidc-provider-sample/blob/main/src/config.ts)) or using [encrypted environment variables](https://community.redwoodjs.com/t/encrypted-environment-variables/2691) before adding jwks to to git. Anyone with these keys will have full access to your app's API.
 
 2. Create a new api function `oauth` and add the following code:
 
@@ -71,6 +71,7 @@ export const handler = serverless(
        `${process.env.APP_DOMAIN}/.redwood/functions`,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     jwks,
+    // middlewares, // Optional, see src/functions/oauth/middlewares
     routes: { login: '/login', authorize: '/authorize' },
     config: {
       // Define your own OIDC-Provider config (https://github.com/panva/node-oidc-provider)
