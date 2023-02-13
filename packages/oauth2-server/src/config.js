@@ -31,7 +31,7 @@ export const getConfig = (db, settings) => {
         response_types: ['code'],
         token_endpoint_auth_method: 'none',
       },
-      scopes: ['openid'],
+      scopes: ['openid', 'email'],
       issueRefreshToken: (ctx, client, code) => {
         return (
           client.grantTypeAllowed('refresh_token') &&
@@ -41,7 +41,7 @@ export const getConfig = (db, settings) => {
       pkce: { require: true, methods: ['S256'] },
       responseTypes: ['code id_token', 'code', 'id_token'],
       claims: {
-        openid: ['sub'],
+        openid: ['sub', 'provider', 'username'],
         email: ['email', 'email_verified'],
       },
       cookies: { keys: settings.SECURE_KEY.split(',') },
@@ -59,7 +59,6 @@ export const getConfig = (db, settings) => {
       },
       routes: {
         authorization: '/auth',
-        backchannel_authentication: '/backchannel',
         jwks: '/jwks',
         revocation: '/token/revocation',
         introspection: '/token/introspection',

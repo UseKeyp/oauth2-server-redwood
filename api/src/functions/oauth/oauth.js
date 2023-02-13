@@ -1,6 +1,7 @@
 import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
+import middlewares from 'src/functions/oauth/middlewares'
 import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import jwks from 'src/lib/jwks'
@@ -15,6 +16,7 @@ export const handler = serverless(
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,
+    middlewares, // Optional, see src/functions/oauth/middlewares
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
       clients: [
@@ -25,6 +27,7 @@ export const handler = serverless(
             'https://jwt.io',
             'https://oauthdebugger.com/debug',
             'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
+            'http://0.0.0.0:8910/redirect/keyp',
             'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
           ],
         },
