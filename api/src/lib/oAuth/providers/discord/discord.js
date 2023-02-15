@@ -25,6 +25,7 @@ export const params = {
   client_id: process.env.DISCORD_CLIENT_ID,
   scope: DISCORD_SCOPE,
   redirect_uri: DISCORD_REDIRECT_URI,
+  prompt: 'none',
 }
 
 export const onSubmitCode = async (code, { codeVerifier }) => {

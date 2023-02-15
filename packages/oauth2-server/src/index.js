@@ -49,7 +49,6 @@ const app = (db, settings) => {
         const { uid, prompt, params } = details
         // console.log('/oauth/interaction/:uid', prompt)
         const client = await oidc.Client.find(params.client_id)
-
         const provider =
           req.apiGateway?.event?.queryStringParameters?.login_provider
         if (prompt.name === 'login') {
@@ -80,6 +79,9 @@ const app = (db, settings) => {
         client.logoUri && (path += `&clientLogoUri=${client.logoUri}`)
         client.policyUri && (path += `&clientPolicyUri=${client.policyUri}`)
         client.tosUri && (path += `&clientTosUri=${client.tosUri}`)
+        client.redirectUris &&
+          (path += `&clientRedirectUri=${client.redirectUris[0]}`)
+
         // For more client metadata available see https://github.com/panva/node-oidc-provider/blob/main/lib/consts/client_attributes.js
 
         return res.redirect(path)
