@@ -92,7 +92,11 @@ export const handler = serverless(
 
 3. Copy the .env.example to .env and update the values
 
-4. Setup an Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`. Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path, or my implementation is incorrect. If you you can help solve this, please let me know!
+4. Setup a local Nginx proxy. I've included `oauth2-server-redwood.conf` which removes the prefix and serves the endpoint from `localhost/oauth` instead of `localhost/api/oauth`.
+
+> HELP WANTED: Oidc-provider does not always adhere to the `/api` path prefix when setting cookie path (or maybe my implementation is incorrect). If you you can help remove the need for nginx, or improve this setup, please let me know!
+
+If you need https locally, this is a good resource: https://www.howtogeek.com/devops/how-to-create-and-use-self-signed-ssl-on-nginx/, paired with setting `NODE_TLS_REJECT_UNAUTHORIZED=0` in your `.env` file.
 
 5. Setup dbAuth and update the graphql schema. Copy the schema here or see [`oauth2-client-redwood`][oauth2-client-redwood].
 
