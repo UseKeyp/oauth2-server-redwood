@@ -3,7 +3,7 @@ const middlewares = (oidc) => async (ctx, next) => {
   // PRE MIDDLEWARE
   await next()
   // POST MIDDLEWARE
-  console.log('post middleware', ctx.method, ctx.oidc.route)
+  // console.log('post middleware', ctx.method, ctx.oidc.route)
 }
 
 export default middlewares
