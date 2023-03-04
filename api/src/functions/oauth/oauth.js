@@ -19,6 +19,10 @@ export const handler = serverless(
     middlewares, // Optional, see src/functions/oauth/middlewares
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
+      claims: {
+        openid: ['sub', 'username'],
+        email: ['email', 'email_verified'],
+      },
       clients: [
         {
           // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
