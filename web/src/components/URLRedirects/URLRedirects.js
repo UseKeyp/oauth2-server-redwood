@@ -7,6 +7,7 @@ import Button from 'src/components/Button/Button'
 import { QUERY as clientQuery } from 'src/components/ClientCell'
 import TextInput from 'src/components/TextInput/TextInput'
 
+// eslint-disable-next-line camelcase
 const UPDATE_ClIENT = gql`
   mutation UpdateClientMutation($id: String!, $redirectUrls: String!) {
     updateClient(id: $id, redirectUrls: $redirectUrls) {

@@ -16,6 +16,7 @@ export const QUERY = gql`
   }
 `
 
+// eslint-disable-next-line camelcase
 const CREATE_ClIENT = gql`
   mutation CreateClientMutation {
     createClient {
