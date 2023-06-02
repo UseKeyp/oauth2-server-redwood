@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '@redwoodjs/auth'
 
 import Button from 'src/components/Button'
-import Icon from 'src/components/Icon'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 function Authorize() {

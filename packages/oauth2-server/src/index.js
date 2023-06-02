@@ -51,6 +51,12 @@ const app = (db, settings) => {
         const client = await oidc.Client.find(params.client_id)
         const provider =
           req.apiGateway?.event?.queryStringParameters?.login_provider
+        const clientRedirectUri = details?.params?.redirect_uri;
+
+        if (!client.redirectUris.includes(clientRedirectUri)) {
+          throw new Error('redirect_uri did not match any of the registered uris')
+        }
+
         if (prompt.name === 'login') {
           if (provider) {
             const response = await fetch(`${settings.REDWOOD_API_URL}/auth`, {
@@ -79,8 +85,7 @@ const app = (db, settings) => {
         client.logoUri && (path += `&clientLogoUri=${client.logoUri}`)
         client.policyUri && (path += `&clientPolicyUri=${client.policyUri}`)
         client.tosUri && (path += `&clientTosUri=${client.tosUri}`)
-        client.redirectUris &&
-          (path += `&clientRedirectUri=${client.redirectUris[0]}`)
+        path += `&clientRedirectUri=${encodeURIComponent(clientRedirectUri)}`
 
         // For more client metadata available see https://github.com/panva/node-oidc-provider/blob/main/lib/consts/client_attributes.js
 
